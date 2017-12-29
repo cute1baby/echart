@@ -1,0 +1,3 @@
+<?xml version="1.0"?>
+
+<resultset statement="select COUNT(audit.staff_id)as num ,s.staff_name, CURDATE() as endDate,DATE_ADD(CURDATE(),INTERVAL -6 DAY)  as startData   FROM behavior_chat_log log LEFT JOIN behavior_chat_audit audit ON log.chat_audit_id = audit.chat_audit_id LEFT JOIN pub_staff s ON audit.staff_id = s.staff_id where log.chat_time &gt;= DATE_ADD(CURDATE(),INTERVAL -6 DAY) and audit.app_pkg_name ='com.tencent.mm' and log.talk_type =1 and log.chat_status=1 GROUP BY audit.staff_id order by num desc LIMIT 50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"></resultset>

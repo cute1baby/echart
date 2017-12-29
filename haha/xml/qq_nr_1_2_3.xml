@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+
+<resultset statement="select log.content_type, log.group_name, count(log.group_id) AS num, DATE_ADD( CURDATE(), INTERVAL - (DAYOFMONTH(CURDATE()) - 1) DAY ) AS startData, CURDATE() AS endDate FROM behavior_chat_log log LEFT JOIN behavior_chat_audit audit ON log.chat_audit_id = audit.chat_audit_id WHERE audit.app_pkg_name LIKE 'com.tencent.%qq%' AND log.content_type = 2 AND log.talk_type = 1 AND log.chat_time &gt; DATE_ADD( CURDATE(), INTERVAL - (DAYOFMONTH(CURDATE()) - 1) DAY ) GROUP BY log.group_id ORDER BY num DESC LIMIT 20" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <row>
+	<field name="content_type">2</field>
+	<field name="group_name">614225915</field>
+	<field name="num">53</field>
+	<field name="startData">2017-11-01</field>
+	<field name="endDate">2017-11-22</field>
+  </row>
+
+  <row>
+	<field name="content_type">2</field>
+	<field name="group_name">320815192</field>
+	<field name="num">48</field>
+	<field name="startData">2017-11-01</field>
+	<field name="endDate">2017-11-22</field>
+  </row>
+
+  <row>
+	<field name="content_type">2</field>
+	<field name="group_name">571016826</field>
+	<field name="num">42</field>
+	<field name="startData">2017-11-01</field>
+	<field name="endDate">2017-11-22</field>
+  </row>
+
+  <row>
+	<field name="content_type">2</field>
+	<field name="group_name">245517480</field>
+	<field name="num">32</field>
+	<field name="startData">2017-11-01</field>
+	<field name="endDate">2017-11-22</field>
+  </row>
+
+  <row>
+	<field name="content_type">2</field>
+	<field name="group_name">147047026</field>
+	<field name="num">22</field>
+	<field name="startData">2017-11-01</field>
+	<field name="endDate">2017-11-22</field>
+  </row>
+
+  <row>
+	<field name="content_type">2</field>
+	<field name="group_name">70724798</field>
+	<field name="num">17</field>
+	<field name="startData">2017-11-01</field>
+	<field name="endDate">2017-11-22</field>
+  </row>
+
+  <row>
+	<field name="content_type">2</field>
+	<field name="group_name">426418592</field>
+	<field name="num">14</field>
+	<field name="startData">2017-11-01</field>
+	<field name="endDate">2017-11-22</field>
+  </row>
+
+  <row>
+	<field name="content_type">2</field>
+	<field name="group_name">北京房产交流群</field>
+	<field name="num">12</field>
+	<field name="startData">2017-11-01</field>
+	<field name="endDate">2017-11-22</field>
+  </row>
+
+  <row>
+	<field name="content_type">2</field>
+	<field name="group_name">和平</field>
+	<field name="num">4</field>
+	<field name="startData">2017-11-01</field>
+	<field name="endDate">2017-11-22</field>
+  </row>
+
+  <row>
+	<field name="content_type">2</field>
+	<field name="group_name">215331580</field>
+	<field name="num">2</field>
+	<field name="startData">2017-11-01</field>
+	<field name="endDate">2017-11-22</field>
+  </row>
+</resultset>

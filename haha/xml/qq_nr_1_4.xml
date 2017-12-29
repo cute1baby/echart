@@ -1,0 +1,811 @@
+<?xml version="1.0"?>
+
+<resultset statement="select log.group_id,log.group_name,log.content_type, count(log.content_type) AS num, CURDATE() as endDate ,DATE_ADD(DATE_ADD(CURDATE(),INTERVAL -2 month),INTERVAL -(DAYOFMONTH(CURDATE())-1) day)  as startData FROM behavior_chat_log log LEFT JOIN behavior_chat_audit audit ON log.chat_audit_id = audit.chat_audit_id INNER JOIN ( SELECT log.group_id, count(log.group_id) AS num FROM behavior_chat_log log LEFT JOIN behavior_chat_audit audit ON log.chat_audit_id = audit.chat_audit_id WHERE audit.app_pkg_name LIKE 'com.tencent.%qq%' AND log.talk_type = 1 AND log.chat_time &gt;= DATE_ADD(DATE_ADD(CURDATE(),INTERVAL -2 month),INTERVAL -(DAYOFMONTH(CURDATE())-1) day) GROUP BY log.group_id ORDER BY num LIMIT 50 ) AS tmp ON log.group_id = tmp.group_id WHERE audit.app_pkg_name LIKE 'com.tencent.%qq%' AND log.talk_type = 1 AND log.chat_time &gt;= DATE_ADD(DATE_ADD(CURDATE(),INTERVAL -2 month),INTERVAL -(DAYOFMONTH(CURDATE())-1) day) GROUP BY log.group_id, log.content_type ORDER BY tmp.num DESC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <row>
+	<field name="group_id">614225915</field>
+	<field name="group_name">614225915</field>
+	<field name="content_type">1</field>
+	<field name="num">635</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">614225915</field>
+	<field name="group_name">614225915</field>
+	<field name="content_type">2</field>
+	<field name="num">53</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">614225915</field>
+	<field name="group_name">614225915</field>
+	<field name="content_type">3</field>
+	<field name="num">1</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">245517480</field>
+	<field name="group_name">245517480</field>
+	<field name="content_type">1</field>
+	<field name="num">591</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">245517480</field>
+	<field name="group_name">245517480</field>
+	<field name="content_type">2</field>
+	<field name="num">32</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">571016826</field>
+	<field name="group_name">571016826</field>
+	<field name="content_type">1</field>
+	<field name="num">513</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">571016826</field>
+	<field name="group_name">571016826</field>
+	<field name="content_type">2</field>
+	<field name="num">42</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">147047026</field>
+	<field name="group_name">147047026</field>
+	<field name="content_type">1</field>
+	<field name="num">519</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">147047026</field>
+	<field name="group_name">147047026</field>
+	<field name="content_type">2</field>
+	<field name="num">22</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">320815192</field>
+	<field name="group_name">320815192</field>
+	<field name="content_type">1</field>
+	<field name="num">373</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">320815192</field>
+	<field name="group_name">320815192</field>
+	<field name="content_type">2</field>
+	<field name="num">48</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">320815192</field>
+	<field name="group_name">♛林俊杰主教♪JM风潮</field>
+	<field name="content_type">3</field>
+	<field name="num">2</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">320815192</field>
+	<field name="group_name">♛林俊杰主教♪JM风潮</field>
+	<field name="content_type">4</field>
+	<field name="num">1</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">70724798</field>
+	<field name="group_name">70724798</field>
+	<field name="content_type">1</field>
+	<field name="num">274</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">70724798</field>
+	<field name="group_name">70724798</field>
+	<field name="content_type">6</field>
+	<field name="num">2</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">70724798</field>
+	<field name="group_name">70724798</field>
+	<field name="content_type">2</field>
+	<field name="num">17</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">426418592</field>
+	<field name="group_name">426418592</field>
+	<field name="content_type">1</field>
+	<field name="num">220</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">426418592</field>
+	<field name="group_name">426418592</field>
+	<field name="content_type">2</field>
+	<field name="num">14</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">426418592</field>
+	<field name="group_name">426418592</field>
+	<field name="content_type">3</field>
+	<field name="num">3</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">662882879</field>
+	<field name="group_name">662882879</field>
+	<field name="content_type">1</field>
+	<field name="num">84</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">1721572161</field>
+	<field name="group_name">和平</field>
+	<field name="content_type">1</field>
+	<field name="num">64</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">1721572161</field>
+	<field name="group_name">和平</field>
+	<field name="content_type">3</field>
+	<field name="num">10</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">1721572161</field>
+	<field name="group_name">和平</field>
+	<field name="content_type">2</field>
+	<field name="num">4</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">554822507</field>
+	<field name="group_name">554822507</field>
+	<field name="content_type">1</field>
+	<field name="num">23</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">554822507</field>
+	<field name="group_name">北京房产交流群</field>
+	<field name="content_type">2</field>
+	<field name="num">12</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">215331580</field>
+	<field name="group_name">215331580</field>
+	<field name="content_type">1</field>
+	<field name="num">20</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">215331580</field>
+	<field name="group_name">215331580</field>
+	<field name="content_type">2</field>
+	<field name="num">2</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">652168598</field>
+	<field name="group_name">652168598</field>
+	<field name="content_type">1</field>
+	<field name="num">16</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">490565249</field>
+	<field name="group_name">490565249</field>
+	<field name="content_type">1</field>
+	<field name="num">6</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">83958636</field>
+	<field name="group_name">83958636</field>
+	<field name="content_type">1</field>
+	<field name="num">5</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+  <row>
+	<field name="group_id">614225915</field>
+	<field name="group_name">614225915</field>
+	<field name="content_type">1</field>
+	<field name="num">635</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">614225915</field>
+	<field name="group_name">614225915</field>
+	<field name="content_type">2</field>
+	<field name="num">53</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">614225915</field>
+	<field name="group_name">614225915</field>
+	<field name="content_type">3</field>
+	<field name="num">1</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">245517480</field>
+	<field name="group_name">245517480</field>
+	<field name="content_type">1</field>
+	<field name="num">591</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">245517480</field>
+	<field name="group_name">245517480</field>
+	<field name="content_type">2</field>
+	<field name="num">32</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">571016826</field>
+	<field name="group_name">571016826</field>
+	<field name="content_type">1</field>
+	<field name="num">513</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">571016826</field>
+	<field name="group_name">571016826</field>
+	<field name="content_type">2</field>
+	<field name="num">42</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">147047026</field>
+	<field name="group_name">147047026</field>
+	<field name="content_type">1</field>
+	<field name="num">519</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">147047026</field>
+	<field name="group_name">147047026</field>
+	<field name="content_type">2</field>
+	<field name="num">22</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">320815192</field>
+	<field name="group_name">320815192</field>
+	<field name="content_type">1</field>
+	<field name="num">373</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">320815192</field>
+	<field name="group_name">320815192</field>
+	<field name="content_type">2</field>
+	<field name="num">48</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">320815192</field>
+	<field name="group_name">♛林俊杰主教♪JM风潮</field>
+	<field name="content_type">3</field>
+	<field name="num">2</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">320815192</field>
+	<field name="group_name">♛林俊杰主教♪JM风潮</field>
+	<field name="content_type">4</field>
+	<field name="num">1</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">70724798</field>
+	<field name="group_name">70724798</field>
+	<field name="content_type">1</field>
+	<field name="num">274</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">70724798</field>
+	<field name="group_name">70724798</field>
+	<field name="content_type">6</field>
+	<field name="num">2</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">70724798</field>
+	<field name="group_name">70724798</field>
+	<field name="content_type">2</field>
+	<field name="num">17</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">426418592</field>
+	<field name="group_name">426418592</field>
+	<field name="content_type">1</field>
+	<field name="num">220</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">426418592</field>
+	<field name="group_name">426418592</field>
+	<field name="content_type">2</field>
+	<field name="num">14</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">426418592</field>
+	<field name="group_name">426418592</field>
+	<field name="content_type">3</field>
+	<field name="num">3</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">662882879</field>
+	<field name="group_name">662882879</field>
+	<field name="content_type">1</field>
+	<field name="num">84</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">1721572161</field>
+	<field name="group_name">和平</field>
+	<field name="content_type">1</field>
+	<field name="num">64</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">1721572161</field>
+	<field name="group_name">和平</field>
+	<field name="content_type">3</field>
+	<field name="num">10</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">1721572161</field>
+	<field name="group_name">和平</field>
+	<field name="content_type">2</field>
+	<field name="num">4</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">554822507</field>
+	<field name="group_name">554822507</field>
+	<field name="content_type">1</field>
+	<field name="num">23</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">554822507</field>
+	<field name="group_name">北京房产交流群</field>
+	<field name="content_type">2</field>
+	<field name="num">12</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">215331580</field>
+	<field name="group_name">215331580</field>
+	<field name="content_type">1</field>
+	<field name="num">20</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">215331580</field>
+	<field name="group_name">215331580</field>
+	<field name="content_type">2</field>
+	<field name="num">2</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">652168598</field>
+	<field name="group_name">652168598</field>
+	<field name="content_type">1</field>
+	<field name="num">16</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">490565249</field>
+	<field name="group_name">490565249</field>
+	<field name="content_type">1</field>
+	<field name="num">6</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">83958636</field>
+	<field name="group_name">83958636</field>
+	<field name="content_type">1</field>
+	<field name="num">5</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+  <row>
+	<field name="group_id">614225915</field>
+	<field name="group_name">614225915</field>
+	<field name="content_type">1</field>
+	<field name="num">635</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">614225915</field>
+	<field name="group_name">614225915</field>
+	<field name="content_type">2</field>
+	<field name="num">53</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">614225915</field>
+	<field name="group_name">614225915</field>
+	<field name="content_type">3</field>
+	<field name="num">1</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">245517480</field>
+	<field name="group_name">245517480</field>
+	<field name="content_type">1</field>
+	<field name="num">591</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">245517480</field>
+	<field name="group_name">245517480</field>
+	<field name="content_type">2</field>
+	<field name="num">32</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">571016826</field>
+	<field name="group_name">571016826</field>
+	<field name="content_type">1</field>
+	<field name="num">513</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">571016826</field>
+	<field name="group_name">571016826</field>
+	<field name="content_type">2</field>
+	<field name="num">42</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">147047026</field>
+	<field name="group_name">147047026</field>
+	<field name="content_type">1</field>
+	<field name="num">519</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">147047026</field>
+	<field name="group_name">147047026</field>
+	<field name="content_type">2</field>
+	<field name="num">22</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">320815192</field>
+	<field name="group_name">320815192</field>
+	<field name="content_type">1</field>
+	<field name="num">373</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">320815192</field>
+	<field name="group_name">320815192</field>
+	<field name="content_type">2</field>
+	<field name="num">48</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">320815192</field>
+	<field name="group_name">♛林俊杰主教♪JM风潮</field>
+	<field name="content_type">3</field>
+	<field name="num">2</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">320815192</field>
+	<field name="group_name">♛林俊杰主教♪JM风潮</field>
+	<field name="content_type">4</field>
+	<field name="num">1</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">70724798</field>
+	<field name="group_name">70724798</field>
+	<field name="content_type">1</field>
+	<field name="num">274</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">70724798</field>
+	<field name="group_name">70724798</field>
+	<field name="content_type">6</field>
+	<field name="num">2</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">70724798</field>
+	<field name="group_name">70724798</field>
+	<field name="content_type">2</field>
+	<field name="num">17</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">426418592</field>
+	<field name="group_name">426418592</field>
+	<field name="content_type">1</field>
+	<field name="num">220</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">426418592</field>
+	<field name="group_name">426418592</field>
+	<field name="content_type">2</field>
+	<field name="num">14</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">426418592</field>
+	<field name="group_name">426418592</field>
+	<field name="content_type">3</field>
+	<field name="num">3</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">662882879</field>
+	<field name="group_name">662882879</field>
+	<field name="content_type">1</field>
+	<field name="num">84</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">1721572161</field>
+	<field name="group_name">和平</field>
+	<field name="content_type">1</field>
+	<field name="num">64</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">和平458</field>
+	<field name="group_name">和平458</field>
+	<field name="content_type">3</field>
+	<field name="num">10</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">和平444</field>
+	<field name="group_name">和平444</field>
+	<field name="content_type">2</field>
+	<field name="num">4</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">554822578507</field>
+	<field name="group_name">554822578507</field>
+	<field name="content_type">1</field>
+	<field name="num">23</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">北京房产33交流群</field>
+	<field name="group_name">北京房产33交流群</field>
+	<field name="content_type">2</field>
+	<field name="num">12</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">215331600580</field>
+	<field name="group_name">215331600580</field>
+	<field name="content_type">1</field>
+	<field name="num">20</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">215331440</field>
+	<field name="group_name">215331440</field>
+	<field name="content_type">2</field>
+	<field name="num">2</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">9995344</field>
+	<field name="group_name">9995344</field>
+	<field name="content_type">1</field>
+	<field name="num">16</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">4905677</field>
+	<field name="group_name">4905677</field>
+	<field name="content_type">1</field>
+	<field name="num">6</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">83958666</field>
+	<field name="group_name">83958666</field>
+	<field name="content_type">1</field>
+	<field name="num">5</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+</resultset>

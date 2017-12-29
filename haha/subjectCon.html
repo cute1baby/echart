@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<link rel="stylesheet" href="assets/bootstrap.min.css">
+<!-- <link rel="stylesheet" href="assets/bootstrap-table.min.css"> -->
+<link rel="stylesheet" href="assets/css/reset.css">
+<link rel="stylesheet" href="assets/css/font-awesome.css">
+<link rel="stylesheet" href="assets/css/elements.css">
+<link rel="stylesheet" href="assets/css/subjectCon.css">
+<body>
+<!-- 半透明蒙版 -->
+<div id="mengban">
+	
+</div>
+<header>
+	<div id="logo">
+		<h4>IM&nbsp;审计分析系统</h4>
+	</div>
+	<div id="selectCondition">
+		<nav class="navbar navbar-default" role="navigation">
+			<div class="container-fluid"> 
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse"
+							data-target="#example-navbar-collapse">
+						<span class="sr-only">切换导航</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+				</div>
+				<div class="collapse navbar-collapse" id="example-navbar-collapse">
+					<ul class="nav navbar-nav" id="tabNav">
+						<li class="tabClick dropdown active">
+							<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" datanum="wx">
+								微信审计
+								<b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu">
+								<li class="active"><a href="javascript:;"  datanum="0">个人</a></li>
+								<li><a href="javascript:;" datanum="1">群组</a></li>
+							</ul>
+						</li>
+						<li class="tabClick dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" datanum="qq">QQ审计
+								<b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="javascript:;" datanum="0">个人</a></li>
+								<li><a href="javascript:;" datanum="1">群组</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</div>
+	<div id="logout">
+		<button type="button" class="el-button el-button--primary logoutButton">
+			<span>退出</span>	
+		</button>
+	</div>
+</header>
+<div id="noticeRecord">
+	<span class="wxQQSel" datanum="wx">微信审计</span>&nbsp;&gt;&nbsp;<span class="perGroupSel" datanum="0">个人</span>&nbsp;&gt;&nbsp;<span class="chatObjSel" datanum="dx">聊天对象</span>&nbsp;&gt;&nbsp;<span class="dateSel" style="display:none;" datanum="1">今天</span><span id="dateUpdate">2017年11月16日</span>
+</div>
+<div id="container1">
+	<div id="left">
+		<h4 class="audiType">审计类型</h4>
+		<div id="left_select">
+			<li class="show_left" datanum="dx">聊天对象</li>
+			<li datanum="nr">聊天内容</li>
+			<li datanum="key">敏感词</li>
+		</div>
+	</div>
+
+	<div id="right">
+		
+			<div class="right_top">
+				<div class="data_left">
+					<span>审计周期:&nbsp;&nbsp;</span>
+					<span class="dateNow">2017年11月16日</span>
+				</div>
+				<div class="switch_right">
+					<span>快速切换:&nbsp;&nbsp;</span>
+					<button type="button" class="btn btn-custom dateShow"  datanum="1">今天</button>
+					<button type="button" class="btn btn-custom" datanum="2">最近7天</button>
+					<button type="button" class="btn btn-custom" datanum="3">当前月份</button>
+					<button type="button" class="btn btn-custom" datanum="4">近三个月</button>
+				</div>
+			</div>
+			<div class="disNone disShow">
+				<ul class="contentTable">
+					<!-- (1)个人聊天对象 -->
+					<li class="show_right">
+						<div class="chatTable">
+							<p class="title">接收&nbsp;&nbsp;TOP&nbsp;&nbsp;50</p>
+							<div>
+								<table class="table1">
+								    <thead style="color:#388ADF;">
+								        <tr>
+								            <th>排名</th>
+								            <th>姓名</th>
+								            <th>频次</th>
+								        </tr>
+								    </thead>
+							    </table>
+							</div>  
+
+						    <div class="pageNacation chatSelect1">
+							    <table>
+								    <tbody>
+										<tr colspan="3">
+											<td>无符合条件的记录</td>
+										</tr>
+								    </tbody>
+							    </table>
+							</div>
+
+							<div class="pageBranch">
+								<span class="branchLeft" onclick="pageColums('prev',event)"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
+								<span class="branchRight" onclick="pageColums('next',event)"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+								<div class="pageNum">
+									<span class="pageNow">1</span>/
+									<span class="pageAll">1</span>
+								</div>
+								
+							</div>
+						</div>
+						<div class="chatTable">
+							<p class="title">发送&nbsp;&nbsp;TOP&nbsp;&nbsp;50</p>
+							<div>
+								<table class="table1">
+									<thead style="color:#388ADF;">
+								        <tr>
+								            <th>排名</th>
+								            <th>姓名</th>
+								            <th>频次</th>
+								        </tr>
+							    	</thead>
+								</table>
+							</div> 
+
+						    <div class="pageNacation chatSelect2">
+							    <table>
+								    <tbody>
+								        <tr colspan="3">
+											<td>无符合条件的记录</td>
+										</tr>
+								    </tbody>
+								</table>
+							</div>
+
+							<div class="pageBranch">
+								<span class="branchLeft" onclick="pageColums('prev',event)"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
+								<span class="branchRight" onclick="pageColums('next',event)"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+								<div class="pageNum">
+									<span class="pageNow">1</span>/
+									<span class="pageAll">1</span>
+								</div>
+							</div>
+						</div>
+					</li>
+					<!-- (2)个人聊天内容-->
+					<li>
+						<div class="chatTable2">
+							<div>
+								<table class="table1">
+								    <thead style="color:#fff;background:#388ADF;">
+								        <tr>
+								            <th>内容类型</th>
+								            <th>接收量（单位：次）</th>
+								            <th>发送量（单位：次）</th>
+								        </tr>
+								    </thead>
+							    </table>
+						    </div>
+						    <div class="pageNacation chattedConPer">
+							    <table>
+								    <tbody>
+										<tr colspan="3">
+											<td>无符合条件的记录</td>
+										</tr>
+								    </tbody>
+								</table>
+							</div>
+						</div>
+					</li>
+					<!-- (3)个人敏感词 -->
+					<li>
+						<div class="chatTable2">
+							<p class="title">关键词&nbsp;&nbsp;TOP&nbsp;&nbsp;50</p>
+							<div>
+								<table class="table1">
+								    <thead style="color:#388ADF;">
+								        <tr>
+								            <th>排名</th>
+								            <th>敏感词</th>
+								            <th>次数</th>
+								        </tr>
+								    </thead>
+								</table>
+							</div>
+							<div class="pageNacation sensitiveTdiv">
+							    <table>
+								    <tbody>
+										<tr colspan="3">
+											<td>无符合条件的记录</td>
+										</tr>
+								    </tbody>
+								</table>
+							</div>
+							<div class="pageBranch">
+								<span class="branchLeft" onclick="pageColums('prev',event)"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
+								<span class="branchRight" onclick="pageColums('next',event)"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+								<div class="pageNum">
+									<span class="pageNow">1</span>/
+									<span class="pageAll">1</span>
+								</div>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="disNone">
+				<ul class="contentTable">
+					<!-- (1)群组聊天内容 -->
+					<li class="show_right">
+						<div class="chatTable2">
+							<p class="title">聊天对象&nbsp;&nbsp;TOP&nbsp;&nbsp;50</p>
+							<div>
+								<table class="table1">
+								    <thead style="color:#388ADF;">
+								        <tr>
+								            <th>排名</th>
+								            <th>群组名称</th>
+								            <th>次数</th>
+								        </tr>
+								    </thead>
+								</table>
+							</div>
+							<div class="pageNacation chatGroup1">
+							    <table>
+								    <tbody>
+								        <tr colspan="3">
+											<td>无符合条件的记录</td>
+										</tr>
+								    </tbody>
+								</table>
+							</div>
+							<div class="pageBranch">
+								<span class="branchLeft" onclick="pageColums('prev',event)"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
+								<span class="branchRight" onclick="pageColums('next',event)"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+								<div class="pageNum">
+									<span class="pageNow">1</span>/
+									<span class="pageAll">1</span>
+								</div>
+							</div>	
+						</div>
+					</li>
+
+
+					<!-- (2)群组聊天内容 -->
+					<li>
+						<div class="chatSplit chatTable2">
+							<p class="title">收发总量&nbsp;&nbsp;TOP&nbsp;&nbsp;50</p>
+							<div>
+								<table class="table1 chatConCursor">
+								    <thead style="color:#388ADF;">
+								        <tr>
+								            <th style="cursor:pointer;">排名</th>
+								            <th style="cursor:pointer;">群组名称</th>
+								            <th style="cursor:pointer;">图片(0)</th>
+								            <th style="cursor:pointer;">视频(0)</th>
+								            <th style="cursor:pointer;">音频(0)</th>
+								            <th style="cursor:pointer;">文字(0)</th>
+								        </tr>
+								    </thead>
+							    </table>
+						    </div>
+						    <div class="pageNacation">
+							    <table>
+								    <tbody>
+										<tr colspan="3">
+											<td>无符合条件的记录</td>
+										</tr>
+								    </tbody>
+								</table>
+							</div>
+							<div class="pageBranch">
+								<span class="branchLeft" onclick="pageColums('prev',event)"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
+								<span class="branchRight" onclick="pageColums('next',event)"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+								<div class="pageNum">
+									<span class="pageNow">1</span>/
+									<span class="pageAll">1</span>
+								</div>
+							</div>	
+						</div>
+					</li>
+					<!-- (3)群组敏感词 -->
+					<li>
+						<div class="chatTable2">
+							<p class="title">关键词&nbsp;&nbsp;TOP&nbsp;&nbsp;50</p>
+							<div>
+								<table class="table1">
+								    <thead style="color:#388ADF;">
+								        <tr>
+								            <th>排名</th>
+								            <th>敏感词</th>
+								            <th>次数</th>
+								        </tr>
+								    </thead>
+								</table>
+							</div>
+							<div class="pageNacation sensitiveTdiv">
+							    <table>
+								    <tbody>
+										<tr colspan="3">
+											<td>无符合条件的记录</td>
+										</tr>
+								    </tbody>
+								</table>
+							</div>
+							<div class="pageBranch">
+								<span class="branchLeft" onclick="pageColums('prev',event)"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
+								<span class="branchRight" onclick="pageColums('next',event)"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+								<div class="pageNum">
+									<span class="pageNow">1</span>/
+									<span class="pageAll">1</span>
+								</div>
+							</div>	
+						</div>
+					</li>
+				</ul>
+			</div>
+		
+			<!-- <div class="right_top">
+				<div class="data_left">
+					<span>审计周期:&nbsp;&nbsp;</span>
+					<span class="dateNow">2017年11月16日</span>
+				</div>
+				<div class="switch_right">
+					<span>快速切换:&nbsp;&nbsp;</span>
+					<button type="button" class="btn btn-custom dateShow" datanum="1">今天</button>
+					<button type="button" class="btn btn-custom" datanum="2">最近7天</button>
+					<button type="button" class="btn btn-custom" datanum="3">当前月份</button>
+					<button type="button" class="btn btn-custom" datanum="4">近三个月</button>
+				</div>
+			</div> -->
+			
+		</div>
+		
+	</div>
+</div>
+
+<div class="Popup">
+	<!-- 个人敏感词二级列表(接收人TOP20) -->
+	<div id="sensitivePerConfirm" class="titSelect">
+		<div class="chatTable">
+			<p class="title" style="color:#388ADF;background:#fff;text-align:left;">接收人&nbsp;TOP&nbsp;20</p>
+			<span class="closeWin">X</span>
+			<div class="titClass firstOutTab">
+				<table class="table1">
+				    <thead style="color:#388ADF;">
+				        <tr>
+				            <th>排名</th>
+				            <th>用户名称</th>
+				            <th>收发次数</th>
+				        </tr>
+				    </thead>
+				</table>
+			</div>
+			<div class="pageNacation" style="max-height:310px;overflow:auto;">
+			    <table>
+				    <tbody>
+						<tr colspan="3">
+							<td>无符合条件的记录</td>
+						</tr>
+				    </tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<!-- 群组聊天内容二级列表(图片视频TOP20) -->
+	<div id="chatTalkVideo" class="titSelect">
+		<div class="chatTable">
+			<p class="title" style="color:#388ADF;background:#fff;text-align:left;">文字总量&nbsp;TOP&nbsp;20</p>
+			<span class="closeWin">X</span>
+			<div class="titClass firstOutTab">
+				<table class="table1">
+				    <thead style="color:#388ADF;">
+				        <tr>
+				            <th>排名</th>
+				            <th>群组名称</th>
+				            <th>收发次数</th>
+				        </tr>
+				    </thead>
+				</table>
+			</div>
+			<div class="pageNacation" style="max-height:310px;overflow:auto;">
+			    <table>
+				    <tbody>
+				        <tr>
+				            <td>1</td>
+				            <td><span>Item 1</span></td>
+				            <td>$1</td>
+				        </tr>
+				        <tr>
+				            <td>2</td>
+				            <td><span>Item 2</span></td>
+				            <td>$2</td>
+				        </tr>
+				        <tr>
+				            <td>2</td>
+				            <td><span>Item 2</span></td>
+				            <td>$2</td>
+				        </tr>
+				        <tr>
+				            <td>2</td>
+				            <td><span>Item 2</span></td>
+				            <td>$2</td>
+				        </tr>
+				    </tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="assets/jquery.min.js"></script>
+<script src="assets/bootstrap.min.js"></script>
+<!-- <script src="assets/bootstrap-table.min.js"></script>
+<script src="assets/bootstrap-table-zh-CN.min.js"></script> -->
+<script src="jx.js"></script>
+<script>
+/**
+//【敏感词无个人和群组，接收和发送的关系】
+*生成的文件名称规则：在路径/tmp/xml_doc下 
+    文件名称：  x_v_y_z_d.xml
+     x:代表应用      QQ：qq   微信：wx
+     v:代表模块 聊天对象：dx    |聊天内容：nr|敏感词：key
+     y:对象 有个人和群组  个人：0  群组：1
+     z:消息方式           接收：0  发送：1
+     d:代表时间选项   1：今天 2：7天  3：本月  4：3个月
+例如：qq文件个人接收模式3个月的文件名称  qq_0_0_4.xml
+      微信文件群组发送模式1个月的文件名称  wx_1_1_3.xml*
+
+聊天内容包含统计和列表
+统计：x_v_sum_y_d;
+列表：x_v_y_d;
+**/
+$(function(){
+	var indexGroup = 0;  //保存当前点击的是个人还是群组【0表示个人，1表示群组】
+	var weixinQQIndex = 0;      //记录微信和qq状态。0表示微信，1表示QQ
+	var timeCookies =[];
+	var chatIndex = 0;       //记录是聊天对象、内容还是敏感词
+	/*微信qq间的切换*/
+	$("#tabNav .tabClick").on("click",function(){
+		weixinQQIndex = $(this).index();
+		$(this).addClass("active").siblings().removeClass("active");
+
+	})
+
+	//个人和群组之间的样式切换
+	$("#tabNav .tabClick").on("click","li",function(){
+		$("#tabNav .tabClick li").removeClass("active");
+		indexGroup = $(this).index();
+
+		//影响父级的赋值【微信qq间的切换】
+		var wxQQSelHtml = $(this).parents('.tabClick').children('a.dropdown-toggle').text();
+		var datanum = $(this).parents('.tabClick').children('a.dropdown-toggle').attr('datanum');
+		$("#noticeRecord .wxQQSel").html(wxQQSelHtml);
+		$("#noticeRecord .wxQQSel").attr('datanum',datanum);
+
+		//自身的影响
+		var perGroupSelHtml = $(this).children('a').html();
+		var datanum = $(this).children('a').attr('datanum');
+        $("#noticeRecord .perGroupSel").html(perGroupSelHtml);
+        $("#noticeRecord .perGroupSel").attr('datanum',datanum);
+		$(this).addClass("active").siblings().removeClass("active");
+		$("#right .disNone").eq($(this).index()).addClass("disShow").siblings().removeClass("disShow");
+		$(".contentTable").eq($(this).index()).find("li").eq(chatIndex).addClass("show_right").siblings().removeClass("show_right");   //此时能够正常的跳转
+		//聊天，敏感词跳转到第一项
+		//$("#left_select li").eq(0).click();
+		xmlToJson.oneGroupAjax(); 
+	})
+
+
+	//点击[聊天对象，聊天内容和敏感词]
+	$("#left_select li").on("click",function(){
+		chatIndex =$(this).index();
+	    var chatObjSel = $(this).html();
+	    var datanum = $(this).attr("datanum");
+        $("#noticeRecord .chatObjSel").html(chatObjSel);
+        $("#noticeRecord .chatObjSel").attr("datanum",datanum);
+		$(this).addClass("show_left").siblings().removeClass("show_left");
+		$(".contentTable").eq(indexGroup).find("li").eq($(this).index()).addClass("show_right").siblings().removeClass("show_right");
+		xmlToJson.oneGroupAjax();  //分割成数组
+	})	
+
+	/*日期切换*/
+	$(".switch_right").on("click","button",function(){
+		//index:[1-4]
+		$(this).addClass("dateShow").siblings().removeClass("dateShow");
+		$(".switch_right:hidden").find("button").eq($(this).index()-1).click();
+		var dateSel = $(this).html();
+		var datanum = $(this).attr('datanum');
+		$("#noticeRecord .dateSel").html(dateSel);
+		$("#noticeRecord .dateSel").attr('datanum',datanum);
+
+		//给时间赋值
+		$("#dateUpdate").html(timeCookies[$(this).attr('datanum')-1]);
+		$(".dateNow").not(".dateNow:hidden").html(timeCookies[$(this).attr('datanum')-1]);
+		xmlToJson.oneGroupAjax(); 
+	})
+
+	xmlToJson.loadDoc('xml/date/date.xml',function(res){
+		//对该数据进行操作
+		var enddate =JSON.parse(res[0][0]).date.split("-"),
+		enddateStr = enddate[0]+"年"+ enddate[1]+"月"+ enddate[2]+"日";
+		var endweekday =JSON.parse(res[0][1]).weekday.split("-"),
+		endweekdayStr = endweekday[0]+"年"+ endweekday[1]+"月"+ endweekday[2]+"日";
+		var endoneMonth =JSON.parse(res[0][2]).oneMonth.split("-"),
+		endoneMonthStr = endoneMonth[0]+"年"+ endoneMonth[1]+"月"+ endoneMonth[2]+"日";
+		var endthreeMonth =JSON.parse(res[0][3]).threeMonth.split("-"),
+		endthreeMonthStr = endthreeMonth[0]+"年"+ endthreeMonth[1]+"月"+ endthreeMonth[2]+"日";
+		timeCookies=[enddateStr,endweekdayStr+'-'+enddateStr,endoneMonthStr+'-'+enddateStr,endthreeMonthStr+'-'+enddateStr];
+
+		$("#dateUpdate").html(timeCookies[0]);
+		$(".dateNow").not(".dateNow:hidden").html(timeCookies[0]);
+	});
+
+
+
+	//默认状态数据请求
+	xmlToJson.oneGroupAjax();
+
+/******************************tset测试**************************************************/
+		xmlToJson.popupStyle("#sensitivePerConfirm");
+		xmlToJson.popupStyle("#chatTalkVideo");
+
+	//退出
+	$("#logout button").on("click",function(){
+		window.location.href="./index.html";
+	})
+
+
+	$(".closeWin").on("click",function(){
+		$(this).parent().parent().hide();
+		$("#mengban").hide();
+	});
+	$("#mengban").on("click",function(){
+		$(".titSelect").not(".titSelect:hidden").hide();
+		$("#mengban").hide();
+	});
+})
+
+	/*分页效果封装*/
+	function pageColums(statu,event){
+		var tableId=event.target,
+			$th=$(event.target),
+			$pa=$th.parents('.pageBranch'),
+			n=+$pa.data('page') || 0;  //绑定唯一的元素;
+		//tr的个数
+		var trLength = Array.prototype.slice.call($(tableId).parents('.pageBranch').siblings('.pageNacation').find("table").find("tr")).length;  
+		if(trLength<20){
+			return;
+		}
+		//table的高度
+		var TableHeight =$(tableId).parents('.pageBranch').siblings('.pageNacation').find("table").height();
+		//一页的高度
+		var tableTrHeight = $(tableId).parents('.pageBranch').siblings('.pageNacation').find("table").find("tr").get(20).offsetTop;   
+
+
+		//一共有多少页
+		if(TableHeight%tableTrHeight===0){
+			var zhengshu = TableHeight/tableTrHeight;
+			var chazhi =0;
+		}else if(TableHeight%tableTrHeight>0){
+			var zhengshu = parseInt(TableHeight/tableTrHeight)+1;
+			var chazhi =tableTrHeight-(TableHeight%tableTrHeight);  //离整页相差的元素个数
+		}
+
+		/*$(tableId).parents('.pageBranch').siblings('.pageNacation').find("table").height(TableHeight+chazhi); */ //重新定义inner的高度
+		if(statu ==='prev'){
+			if(n<=1){
+				$th.parent().hide();
+				n=0;
+			}else{
+				$th.parent().show();
+				n--;
+			}
+			$th.parent().siblings('.branchRight').show();
+		}else if(statu ==='next'){
+			if(n>=zhengshu-2){
+				$th.parent().hide();
+				n=zhengshu-1;
+			}else{
+				$th.parent().show();
+				n++;
+			}
+			$th.parent().siblings('.branchLeft').show();
+		}
+		$pa.data('page',n);
+		$pa.find('.pageNow').html($pa.data('page')+1);
+		$(tableId).parents('.pageBranch').siblings('.pageNacation').stop(true,false).animate({'opacity':0},30).animate({'scrollTop':tableTrHeight*n},10).animate({'opacity':1},30);  //是否到达终点,是否重复
+	}
+
+	/*敏感词二级弹框*/
+	function setContent(){
+		alert(1);
+	}
+</script>
+</body>
+</html>

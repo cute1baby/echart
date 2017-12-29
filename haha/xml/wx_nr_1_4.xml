@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+
+<resultset statement="select log.group_id,log.group_name,log.content_type, count(log.content_type) AS num , CURDATE() as endDate,DATE_ADD(DATE_ADD(CURDATE(),INTERVAL -2 month),INTERVAL -(DAYOFMONTH(CURDATE())-1) day)  as startData  FROM behavior_chat_log log LEFT JOIN behavior_chat_audit audit ON log.chat_audit_id = audit.chat_audit_id INNER JOIN ( SELECT log.group_id, count(log.group_id) AS num FROM behavior_chat_log log LEFT JOIN behavior_chat_audit audit ON log.chat_audit_id = audit.chat_audit_id WHERE audit.app_pkg_name ='com.tencent.mm' AND log.talk_type = 1 AND log.chat_time &gt;= DATE_ADD(DATE_ADD(CURDATE(),INTERVAL -2 month),INTERVAL -(DAYOFMONTH(CURDATE())-1) day) GROUP BY log.group_id ORDER BY num LIMIT 50 ) AS tmp ON log.group_id = tmp.group_id WHERE audit.app_pkg_name ='com.tencent.mm' AND log.talk_type = 1 AND log.chat_time &gt;= DATE_ADD(DATE_ADD(CURDATE(),INTERVAL -2 month),INTERVAL -(DAYOFMONTH(CURDATE())-1) day) GROUP BY log.group_id, log.content_type ORDER BY tmp.num DESC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <row>
+	<field name="group_id">6672681689@chatroom</field>
+	<field name="group_name">林夕📣('ᴗ' )و生活用品团购群</field>
+	<field name="content_type">1</field>
+	<field name="num">104</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">6672681689@chatroom</field>
+	<field name="group_name">林夕📣('ᴗ' )و生活用品团购群</field>
+	<field name="content_type">2</field>
+	<field name="num">76</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">6672681689@chatroom</field>
+	<field name="group_name">林夕📣('ᴗ' )و生活用品团购群</field>
+	<field name="content_type">4</field>
+	<field name="num">1</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">7792900771@chatroom</field>
+	<field name="group_name">7792900771@chatroom</field>
+	<field name="content_type">1</field>
+	<field name="num">92</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">7792900771@chatroom</field>
+	<field name="group_name">盒马鲜生十里堡店3群</field>
+	<field name="content_type">6</field>
+	<field name="num">1</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">7792900771@chatroom</field>
+	<field name="group_name">盒马鲜生十里堡店3群</field>
+	<field name="content_type">2</field>
+	<field name="num">16</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">6586557724@chatroom</field>
+	<field name="group_name">京东内部优惠分享群✿</field>
+	<field name="content_type">1</field>
+	<field name="num">40</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">6586557724@chatroom</field>
+	<field name="group_name">京东内部优惠分享群✿</field>
+	<field name="content_type">2</field>
+	<field name="num">24</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">5407094401@chatroom</field>
+	<field name="group_name">5407094401@chatroom</field>
+	<field name="content_type">1</field>
+	<field name="num">32</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">5407094401@chatroom</field>
+	<field name="group_name">外卖打车红包，发来18群！</field>
+	<field name="content_type">2</field>
+	<field name="num">1</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">1775465710@chatroom</field>
+	<field name="group_name">兼职外快2群</field>
+	<field name="content_type">1</field>
+	<field name="num">24</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">6399986290@chatroom</field>
+	<field name="group_name">福利分享群②</field>
+	<field name="content_type">2</field>
+	<field name="num">22</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">6399986290@chatroom</field>
+	<field name="group_name">福利分享群②</field>
+	<field name="content_type">1</field>
+	<field name="num">1</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">301049984@chatroom</field>
+	<field name="group_name">301049984@chatroom</field>
+	<field name="content_type">1</field>
+	<field name="num">9</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">6476891789@chatroom</field>
+	<field name="group_name"> 、Singpour—🐱、测试账号</field>
+	<field name="content_type">1</field>
+	<field name="num">6</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-09-01</field>
+  </row>
+</resultset>

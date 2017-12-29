@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<resultset statement="select log.content_type,COUNT(log.content_type)as num , CURDATE() as endDate,DATE_ADD(CURDATE(),INTERVAL -(DAYOFMONTH(CURDATE())-1) day)  as startData FROM behavior_chat_log log LEFT JOIN behavior_chat_audit audit ON log.chat_audit_id = audit.chat_audit_id where log.chat_time &gt;= DATE_ADD(CURDATE(),INTERVAL -(DAYOFMONTH(CURDATE())-1) day) and audit.app_pkg_name like 'com.tencent.%qq%' and log.talk_type =1 GROUP BY log.content_type " xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <row>
+	<field name="content_type">1</field>
+	<field name="num">3343</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-11-01</field>
+  </row>
+
+  <row>
+	<field name="content_type">2</field>
+	<field name="num">246</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-11-01</field>
+  </row>
+
+  <row>
+	<field name="content_type">3</field>
+	<field name="num">16</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-11-01</field>
+  </row>
+
+  <row>
+	<field name="content_type">4</field>
+	<field name="num">1</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-11-01</field>
+  </row>
+
+  <row>
+	<field name="content_type">6</field>
+	<field name="num">2</field>
+	<field name="endDate">2017-11-22</field>
+	<field name="startData">2017-11-01</field>
+  </row>
+</resultset>

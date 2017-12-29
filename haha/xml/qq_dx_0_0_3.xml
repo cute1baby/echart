@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+
+<resultset statement="select COUNT(audit.staff_id)as num ,s.staff_name, CURDATE() as endDate,DATE_ADD(CURDATE(),INTERVAL -(DAYOFMONTH(CURDATE())-1) day)  as startData  FROM behavior_chat_log log LEFT JOIN behavior_chat_audit audit ON log.chat_audit_id = audit.chat_audit_id LEFT JOIN pub_staff s ON audit.staff_id = s.staff_id where log.chat_time &gt;= DATE_ADD(CURDATE(),INTERVAL -(DAYOFMONTH(CURDATE())-1) day) and audit.app_pkg_name like 'com.tencent.%qq%' and log.talk_type =0 and log.chat_status=0 GROUP BY audit.staff_id order by num desc LIMIT 50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <row>
+	<field name="num">242</field>
+	<field name="staff_name">Test_01</field>
+	<field name="endDate">2017-11-24</field>
+	<field name="startData">2017-11-01</field>
+  </row>
+
+  <row>
+	<field name="num">17</field>
+	<field name="staff_name">W2</field>
+	<field name="endDate">2017-11-24</field>
+	<field name="startData">2017-11-01</field>
+  </row>
+
+  <row>
+	<field name="num">15</field>
+	<field name="staff_name">VC</field>
+	<field name="endDate">2017-11-24</field>
+	<field name="startData">2017-11-01</field>
+  </row>
+
+  <row>
+	<field name="num">10</field>
+	<field name="staff_name">11</field>
+	<field name="endDate">2017-11-24</field>
+	<field name="startData">2017-11-01</field>
+  </row>
+
+  <row>
+	<field name="num">10</field>
+	<field name="staff_name">VW</field>
+	<field name="endDate">2017-11-24</field>
+	<field name="startData">2017-11-01</field>
+  </row>
+
+  <row>
+	<field name="num">7</field>
+	<field name="staff_name">22</field>
+	<field name="endDate">2017-11-24</field>
+	<field name="startData">2017-11-01</field>
+  </row>
+
+  <row>
+	<field name="num">1</field>
+	<field name="staff_name">1106</field>
+	<field name="endDate">2017-11-24</field>
+	<field name="startData">2017-11-01</field>
+  </row>
+</resultset>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<link rel="stylesheet" href="assets/css/reset.css">
+<link rel="stylesheet" href="assets/css/elements.css">
+<style>
+#loginCenter{
+	position: absolute;
+	width:260px;
+	height:300px;
+	left:50%;
+	top:50%;
+	margin:-150px 0 0 -130px;
+	text-align:center;
+}
+#loginCenter h3{
+	font-size:32px;
+	font-weight:800;
+	color:#3588DE;
+	line-height:54px;
+	border-bottom:2px solid #3588DE;
+}
+
+#loginForm{
+	margin-top:30px;
+}
+#loginForm .setMargin{
+	margin-bottom:15px;
+}
+
+.remindInfo{
+	color:#fa5555;
+	font-size:12px;
+	text-align: left;
+	line-height: 22px;
+}
+</style>
+<body>
+<div id="loginCenter">
+	<h3>IM审计分析系统</h3>
+	<div id="border"></div>
+	<form id="loginForm">
+		<div class="setMargin" id="userNameDiv">
+			<input id="userName" autocomplete="off" placeholder="请您输入用户名" type="text" validateevent="true" class="el-input__inner">
+			<span class="remindInfo" style="display:none;">请输入用户名</span>
+		</div>
+		<div  id="passwordDiv">
+			<input id="password" autocomplete="off" placeholder="请您输入密码" type="password" validateevent="true" class="el-input__inner">
+			<span class="remindInfo" style="display:none;">请输入密码</span>
+		</div>
+	</form>
+	<button type="button" id="loginSystem" class="el-button el-button--primary" style="margin-top:30px;width:100%;"><span>登录</span></button>
+</div>
+<script src="assets/jquery.min.js"></script>
+<script>
+$("#loginSystem").on('click',function(){
+	//debugger;
+	if($.trim($("#userName").val())==""){
+		$("#userNameDiv .remindInfo").css("display","block");
+	}else{
+		$("#userNameDiv .remindInfo").css("display","none");
+	}
+	if($.trim($("#password").val())==""){
+		$("#passwordDiv .remindInfo").css("display","block");
+	}else{
+		$("#passwordDiv .remindInfo").css("display","none");
+	}
+
+	if($.trim($("#userName").val())=="admin" && $.trim($("#password").val())=="111111"){
+		window.location.href="./subjectCon.html";
+	}else{
+		return;
+	}
+})
+
+</script>
+</body>
+</html>
