@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<resultset statement="select COUNT(audit.staff_id)as num ,s.staff_name, CURDATE() as endDate,DATE_ADD(DATE_ADD(CURDATE(),INTERVAL -2 month),INTERVAL -(DAYOFMONTH(CURDATE())-1) day)  as startData  FROM behavior_chat_log log LEFT JOIN behavior_chat_audit audit ON log.chat_audit_id = audit.chat_audit_id LEFT JOIN pub_staff s ON audit.staff_id = s.staff_id where log.chat_time &gt;= DATE_ADD(DATE_ADD(CURDATE(),INTERVAL -2 month),INTERVAL -(DAYOFMONTH(CURDATE())-1) day) and audit.app_pkg_name like 'com.tencent.%qq%' and log.talk_type =0   GROUP BY audit.staff_id order by num desc LIMIT 50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <row>
+	<field name="num">1294</field>
+	<field name="staff_name">葛银龙</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-10-01</field>
+  </row>
+
+  <row>
+	<field name="num">305</field>
+	<field name="staff_name">徐</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-10-01</field>
+  </row>
+
+  <row>
+	<field name="num">269</field>
+	<field name="staff_name">江春银</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-10-01</field>
+  </row>
+
+  <row>
+	<field name="num">78</field>
+	<field name="staff_name">郭子容</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-10-01</field>
+  </row>
+
+  <row>
+	<field name="num">1</field>
+	<field name="staff_name">何波</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-10-01</field>
+  </row>
+</resultset>

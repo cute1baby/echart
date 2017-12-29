@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+
+<resultset statement="select log.group_id,log.group_name,log.content_type, count(log.content_type) AS num, CURDATE() as endDate ,DATE_ADD(CURDATE(),INTERVAL -(DAYOFMONTH(CURDATE())-1) day)  as startData FROM behavior_chat_log log LEFT JOIN behavior_chat_audit audit ON log.chat_audit_id = audit.chat_audit_id INNER JOIN ( SELECT log.group_id, count(log.group_id) AS num FROM behavior_chat_log log LEFT JOIN behavior_chat_audit audit ON log.chat_audit_id = audit.chat_audit_id WHERE audit.app_pkg_name LIKE 'com.tencent.%qq%' AND log.talk_type = 1 AND log.chat_time &gt;= DATE_ADD(CURDATE(),INTERVAL -(DAYOFMONTH(CURDATE())-1) day) GROUP BY log.group_id ORDER BY num LIMIT 50 ) AS tmp ON log.group_id = tmp.group_id WHERE audit.app_pkg_name LIKE 'com.tencent.%qq%' AND log.talk_type = 1 AND log.chat_time &gt;= DATE_ADD(CURDATE(),INTERVAL -(DAYOFMONTH(CURDATE())-1) day) GROUP BY log.group_id, log.content_type ORDER BY tmp.num DESC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <row>
+	<field name="group_id">422249053</field>
+	<field name="group_name">久伴、久久久</field>
+	<field name="content_type">1</field>
+	<field name="num">125</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">422249053</field>
+	<field name="group_name">久伴、久久久</field>
+	<field name="content_type">2</field>
+	<field name="num">11</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">575401860</field>
+	<field name="group_name">Top众神領域</field>
+	<field name="content_type">1</field>
+	<field name="num">68</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">575401860</field>
+	<field name="group_name">Top众神領域</field>
+	<field name="content_type">2</field>
+	<field name="num">27</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">65814599</field>
+	<field name="group_name">小仙肉😫</field>
+	<field name="content_type">1</field>
+	<field name="num">31</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">65814599</field>
+	<field name="group_name">小仙肉😫</field>
+	<field name="content_type">2</field>
+	<field name="num">6</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">143793454</field>
+	<field name="group_name">时光、葬了爱情</field>
+	<field name="content_type">1</field>
+	<field name="num">16</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">454776646</field>
+	<field name="group_name">家族企业</field>
+	<field name="content_type">1</field>
+	<field name="num">12</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">1613170283</field>
+	<field name="group_name">😄😄</field>
+	<field name="content_type">1</field>
+	<field name="num">10</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">101422519</field>
+	<field name="group_name">柒度免费技术分享群</field>
+	<field name="content_type">1</field>
+	<field name="num">4</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">77062347</field>
+	<field name="group_name">顶级╱／乱插</field>
+	<field name="content_type">1</field>
+	<field name="num">3</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">174554230</field>
+	<field name="group_name">FQ夫妻开心玩</field>
+	<field name="content_type">1</field>
+	<field name="num">2</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">209035828</field>
+	<field name="group_name">美女帥哥、聊天群英會</field>
+	<field name="content_type">1</field>
+	<field name="num">1</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">530282410</field>
+	<field name="group_name">六界仙尊</field>
+	<field name="content_type">1</field>
+	<field name="num">1</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">220179429</field>
+	<field name="group_name">淘宝天猫免费优惠卷</field>
+	<field name="content_type">1</field>
+	<field name="num">1</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">374670086</field>
+	<field name="group_name">☆爱情如此的美好&amp;</field>
+	<field name="content_type">1</field>
+	<field name="num">1</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+</resultset>

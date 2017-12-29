@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<resultset statement="select w.sensitive_name,s.name,COUNT(w.user_id) as num , DATE_ADD(CURDATE(), INTERVAL - 6 DAY) AS startData, CURDATE() AS endDate from behavior_sensitive_word_report w LEFT JOIN sys_user s on s.user_id =w.user_id where sensitive_source ='com.tencent.mm' and sensitive_name = '首长' AND use_date &gt;= DATE_ADD(CURDATE(), INTERVAL - 6 DAY) GROUP BY w.user_id ORDER BY num desc limit 20" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <row>
+	<field name="sensitive_name">首长</field>
+	<field name="name">韩声建</field>
+	<field name="num">1</field>
+	<field name="startData">2017-12-23</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+</resultset>

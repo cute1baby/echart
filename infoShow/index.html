@@ -1,0 +1,1920 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>数据统计中心</title>
+    <link rel="stylesheet" type="text/css" href="css/iconfont.css">
+
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
+    <script src="js/plugins/jquery.min.js"></script>
+    <script src="js/plugins/echarts.min.js"></script>
+    <script src="js/plugins/china.js"></script>
+    <script type="text/javascript" src="js/plugins/bootstrap.min.js"></script>
+    <link href="css/jquery.ui.datepicker.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/plugins/jquery.ui.core.js"></script>
+    <script type="text/javascript" src="js/plugins/jquery.ui.datepicker.js"></script>
+    <script type="text/javascript" src="js/plugins/crypto-js.js"></script>
+    <script src="js/common.js"></script>
+    <script src="jx.js"></script>
+    <script type="text/javascript" src="js/plugins/echarts_api.js"></script>
+    <script type="text/javascript" src="js/plugins/bmap.min.js"></script>
+</head>
+<body>
+<div id="main">
+    <div id="noticeRecord">
+        <!--infoStr:微信(wx)，聊天对象(dx),个人(1)，今天(1)-->
+        <span class="wxQQSel" datanum="wx">微信审计</span>&nbsp;&gt;&nbsp;<span class="perGroupSel" datanum="0">个人</span>&nbsp;&gt;&nbsp;<span class="chatObjSel" datanum="dx">聊天对象</span>&nbsp;&gt;&nbsp;<span class="dateSel" style="display:none;" datanum="1">今天</span><span id="dateUpdate">2017年11月16日</span>
+    </div>
+</div>
+
+<script src="jx.js"></script>
+<script>
+$(function(){
+    var treeData = '';//组织/个人树的数据
+    var rootId = '';//组织的根节点
+    var rootType = '';
+    var rootText = '';//组织的根节点名称
+    var owner = '';//
+    var ownerType = 'C';
+    var ownerText = '';
+    var beginTime = nowDateTime('month')[2];//开始时间
+    var endTime = nowDateTime('month')[1]; //结束时间
+    var k = 0;
+    //中间区域的开始结束时间需要每5秒更新一次，所以，时间需要重新计算
+    var clockbeginTime = nowDateTime('month')[2]
+    var clockendTime = nowDateTime('month')[2]
+    var hours = ''
+    //设置拼接的默认初始展示情况(默认wx)  [微信，类型，个人(0,1)，今天]
+    var screenGroup = [
+        ["wx", "key", "0", "1"],
+        ["wx", "key", "1", "1"],
+        ["wx", "focus", "0", "1"],
+        ["wx", "focus", "1", "1"]
+
+    ]
+    Array.prototype.maxValue=function(){
+        var max = this[0];
+        for(var i = 0; i < this.length; i++) {
+            if(max < this[i]) {
+                max = this[i];
+            }
+        }
+        return max;
+    }
+
+
+    function commonMain(){
+        //可视窗口的宽高
+        var dw = $(window).width();
+        var dh = $(window).height();
+
+        var mainH = dh-70;
+
+        var circleX = dw*0.575*0.5;//圆的中心坐标
+        var circleY = dh*0.5837*0.5;
+        var r = circleY-45;//圆的半径，表盘
+
+        //定义矩形的宽高
+        var rectWidth = dw*0.076;
+        var rectHeight = dh*0.0736;
+
+        //最外层的样式
+        $('#main').css({
+            paddingTop:dh*0.02,
+            paddingBottom:dh*0.02,
+            paddingLeft:dw*0.005,
+            paddingRight:dw*0.005,
+            width:dw-dw*0.01,
+            height:dh-dh*0.04
+        });
+
+        //插入基本框架
+        $('#main').html(
+            '<div style="overflow:hidden;">'+
+            '<div class="left-m f-l"></div>' +
+            '<div class="middle-m f-l"></div>' +
+            '<div class="right-m f-r"></div>' +
+            '</div>'+
+            '<div style="overflow:hidden;">'+
+            '<div class="footer-left f-l"></div>' +
+            '<div class="footer-right f-r"></div>'+
+            '</div>');
+        return {
+            dw:dw,
+            dh:dh,
+            circleX:circleX,
+            circleY:circleY,
+            r:r,
+            rectWidth:rectWidth,
+            rectHeight:rectHeight,
+            mainH:mainH
+        }
+
+    }
+
+    //初始状态
+    var base = commonMain();
+
+    /********************初始化数据阶段结束*************************/
+
+    function initData(appVal){
+        if($("#sensitiveSelect").val()){
+            var sensitiveIndex = $("#sensitiveSelect").val();
+        }else{
+            var sensitiveIndex = 1;
+        }
+        if($("#hotSelect").val()){
+            var hotSelectIndex = $("#hotSelect").val();
+        }else{
+            var hotSelectIndex = 1;
+        }
+        if($("#illegalSelect").val()){
+            var illegalIndex = $("#illegalSelect").val();
+        }else{
+            var illegalIndex = 0;
+        }
+        if($("#userActiveSelect").val()){
+            var userActiveIndex = $("#userActiveSelect").val();
+        }else{
+            var userActiveIndex = 0;
+        }
+
+        //敏感词拦截,一天内
+        sensitiveWord(appVal,sensitiveIndex);
+        $("#sensitiveSelect").val(sensitiveIndex);
+
+        //中间区域
+        middleM();
+
+        //安装应用,一天内
+        installApp(appVal,hotSelectIndex);
+        $("#hotSelect").val(hotSelectIndex);
+
+        //内容信息类型收发,一天内
+        illegalBehavior(appVal,illegalIndex);
+        $("#illegalSelect").val(illegalIndex);
+
+        //用户信息活跃度,一天内
+        callRecords(appVal,userActiveIndex);
+        $("#userActiveSelect").val(userActiveIndex);
+    }
+
+    //改变窗口
+    function resizehandler(){
+        base = commonMain();
+        if($("#adjustmentApp").val()){
+            var appIndex = $("#adjustmentApp").val();
+        }else{
+            var appIndex = 'wx';
+        }
+        initData(appIndex);
+    }
+/*默认请求微信应用*/
+    initData('wx');
+    function throttle(method){
+        clearTimeout(method.tId);
+        method.tId=setTimeout(function(){
+            method();
+        },500);
+    }
+
+    window.onresize=function(){
+        throttle(resizehandler);
+    };
+
+
+    /************************敏感词开始*****************************/
+    //敏感词
+    function sensitiveWord(appUesd,dates){
+        $('.left-m').html('<div class="left-main1">'
+            +'  <span class="left-main1-1"></span>'
+            +'  <span class="left-main1-2"></span>'
+            +'  <span class="left-main1-3"></span>'
+            +'  <span class="left-main1-4"></span>'
+            +'<div class="titleTop">'
+            +'<h3 class="title">敏感词Top&nbsp;&nbsp;10</h3>'
+            +'<select class="selectDate" id="sensitiveSelect">'
+            +'<option value="1">今天</option>'
+            +'<option value="2">近七天</option>'
+            +'<option value="3">当前月</option>'
+            +'<option value="4">近三月</option>'
+            +'</select>'
+            +'</div>'
+            +'  <div id="sensitive">'
+            +'</div>'
+            +'</div>')
+        //设置宽高
+        $('.left-main1').css({
+            width:base.dw*0.2,
+            height:base.dh*0.632
+        })
+        $("#sensitiveSelect").on("change",function(){
+            var valueChange = parseInt($(this).val());
+            sensitiveWord($("#adjustmentApp").val(),valueChange);
+            $("#sensitiveSelect").val(valueChange);
+        })
+
+        var sensitive = document.getElementById('sensitive');
+
+        sensitive.style.width = $('.left-main1').width()+'px';
+        sensitive.style.height = $('.left-main1').height()-$('.left-main1 .titleTop').height()+'px';
+        var myChartSensitive= echarts.init(sensitive);
+        myChartSensitive.showLoading({
+            text: '数据加载中',
+            color: 'rgba(75,189,203,1)',
+            textColor: 'rgba(75,189,203,1)',
+            maskColor: 'rgba(18,39,76,0.8)',
+            zlevel: 0
+        });
+        myChartSensitive.hideLoading();
+        $.ajax({
+            type: 'POST',
+            dataType:'text',
+            url:'./xml/json/'+appUesd+'_key_'+dates+'.xml.json',
+            success:function(data){
+                var result1 = JSON.parse(data),result;
+                if(result1.data.length>10){
+                    result = result1.data.splice(0,10);
+                }else if(result1.data.length>0){
+                    /*var newLength = 10 - result1.data.length;
+                    for(var i=0;i<newLength;i++){
+                        result1.data.push({"name":"null","value":0});
+                    }*/
+                    result = result1.data;
+                }else{
+                    $("#sensitive").html('<p style="color:#fff;text-align:center;margin-top:50px;font-size:16px;">暂无数据</p>');
+                    result = null;
+                    return;
+                }
+                if(result){
+                    var data = result;
+                    data.sort(function(a,b) {
+                        return a.value - b.value;
+                    })
+                    //名称
+                    var categoryData = [];
+                    //柱形数据
+                    var barData = [],barDataGroup = [];
+                    //渐变色
+                    var colorListPer = [],colorListGroup = [];
+                    for (var i = 0; i < data.length; i++) {
+                        categoryData.push(data[i].name);
+                        barData.push(data[i].value);
+                        barDataGroup.push(data[i].value);
+                        var j = i+1;
+                        var opacity = j/data.length;
+                        colorListPer.push('rgba(54,241,190,'+opacity+')');
+                        colorListGroup.push('rgba(97,58,191,'+opacity+')');
+                    }
+
+                    //设置
+                    option = {
+                        animation: true,
+                        animationDuration: 1000,
+                        animationEasing: 'cubicInOut',
+                        animationDurationUpdate: 1000,
+                        animationEasingUpdate: 'cubicInOut',
+                        tooltip: {
+                            trigger: 'item',
+                            position: 'top',
+                            padding: [5, 10],
+                            formatter: function(params) {
+                                return '<span style="display:inline-block;position:relative;margin-right:10px;border-color:'+ params.color +';border-radius:10px;width:9px;height:9px;background-color:' + params.color + '"></span>'+params.seriesName+"<br/>"+params.name+'：'+params.value;
+                            },
+                            textStyle:{
+                                width:300,
+                                lineHeight:18
+                            }
+                        },
+                        legend: {
+                            itemWidth:base.dw*0.01,
+                            itemHeight:base.dh*0.012,
+                            data: ['个人', '群组'],
+                            align: 'left',
+                            right: 10,
+                            bottom:10,
+                            textStyle:{
+                                color:'#fff'
+                            }
+                        },
+                        //整个图距外框的距离
+                        grid: {
+                            left: 70,
+                            top: base.dh*0.08,
+                            bottom: 20
+                        },
+                        xAxis: {
+                            splitNumber: 4,
+                            type: 'value',
+                            position: 'top',
+                            boundaryGap: true,
+                            splitLine: {
+                                show: false
+                            },
+                            axisLine: {
+                                show: false
+                            },
+                            axisTick: {
+                                show: false
+                            },
+                            axisLabel: {
+                                textStyle: {
+                                    color: 'rgb(62,172,205)'
+                                }
+                            }
+                        },
+                        yAxis: {
+                            type: 'category',
+                            nameGap: 16,
+                            axisLine: {
+                                show: false,
+                                lineStyle: {
+                                    color: 'rgba(62,172,205,1)'
+                                }
+                            },
+                            axisTick: {
+                                show: false,
+                                lineStyle: {
+                                    color: 'rgba(62,172,205,1)'
+                                }
+                            },
+                            axisLabel: {
+                                interval: 0,
+                                rotate:34,
+                                textStyle: {
+                                    color: 'rgba(62,172,205,1)',
+                                    fontSize: base.dw*0.005
+                                }
+                            },
+                            data: categoryData
+                        },
+                        series: [ //柱形
+                            {
+                                id: 'bar1',
+                                name:'个人',
+                                zlevel: 1,
+                                type: 'bar',
+                                barGap: '-100%',  //柱体之间的间距
+                                barWidth: '30%',
+                                //                                barCategoryGap: base.dh*0.018,//柱间的距离
+                                symbol: 'none',
+                                itemStyle: {
+                                    normal: {
+                                        color: function(params) {
+                                            return colorListPer[params.dataIndex]
+                                            //return '#36F1BE'
+                                        }
+                                    }
+                                },
+                                data: barData
+
+                            },{
+                                id: 'bar2',
+                                name:'群组',
+                                zlevel: 1,
+                                type: 'bar',
+                                barGap: '-100%',
+                                barWidth: '30%',
+                                barCategoryGap: base.dh*0.018,//柱间的距离
+                                symbol: 'none',
+                                itemStyle: {
+                                    normal: {
+                                        color: function(params) {
+                                            return colorListGroup[params.dataIndex];
+                                        }
+                                    }
+                                },
+                                data: barDataGroup
+                            }]
+                    };
+                    myChartSensitive.clear();
+                    myChartSensitive.setOption(option);
+                }
+
+            },
+            error:function(errorMsg){
+                myChartSensitive.showLoading({
+                    text: '数据加载失败，请联系管理员',
+                    color: 'rgba(75,189,203,0)',
+                    textColor: 'rgba(75,189,203,1)',
+                    maskColor: 'rgba(18,39,76,0.8)',
+                    zlevel: 0
+                });
+            }
+        })
+    }
+    /************************拦截敏感词结束*****************************/
+
+    /************************中间主体部分开始*****************************/
+    //中间区域头部
+    function middleM(){
+        $('.middle-m').html('<header>'
+            +'<div class="titleTop logo" id="topHeight">'
+            +'<div class="logo-right f-l">'
+            +'<span>IM信息可视化管理系统</span>'
+            +'<span class="showGestrue" id="showGestrue">(微信信息流势图)</span>'
+            +'<select class="selectDate" id="adjustmentApp">'
+            +'<option value="wx">微信</option>'
+            +'<option value="qq">QQ</option>'
+            +'</select>'
+            +'</div>'
+            +'</div>'
+            +'</header>' +
+            '<div class="canvas-main" id="main_manager"></div>')
+
+        $('header').css({
+            width:base.dw*0.58,
+            height:base.dh*0.05
+        })
+        $('.middle-m').css({
+            width:base.dw*0.58,
+            height:base.dh*0.632+4
+        })
+
+        $("#adjustmentApp").on("change",function(){
+            var value = $(this).val();
+            initData(value);
+            $("#adjustmentApp").val(value);
+        })
+
+        var adjustmentAppObj={
+            'wx':'微信',
+            'qq':'QQ'
+        };
+        $("#adjustmentApp").on("change",function(){
+            var showCon = adjustmentAppObj[$(this).val()];
+            $("#showGestrue").html('('+showCon+'信息流势图)');
+        })
+
+        //开始主图
+        var mainManager = document.getElementById('main_manager');
+        mainManager.style.width = $('header').width()+'px';
+        mainManager.style.height = $('.middle-m').height()-$('#topHeight').height()+'px';
+        var myChartMain= echarts.init(mainManager);
+        myChartMain.showLoading({
+            text: '数据加载中',
+            color: 'rgba(75,189,203,1)',
+            textColor: 'rgba(75,189,203,1)',
+            maskColor: 'rgba(18,39,76,0.8)',
+            zlevel: 0
+        });
+        //三个月个人敏感词汇总【有两层【top50内部的top20】】
+        var data = [
+            {name: '海门', value: 9},
+            {name: '鄂尔多斯', value: 12},
+            {name: '招远', value: 12},
+            {name: '舟山', value: 12},
+            {name: '齐齐哈尔', value: 14},
+            {name: '盐城', value: 15},
+            {name: '赤峰', value: 16},
+            {name: '青岛', value: 18},
+            {name: '乳山', value: 18},
+            {name: '金昌', value: 19},
+            {name: '泉州', value: 21},
+            {name: '莱西', value: 21},
+            {name: '日照', value: 21},
+            {name: '胶南', value: 22},
+            {name: '南通', value: 23},
+            {name: '拉萨', value: 24},
+            {name: '云浮', value: 24},
+            {name: '梅州', value: 25},
+            {name: '文登', value: 25},
+            {name: '上海', value: 25},
+            {name: '攀枝花', value: 25},
+            {name: '威海', value: 25},
+            {name: '承德', value: 25},
+            {name: '厦门', value: 26},
+            {name: '汕尾', value: 26},
+            {name: '潮州', value: 26},
+            {name: '丹东', value: 27},
+            {name: '太仓', value: 27},
+            {name: '曲靖', value: 27},
+            {name: '烟台', value: 28},
+            {name: '福州', value: 29},
+            {name: '瓦房店', value: 30},
+            {name: '即墨', value: 30},
+            {name: '抚顺', value: 31},
+            {name: '玉溪', value: 31},
+            {name: '张家口', value: 31},
+            {name: '阳泉', value: 31},
+            {name: '莱州', value: 32},
+            {name: '湖州', value: 32},
+            {name: '汕头', value: 32},
+            {name: '昆山', value: 33},
+            {name: '宁波', value: 33},
+            {name: '湛江', value: 33},
+            {name: '揭阳', value: 34},
+            {name: '荣成', value: 34},
+            {name: '连云港', value: 35},
+            {name: '葫芦岛', value: 35},
+            {name: '常熟', value: 36},
+            {name: '东莞', value: 36},
+            {name: '河源', value: 36},
+            {name: '淮安', value: 36},
+            {name: '泰州', value: 36},
+            {name: '南宁', value: 37},
+            {name: '营口', value: 37},
+            {name: '惠州', value: 37},
+            {name: '江阴', value: 37},
+            {name: '蓬莱', value: 37},
+            {name: '韶关', value: 38},
+            {name: '嘉峪关', value: 38},
+            {name: '广州', value: 38},
+            {name: '延安', value: 38},
+            {name: '太原', value: 39},
+            {name: '清远', value: 39},
+            {name: '中山', value: 39},
+            {name: '昆明', value: 39},
+            {name: '寿光', value: 40},
+            {name: '盘锦', value: 40},
+            {name: '长治', value: 41},
+            {name: '深圳', value: 41},
+            {name: '珠海', value: 42},
+            {name: '宿迁', value: 43},
+            {name: '咸阳', value: 43},
+            {name: '铜川', value: 44},
+            {name: '平度', value: 44},
+            {name: '佛山', value: 44},
+            {name: '海口', value: 44},
+            {name: '江门', value: 45},
+            {name: '章丘', value: 45},
+            {name: '肇庆', value: 46},
+            {name: '大连', value: 47},
+            {name: '临汾', value: 47},
+            {name: '吴江', value: 47},
+            {name: '石嘴山', value: 49},
+            {name: '沈阳', value: 50},
+            {name: '苏州', value: 50},
+            {name: '茂名', value: 50},
+            {name: '嘉兴', value: 51},
+            {name: '长春', value: 51},
+            {name: '胶州', value: 52},
+            {name: '银川', value: 52},
+            {name: '张家港', value: 52},
+            {name: '三门峡', value: 53},
+            {name: '锦州', value: 54},
+            {name: '南昌', value: 54},
+            {name: '柳州', value: 54},
+            {name: '三亚', value: 54},
+            {name: '自贡', value: 56},
+            {name: '吉林', value: 56},
+            {name: '阳江', value: 57},
+            {name: '泸州', value: 57},
+            {name: '西宁', value: 57},
+            {name: '宜宾', value: 58},
+            {name: '呼和浩特', value: 58},
+            {name: '成都', value: 58},
+            {name: '大同', value: 58},
+            {name: '镇江', value: 59},
+            {name: '桂林', value: 59},
+            {name: '张家界', value: 59},
+            {name: '宜兴', value: 59},
+            {name: '北海', value: 60},
+            {name: '西安', value: 61},
+            {name: '金坛', value: 62},
+            {name: '东营', value: 62},
+            {name: '牡丹江', value: 63},
+            {name: '遵义', value: 63},
+            {name: '绍兴', value: 63},
+            {name: '扬州', value: 64},
+            {name: '常州', value: 64},
+            {name: '潍坊', value: 65},
+            {name: '重庆', value: 66},
+            {name: '台州', value: 67},
+            {name: '南京', value: 67},
+            {name: '滨州', value: 70},
+            {name: '贵阳', value: 71},
+            {name: '无锡', value: 71},
+            {name: '本溪', value: 71},
+            {name: '克拉玛依', value: 72},
+            {name: '渭南', value: 72},
+            {name: '马鞍山', value: 72},
+            {name: '宝鸡', value: 72},
+            {name: '焦作', value: 75},
+            {name: '句容', value: 75},
+            {name: '北京', value: 79},
+            {name: '徐州', value: 79},
+            {name: '衡水', value: 80},
+            {name: '包头', value: 80},
+            {name: '绵阳', value: 80},
+            {name: '乌鲁木齐', value: 84},
+            {name: '枣庄', value: 84},
+            {name: '杭州', value: 84},
+            {name: '淄博', value: 85},
+            {name: '鞍山', value: 86},
+            {name: '溧阳', value: 86},
+            {name: '库尔勒', value: 86},
+            {name: '安阳', value: 90},
+            {name: '开封', value: 90},
+            {name: '济南', value: 92},
+            {name: '德阳', value: 93},
+            {name: '温州', value: 95},
+            {name: '九江', value: 96},
+            {name: '邯郸', value: 98},
+            {name: '临安', value: 99},
+            {name: '兰州', value: 99},
+            {name: '沧州', value: 100},
+            {name: '临沂', value: 103},
+            {name: '南充', value: 104},
+            {name: '天津', value: 105},
+            {name: '富阳', value: 106},
+            {name: '泰安', value: 112},
+            {name: '诸暨', value: 112},
+            {name: '郑州', value: 113},
+            {name: '哈尔滨', value: 114},
+            {name: '聊城', value: 116},
+            {name: '芜湖', value: 117},
+            {name: '唐山', value: 119},
+            {name: '平顶山', value: 119},
+            {name: '邢台', value: 119},
+            {name: '德州', value: 120},
+            {name: '济宁', value: 120},
+            {name: '荆州', value: 127},
+            {name: '宜昌', value: 130},
+            {name: '义乌', value: 132},
+            {name: '丽水', value: 133},
+            {name: '洛阳', value: 134},
+            {name: '秦皇岛', value: 136},
+            {name: '株洲', value: 143},
+            {name: '石家庄', value: 147},
+            {name: '莱芜', value: 148},
+            {name: '常德', value: 152},
+            {name: '保定', value: 153},
+            {name: '湘潭', value: 154},
+            {name: '金华', value: 157},
+            {name: '岳阳', value: 169},
+            {name: '长沙', value: 175},
+            {name: '衢州', value: 177},
+            {name: '廊坊', value: 193},
+            {name: '菏泽', value: 194},
+            {name: '合肥', value: 229},
+            {name: '武汉', value: 273},
+            {name: '大庆', value: 279}
+        ];
+        var geoCoordMap = {
+            '海门':[121.15,31.89],
+            '鄂尔多斯':[109.781327,39.608266],
+            '招远':[120.38,37.35],
+            '舟山':[122.207216,29.985295],
+            '齐齐哈尔':[123.97,47.33],
+            '盐城':[120.13,33.38],
+            '赤峰':[118.87,42.28],
+            '青岛':[120.33,36.07],
+            '乳山':[121.52,36.89],
+            '金昌':[102.188043,38.520089],
+            '泉州':[118.58,24.93],
+            '莱西':[120.53,36.86],
+            '日照':[119.46,35.42],
+            '胶南':[119.97,35.88],
+            '南通':[121.05,32.08],
+            '拉萨':[91.11,29.97],
+            '云浮':[112.02,22.93],
+            '梅州':[116.1,24.55],
+            '文登':[122.05,37.2],
+            '上海':[121.48,31.22],
+            '攀枝花':[101.718637,26.582347],
+            '威海':[122.1,37.5],
+            '承德':[117.93,40.97],
+            '厦门':[118.1,24.46],
+            '汕尾':[115.375279,22.786211],
+            '潮州':[116.63,23.68],
+            '丹东':[124.37,40.13],
+            '太仓':[121.1,31.45],
+            '曲靖':[103.79,25.51],
+            '烟台':[121.39,37.52],
+            '福州':[119.3,26.08],
+            '瓦房店':[121.979603,39.627114],
+            '即墨':[120.45,36.38],
+            '抚顺':[123.97,41.97],
+            '玉溪':[102.52,24.35],
+            '张家口':[114.87,40.82],
+            '阳泉':[113.57,37.85],
+            '莱州':[119.942327,37.177017],
+            '湖州':[120.1,30.86],
+            '汕头':[116.69,23.39],
+            '昆山':[120.95,31.39],
+            '宁波':[121.56,29.86],
+            '湛江':[110.359377,21.270708],
+            '揭阳':[116.35,23.55],
+            '荣成':[122.41,37.16],
+            '连云港':[119.16,34.59],
+            '葫芦岛':[120.836932,40.711052],
+            '常熟':[120.74,31.64],
+            '东莞':[113.75,23.04],
+            '河源':[114.68,23.73],
+            '淮安':[119.15,33.5],
+            '泰州':[119.9,32.49],
+            '南宁':[108.33,22.84],
+            '营口':[122.18,40.65],
+            '惠州':[114.4,23.09],
+            '江阴':[120.26,31.91],
+            '蓬莱':[120.75,37.8],
+            '韶关':[113.62,24.84],
+            '嘉峪关':[98.289152,39.77313],
+            '广州':[113.23,23.16],
+            '延安':[109.47,36.6],
+            '太原':[112.53,37.87],
+            '清远':[113.01,23.7],
+            '中山':[113.38,22.52],
+            '昆明':[102.73,25.04],
+            '寿光':[118.73,36.86],
+            '盘锦':[122.070714,41.119997],
+            '长治':[113.08,36.18],
+            '深圳':[114.07,22.62],
+            '珠海':[113.52,22.3],
+            '宿迁':[118.3,33.96],
+            '咸阳':[108.72,34.36],
+            '铜川':[109.11,35.09],
+            '平度':[119.97,36.77],
+            '佛山':[113.11,23.05],
+            '海口':[110.35,20.02],
+            '江门':[113.06,22.61],
+            '章丘':[117.53,36.72],
+            '肇庆':[112.44,23.05],
+            '大连':[121.62,38.92],
+            '临汾':[111.5,36.08],
+            '吴江':[120.63,31.16],
+            '石嘴山':[106.39,39.04],
+            '沈阳':[123.38,41.8],
+            '苏州':[120.62,31.32],
+            '茂名':[110.88,21.68],
+            '嘉兴':[120.76,30.77],
+            '长春':[125.35,43.88],
+            '胶州':[120.03336,36.264622],
+            '银川':[106.27,38.47],
+            '张家港':[120.555821,31.875428],
+            '三门峡':[111.19,34.76],
+            '锦州':[121.15,41.13],
+            '南昌':[115.89,28.68],
+            '柳州':[109.4,24.33],
+            '三亚':[109.511909,18.252847],
+            '自贡':[104.778442,29.33903],
+            '吉林':[126.57,43.87],
+            '阳江':[111.95,21.85],
+            '泸州':[105.39,28.91],
+            '西宁':[101.74,36.56],
+            '宜宾':[104.56,29.77],
+            '呼和浩特':[111.65,40.82],
+            '成都':[104.06,30.67],
+            '大同':[113.3,40.12],
+            '镇江':[119.44,32.2],
+            '桂林':[110.28,25.29],
+            '张家界':[110.479191,29.117096],
+            '宜兴':[119.82,31.36],
+            '北海':[109.12,21.49],
+            '西安':[108.95,34.27],
+            '金坛':[119.56,31.74],
+            '东营':[118.49,37.46],
+            '牡丹江':[129.58,44.6],
+            '遵义':[106.9,27.7],
+            '绍兴':[120.58,30.01],
+            '扬州':[119.42,32.39],
+            '常州':[119.95,31.79],
+            '潍坊':[119.1,36.62],
+            '重庆':[106.54,29.59],
+            '台州':[121.420757,28.656386],
+            '南京':[118.78,32.04],
+            '滨州':[118.03,37.36],
+            '贵阳':[106.71,26.57],
+            '无锡':[120.29,31.59],
+            '本溪':[123.73,41.3],
+            '克拉玛依':[84.77,45.59],
+            '渭南':[109.5,34.52],
+            '马鞍山':[118.48,31.56],
+            '宝鸡':[107.15,34.38],
+            '焦作':[113.21,35.24],
+            '句容':[119.16,31.95],
+            '北京':[116.46,39.92],
+            '徐州':[117.2,34.26],
+            '衡水':[115.72,37.72],
+            '包头':[110,40.58],
+            '绵阳':[104.73,31.48],
+            '乌鲁木齐':[87.68,43.77],
+            '枣庄':[117.57,34.86],
+            '杭州':[120.19,30.26],
+            '淄博':[118.05,36.78],
+            '鞍山':[122.85,41.12],
+            '溧阳':[119.48,31.43],
+            '库尔勒':[86.06,41.68],
+            '安阳':[114.35,36.1],
+            '开封':[114.35,34.79],
+            '济南':[117,36.65],
+            '德阳':[104.37,31.13],
+            '温州':[120.65,28.01],
+            '九江':[115.97,29.71],
+            '邯郸':[114.47,36.6],
+            '临安':[119.72,30.23],
+            '兰州':[103.73,36.03],
+            '沧州':[116.83,38.33],
+            '临沂':[118.35,35.05],
+            '南充':[106.110698,30.837793],
+            '天津':[117.2,39.13],
+            '富阳':[119.95,30.07],
+            '泰安':[117.13,36.18],
+            '诸暨':[120.23,29.71],
+            '郑州':[113.65,34.76],
+            '哈尔滨':[126.63,45.75],
+            '聊城':[115.97,36.45],
+            '芜湖':[118.38,31.33],
+            '唐山':[118.02,39.63],
+            '平顶山':[113.29,33.75],
+            '邢台':[114.48,37.05],
+            '德州':[116.29,37.45],
+            '济宁':[116.59,35.38],
+            '荆州':[112.239741,30.335165],
+            '宜昌':[111.3,30.7],
+            '义乌':[120.06,29.32],
+            '丽水':[119.92,28.45],
+            '洛阳':[112.44,34.7],
+            '秦皇岛':[119.57,39.95],
+            '株洲':[113.16,27.83],
+            '石家庄':[114.48,38.03],
+            '莱芜':[117.67,36.19],
+            '常德':[111.69,29.05],
+            '保定':[115.48,38.85],
+            '湘潭':[112.91,27.87],
+            '金华':[119.64,29.12],
+            '岳阳':[113.09,29.37],
+            '长沙':[113,28.21],
+            '衢州':[118.88,28.97],
+            '廊坊':[116.7,39.53],
+            '菏泽':[115.480656,35.23375],
+            '合肥':[117.27,31.86],
+            '武汉':[114.31,30.52],
+            '大庆':[125.03,46.58]
+        };
+
+        var convertData = function (data) {
+            var res = [];
+            for (var i = 0; i < data.length; i++) {
+                var geoCoord = geoCoordMap[data[i].name];
+                if (geoCoord) {
+                    res.push({
+                        name: data[i].name,
+                        value: geoCoord.concat(data[i].value),
+                        label:{
+                            normal:{
+                                color:'#fff'
+                            }
+                        }
+                    });
+                }
+            }
+            return res;
+        };
+        myChartMain.hideLoading();
+        var option = {
+            tooltip : {
+                trigger: 'item'
+            },
+            bmap: {
+                center: [104.114129, 37.550339],
+                zoom: 5,
+                roam: true,
+                mapStyle: {
+                    styleJson: [{
+                        'featureType': 'water',     //水域
+                        'elementType': 'all',
+                        'stylers': {
+                            'color': '#044061'
+                        }
+                    }, {
+                        'featureType': 'land',      //陆地
+                        'elementType': 'all',
+                        'stylers': {
+                            'color': '#004881'
+                        }
+                    }, {
+                        'featureType': 'railway',    //铁路
+                        'elementType': 'all',
+                        'stylers': {
+                            'visibility': '#6cc5d1'
+                        }
+                    }, {
+                        'featureType': 'highway',
+                        'elementType': 'all',
+                        'stylers': {
+                            'color': '#6cc5d1'
+                        }
+                    }, {
+                        'featureType': 'highway',
+                        'elementType': 'labels',
+                        'stylers': {
+                            'visibility': '#6cc5d1'
+                        }
+                    }, {
+                        'featureType': 'arterial',
+                        'elementType': 'geometry',
+                        'stylers': {
+                            'color': '#fff'
+                        }
+                    }, {
+                        'featureType': 'arterial',
+                        'elementType': 'geometry.fill',
+                        'stylers': {
+                            'color': '#fff'
+                        }
+                    }, {
+                        'featureType': 'poi',
+                        'elementType': 'all',
+                        'stylers': {
+                            'visibility': 'off'
+                        }
+                    }, {
+                        'featureType': 'green',
+                        'elementType': 'all',
+                        'stylers': {
+                            'visibility': 'off'
+                        }
+                    }, {
+                        'featureType': 'subway',
+                        'elementType': 'all',
+                        'stylers': {
+                            'visibility': 'off'
+                        }
+                    }, {
+                        'featureType': 'manmade',
+                        'elementType': 'all',
+                        'stylers': {
+                            'color': '#d1d1d1'
+                        }
+                    }, {
+                        'featureType': 'local',
+                        'elementType': 'all',
+                        'stylers': {
+                            'color': '#d1d1d1'
+                        }
+                    }, {
+                        'featureType': 'arterial',
+                        'elementType': 'labels',
+                        'stylers': {
+                            'visibility': 'off'
+                        }
+                    }, {
+                        'featureType': 'boundary',      //边界
+                        'elementType': 'all',
+                        'stylers': {
+                            'color': '#019FD4'
+                        }
+                    }, {
+                        'featureType': 'building',
+                        'elementType': 'all',
+                        'stylers': {
+                            'color': '#d1d1d1'
+                        }
+                    }, {
+                        'featureType': 'label',
+                        'elementType': 'labels.text.fill',
+                        'stylers': {
+                            'color': '#fff'
+                        }
+                    }]
+                }
+            },
+            series : [
+                {
+                    name: 'pm2.5',
+                    type: 'scatter',
+                    coordinateSystem: 'bmap',
+                    data: convertData(data),
+                    symbolSize: function (val) {
+                        return val[2] / 10;
+                    },
+                    label: {
+                        normal: {
+                            formatter: '{b}',
+                            position: 'right',
+                            show: false,
+                            textStyle:{color:"#fff"}
+                        },
+                        emphasis: {
+                            show: true
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: '#6cc5d1'      //#6cc5d1
+                        }
+                    }
+                },
+                {
+                    name: 'Top 5',
+                    type: 'effectScatter',
+                    coordinateSystem: 'bmap',
+                    data: convertData(data.sort(function (a, b) {
+                        return b.value - a.value;
+                    }).slice(0, 6)),
+                    symbolSize: function (val) {
+                        return val[2] / 10;
+                    },
+                    showEffectOn: 'render',
+                    rippleEffect: {
+                        brushType: 'stroke'
+                    },
+                    hoverAnimation: true,
+                    label: {
+                        normal: {
+                            formatter: '{b}',
+                            position: 'right',
+                            show: true,
+                            textStyle:{color:"#fff"}
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: '#6cc5d1',
+                            shadowBlur: 10,
+                            shadowColor: '#0B6196'
+                        }
+                    },
+                    zlevel: 1
+                }
+            ]
+        };
+        myChartMain.clear();
+        myChartMain.setOption(option);
+    }
+    /************************中间主体部分结束*****************************/
+
+
+    /************************安装应用开始*****************************/
+    //安装应用
+    function installApp(appUesd,dates){
+        $('.right-m').html('<div class="right-main1">'
+            +'  <span class="left-main1-1"></span>'
+            +'  <span class="left-main1-2"></span>'
+            +'  <span class="left-main1-3"></span>'
+            +'  <span class="left-main1-4"></span>'
+            +'<div class="titleTop">'
+            +'<h3 class="title">热词Top&nbsp;&nbsp;10</h3>'
+            +'<select class="selectDate" id="hotSelect">'
+            +'<option value="1">今天</option>'
+            +'<option value="2">近七天</option>'
+            +'<option value="3">当前月</option>'
+            +'<option value="4">近三月</option>'
+            +'</select>'
+            +'</div>'
+            +'  <div id="install-app"></div>'
+            +'</div>')
+
+        //设置宽高
+        $('.right-main1').css({
+            width:base.dw*0.2,
+            height:base.dh*0.632
+        })
+
+        $("#hotSelect").on("change",function(){
+            var valueChange = parseInt($(this).val());
+            installApp($("#adjustmentApp").val(),valueChange);
+            $("#hotSelect").val(valueChange);
+        })
+
+        var installApp1 = document.getElementById('install-app');
+        installApp1.style.width = $('.right-main1').width()+'px';
+        installApp1.style.height = $('.right-main1').height()-$('.right-main1 .titleTop').height()+'px';
+        var myChartInstall= echarts.init(installApp1);
+        //加载动画
+        myChartInstall.showLoading({
+            text: '数据加载中',
+            color: 'rgba(75,189,203,1)',
+            textColor: 'rgba(75,189,203,1)',
+            maskColor: 'rgba(18,39,76,0.8)',
+            zlevel: 0
+        });
+        $.ajax({
+            type: 'POST',
+            dataType: 'text',
+            url: './xml/focus/'+appUesd+'_focus_1_'+dates+'.xml.json',
+            success: function (data) {
+                var result1 = JSON.parse(data),result;
+                if(result1.data.length>10){
+                    result = result1.data.splice(0,10);
+                }else if(result1.data.length>0){
+                    /*var newLength = 10 - result1.data.length;
+                    for(var i=0;i<newLength;i++){
+                        result1.data.push({"name":"null","value":0});
+                    }*/
+                    result = result1.data;
+                }else{
+                    $("#install-app").html('<p style="color:#fff;font-size:16px;text-align:center;margin-top:50px;">暂无数据</p>');
+                    result = null;
+                    return;
+                }
+                if(result){
+                    myChartInstall.hideLoading();
+                    var data = result;
+                    //名称,两组数据用一个名称
+                    var myData = [];
+                    //千次的数据
+                    var valueData = [];
+                    //千次的渐变色
+                    var colorList = [];
+                    for (var i = 0; i < data.length; i++) {
+                        myData.push(data[i].name);
+                        valueData.push(data[i].value);
+                        var j = i+1;
+                        var opacity = j/data.length;
+                        colorList.unshift('rgba(203,83,62,'+opacity+')');
+                    }
+                    /*小时*/
+                    var resTime = result;
+                    if(resTime){
+                        var timeData = resTime;
+                        //小时数据
+                        var timeDataArr = [];
+                        //小时渐变色
+                        var colorListTime = [];
+
+                        for (var i = 0; i < timeData.length; i++) {
+                            timeDataArr.push(timeData[i].value);
+                            var j = i+1;
+                            var opacity = j/timeData.length;
+                            colorListTime.unshift('rgba(66,172,205,'+opacity+')');
+                        }
+
+                        option = {
+                            tooltip: {
+                                position: 'top',
+                                padding: [5, 10],
+                                formatter: function(params) {
+                                    return '<span style="display:inline-block;position:relative;margin-right:10px;border-color:'+ params.color +';border-radius:10px;width:9px;height:9px;background-color:' + params.color + '"></span>'+myData[params.dataIndex]+'：'+params.value;
+                                },
+                                textStyle:{
+                                    width:300,
+                                    lineHeight:18
+                                }
+                            },
+                            legend: {
+                                itemWidth:base.dw*0.01,
+                                itemHeight:base.dh*0.012,
+                                right:10,
+                                bottom:base.dw*0.009,   /*base.dw*0.019*/
+                                textStyle: {
+                                    color: 'rgba(62,172,205,1)',
+                                    fontSize: base.dw*0.005,
+                                    fontWeight:'normal'
+                                },
+                                data: ['个人', '群组']//必须与下面series里面的name对应才显示
+                            },
+                            grid: [{
+                                show: false,
+                                left: '22%',
+                                top: base.dh*0.03,  /*base.dh*0.09*/
+                                bottom: '10%',    /*base.dh*0.01*/
+                                containLabel: true,
+                                width: '30%',
+                            }, {
+                                show: false,
+                                left: '52%',
+                                top: base.dh*0.03,  /*base.dh*0.03*/
+                                bottom: '13.3%',    /*base.dh*0.01*/
+                                width: '1%',
+                            }, {
+                                show: false,
+                                right: '12%',
+                                top: base.dh*0.03,  /*base.dh*0.09*/
+                                bottom: '10%',    /*base.dh*0.01*/
+                                containLabel: true,
+                                width: '40%',
+                            }],
+                            xAxis: [{
+                                splitNumber: 4,
+                                name: '次',
+                                nameTextStyle:{
+                                    fontSize: base.dw*0.005,
+                                    fontWeight:'normal'
+                                },
+                                type: 'value',
+                                inverse: true,
+                                axisLine: {
+                                    show: true,
+                                    lineStyle: {
+                                        color: 'rgba(62,172,205,1)'
+                                    }
+                                },
+                                axisTick: {
+                                    show: true
+                                },
+                                position: 'bottom',
+                                axisLabel: {
+                                    show: true,
+                                    formatter: '{value}',
+                                    textStyle: {
+                                        color: 'rgba(62,172,205,1)',
+                                        fontSize: base.dw*0.004,
+                                        fontWeight:'normal'
+                                    }
+                                },
+                                splitLine: {
+                                    show: false,
+                                    lineStyle: {
+                                        width: 0
+                                    }
+                                }
+                            }, {
+                                gridIndex: 1,
+                                show: false
+                            }, {
+                                gridIndex: 2,
+                                splitNumber: 4,
+                                type: 'value',
+                                name: '次',
+                                nameTextStyle:{
+                                    fontSize: base.dw*0.005,
+                                    fontWeight:'normal'
+                                },
+                                axisLine: {
+                                    show: true,
+                                    lineStyle: {
+                                        color: 'rgba(62,172,205,1)'
+                                    }
+                                },
+                                axisTick: {
+                                    show: true
+                                },
+                                position: 'bottom',
+                                axisLabel: {
+                                    show: true,
+                                    textStyle: {
+                                        color: 'rgba(62,172,205,1)',
+                                        fontSize: base.dw*0.004,
+                                        fontWeight:'normal'
+                                    },
+                                    formatter: '{value}'
+                                },
+                                splitLine: {
+                                    show: false,
+                                    lineStyle: {
+                                        width: 0
+                                    }
+                                }
+                            }
+                            ],
+                            yAxis: [
+                                //左边的标尺
+                                {
+                                    type: 'category',
+                                    inverse: true,
+                                    position: 'right',
+                                    axisLine: {
+                                        lineStyle: {
+                                            color: 'rgba(62,172,205,1)'
+                                        }
+                                    },
+                                    axisTick: {
+                                        show: true
+                                    },
+                                    axisLabel: {
+                                        show: false
+                                    },
+                                    data: myData.map(function(value,index) {
+                                        return {
+                                            value: index+1,
+                                            textStyle: {
+                                                align: 'right',
+                                                color:'rgba(62,172,205,1)',
+                                                fontSize: base.dw*0.005,
+                                                fontWeight:'normal'
+
+                                            }
+                                        }
+                                    })
+                                },
+                                //中间的标尺
+                                {
+                                    gridIndex: 1,
+                                    type: 'category',
+                                    inverse: true,
+                                    position: 'left',
+                                    axisLine: {
+                                        show: false
+
+                                    },
+                                    name:'Top',
+                                    nameLocation:'start',
+                                    nameTextStyle:{
+                                        padding:[0,0,-5,-15],
+                                        color:'rgba(62,172,205,1)'
+                                    },
+                                    axisTick: {
+                                        show: false
+
+                                    },
+                                    axisLabel: {
+                                        show: true
+                                    },
+
+                                    data: myData.map(function(value,index) {
+                                        return {
+                                            value: index+1,
+                                            textStyle: {
+                                                align: 'center',
+                                                color:'rgba(62,172,205,1)',
+                                                fontSize: base.dw*0.005,
+                                                fontWeight:'normal'
+                                            }
+                                        }
+                                    })
+                                },
+                                //右边的标尺
+                                {
+                                    gridIndex: 2,
+                                    type: 'category',
+                                    inverse: true,
+                                    position: 'left',
+                                    axisLine: {
+                                        show: true,
+                                        lineStyle: {
+                                            color: 'rgba(62,172,205,1)'
+                                        }
+                                    },
+
+                                    axisTick: {
+                                        show: true,
+                                        lineStyle: {
+                                            color: 'rgba(62,172,205,1)'
+                                        }
+                                    },
+                                    axisLabel: {
+                                        show: false
+                                    },
+
+                                    data: myData.map(function(value,index) {
+                                        return {
+                                            value: index+1,
+                                            textStyle: {
+                                                align: 'right',
+                                                color:'rgba(62,172,205,1)',
+                                                fontSize: base.dw*0.005,
+                                                fontWeight:'normal'
+
+                                            }
+                                        }
+                                    })
+                                }
+                            ],
+                            series: [{
+                                name: '个人',
+                                type: 'bar',
+                                barGap: 20,
+                                barWidth: '30%',
+                                label: {
+                                    normal: {
+                                        show: true,
+                                        color: 'red',
+                                        position: 'left',
+                                        formatter:function(params){
+                                            var arr = [];
+                                            myData.forEach(function(value) {
+                                                return arr.push(value)
+                                            })
+                                            return arr[params.dataIndex];
+
+                                        },
+                                        textStyle: {
+                                            color: 'rgba(62,172,205,1)',
+                                            fontSize: base.dw*0.005,
+                                            fontWeight:'normal'
+                                        }
+
+                                    },
+                                    emphasis: {
+                                        show: false
+                                    }
+
+                                },
+                                itemStyle: {
+                                    normal: {
+                                        color: function(params){
+                                            return colorList[params.dataIndex]
+                                        }
+                                    },
+                                    emphasis: {
+                                        show: false
+                                    }
+                                },
+                                data: valueData
+                            }, {
+                                name: '群组',
+                                type: 'bar',
+                                barGap: 20,
+                                barWidth: '30%',
+                                xAxisIndex: 2,
+                                yAxisIndex: 2,
+                                label: {
+                                    normal: {
+                                        show: true,
+                                        color: 'red',
+                                        position: 'right',
+                                        textStyle: {
+                                            color: 'rgba(62,172,205,1)',
+                                            fontSize: base.dw*0.005,
+                                            fontWeight:'normal'
+                                        },
+                                        formatter:function(params){
+                                            var arr = [];
+                                            myData.forEach(function(value) {
+                                                return arr.push(value)
+                                            })
+                                            return arr[params.dataIndex];
+
+                                        }
+                                    }
+                                },
+                                itemStyle: {
+                                    normal: {
+                                        color: function(params){
+                                            var colorListTimes = ['#42accd','#3b9bc1','#3398db8','#3880b4','#3880b4','#3375af','#165294','#113f7d','#113674','#142a51']
+                                            return colorListTimes[params.dataIndex]
+                                        }
+                                    },
+                                    emphasis: {
+                                        show: false
+                                    }
+                                },
+                                data: timeDataArr
+                            }]
+                        };
+                        myChartInstall.clear();
+                        myChartInstall.setOption(option);
+                    }
+                }
+            },
+            error: function (errorMsg) {
+                myChartInstall.showLoading({
+                    text: '数据加载失败，请联系管理员',
+                    color: 'rgba(75,189,203,0)',
+                    textColor: 'rgba(75,189,203,1)',
+                    maskColor: 'rgba(18,39,76,0.8)',
+                    zlevel: 0
+                });
+            }
+        })
+    };
+    /************************安装应用结束*****************************/
+
+    /************************设备违规开始*****************************/
+    //违规行为[个人，群组]
+    function illegalBehavior(appUesd,group){
+        $('.footer-left').html('<div class="footer-left-main">'
+            +'  <span class="left-main1-1"></span>'
+            +'  <span class="left-main1-2"></span>'
+            +'  <span class="left-main1-3"></span>'
+            +'  <span class="left-main1-4"></span>'
+            +'<div class="titleTop">'
+            +'<h3 class="title">内容信息类型收发走势</h3>'
+            +'<select class="selectDate" id="illegalSelect">'
+            +'<option value="0">个人</option>'
+            +'<option value="1">群组</option>'
+            +'</select>'
+            +'</div>'
+            +'  <div id="illegal-behavior"></div>'
+            +'</div>')
+
+        //设置宽高
+        $('.footer-left-main').css({
+            width:base.dw*0.2,
+            height:base.dh*0.31,
+            marginTop:base.dh*0.01
+
+        })
+
+        $("#illegalSelect").on("change",function(){
+            var valueChange = parseInt($(this).val());
+            illegalBehavior($("#adjustmentApp").val(),valueChange);
+            $("#illegalSelect").val(valueChange);
+        })
+
+        var illegalBehavior1 = document.getElementById('illegal-behavior');
+        illegalBehavior1.style.width = $('.footer-left-main').width()+'px';
+        illegalBehavior1.style.height = $('.footer-left-main').height()-$('.footer-left-main .titleTop').height()+'px';
+
+        var myChartIllegal= echarts.init(illegalBehavior1);
+        myChartIllegal.showLoading({
+            text: '数据加载中',
+            color: 'rgba(75,189,203,1)',
+            textColor: 'rgba(75,189,203,1)',
+            maskColor: 'rgba(18,39,76,0.8)',
+            zlevel: 0
+        });
+
+        /* 文字：1，图片：2，音频：3，视频：4 -------- url:5*/
+        var dataToday = [
+                [0,0,0,0]
+            ],
+            dataWeek = [
+                [0,0,0,0]
+            ],
+            dataMonth = [
+                [0,0,0,0]
+            ],
+            dataThree = [
+                [0,0,0,0]
+            ];
+        xmlToJson.loadDoc('xml/'+appUesd+'_sum_nr_'+group+'.xml',function(res){
+            for(var i=0;i<res.length;i++){
+                var index = JSON.parse(res[i][0]).content_type -1;
+                if(index==0 || index==1 ||index==2 || index==3 ){
+                    if(JSON.parse(res[i][2]).date_type == 1){   //dataToday
+                        dataToday[0][index] = parseInt(JSON.parse(res[i][1]).num);
+                    }
+                    else if(JSON.parse(res[i][2]).date_type == 2){   //dataWeek
+                        dataWeek[0][index] = parseInt(JSON.parse(res[i][1]).num);
+                    }
+                    else if(JSON.parse(res[i][2]).date_type == 3){   //dataMonth
+                        dataMonth[0][index] = parseInt(JSON.parse(res[i][1]).num);
+                    }
+                    else if(JSON.parse(res[i][2]).date_type == 4){   //dataThree
+                        dataThree[0][index] = parseInt(JSON.parse(res[i][1]).num);
+                    }
+                }
+            }
+            xmlToJson.loadDoc('xml/'+appUesd+'_sum_url_'+group+'.xml',function(resURL){
+                for(var i=0;i<resURL.length;i++){
+                    if(JSON.parse(resURL[i][1]).date_type == 1){
+                        dataToday[0].push(parseInt(JSON.parse(resURL[i][0]).urlNum));
+                    }else if(JSON.parse(resURL[i][1]).date_type == 2){
+                        dataWeek[0].push(parseInt(JSON.parse(resURL[i][0]).urlNum));
+                    }else if(JSON.parse(resURL[i][1]).date_type == 3){
+                        dataMonth[0].push(parseInt(JSON.parse(resURL[i][0]).urlNum));
+                    }else if(JSON.parse(resURL[i][1]).date_type == 4){
+                        dataThree[0].push(parseInt(JSON.parse(resURL[i][0]).urlNum));
+                    }
+                }
+                /*设置极值*/
+                /* 文字：1，图片：2，音频：3，视频：4 -------- url:5*/
+                var wordArray = [dataToday[0][0],dataWeek[0][0],dataMonth[0][0],dataThree[0][0]],
+                    picArray = [dataToday[0][1],dataWeek[0][1],dataMonth[0][1],dataThree[0][1]],
+                    radioArray = [dataToday[0][2],dataWeek[0][2],dataMonth[0][2],dataThree[0][2]],
+                    videoArray = [dataToday[0][3],dataWeek[0][3],dataMonth[0][3],dataThree[0][3]],
+                    urlArray = [dataToday[0][4],dataWeek[0][4],dataMonth[0][4],dataThree[0][4]];
+                var wordMax = wordArray.maxValue(),
+                    picMax = picArray.maxValue(),
+                    radioMax = radioArray.maxValue(),
+                    videoMax = videoArray.maxValue(),
+                    urlMax = urlArray.maxValue();
+
+                myChartIllegal.hideLoading();
+
+                var lineStyle = {
+                    normal: {
+                        width: 1,
+                        opacity: 0.5
+                    }
+                };
+                option = {
+                    tooltip:{
+                        formatter:function (params) {
+                            var radarStr = '';
+                            var radarIndex = ['文字','图片','音频','视频','url'];
+                            for(var i=0;i<params.value.length;i++){
+                                radarStr += radarIndex[i]+':'+params.value[i]+'<br/>';
+                            }
+                            return '<span style="display:inline-block;position:relative;margin-right:10px;border-color:'+ params.color +';border-radius:10px;width:9px;height:9px;background-color:' + params.color + '"></span>'+params.seriesName+"<br/>"+radarStr;
+                        }
+                    },
+                    legend: {
+                        bottom: 5,
+                        right:10,
+                        data: ['今天', '近七天', '当前月','近三月'],
+                        itemGap: 0,
+                        textStyle: {
+                            color: '#346A75',
+                            fontSize: 14
+                        },
+                        selectedMode: 'single'
+                    },
+                    radar: {
+                        indicator: [
+                            {name: '文字', max: wordMax},
+                            {name: '图片', max: picMax},
+                            {name: '音频', max: radioMax},
+                            {name: '视频', max: videoMax},
+                            {name: 'url', max: urlMax}
+                        ],
+                        startAngle:45,
+                        shape: 'circle',
+                        splitNumber: 5,
+                        name: {
+                            textStyle: {
+                                color: '#42accd'
+                            }
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: [
+                                    'rgba(100,194,208, 0.1)','rgba(100,194,208, 0.2)','rgba(100,194,208, 0.4)',
+                                    'rgba(100,194,208, 0.6)','rgba(100,194,208, 0.8)', 'rgba(100,194,208, 1)'
+                                ].reverse()
+                            }
+                        },
+                        splitArea: {
+                            show: false
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: 'rgba(197,249,249, 0.5)'
+                            }
+                        }
+                    },
+                    series: [
+                        {
+                            name: '今天',
+                            type: 'radar',
+                            lineStyle: lineStyle,
+                            data: dataToday,
+                            symbol: 'none',
+                            itemStyle: {
+                                normal: {
+                                    color: '#00dc86'
+                                }
+                            },
+                            areaStyle: {
+                                normal: {
+                                    opacity: 0.1
+                                }
+                            }
+                        },
+                        {
+                            name: '近七天',
+                            type: 'radar',
+                            lineStyle: lineStyle,
+                            data: dataWeek,
+                            symbol: 'none',
+                            itemStyle: {
+                                normal: {
+                                    color: '#ff924d'
+                                }
+                            },
+                            areaStyle: {
+                                normal: {
+                                    opacity: 0.05
+                                }
+                            }
+                        },
+                        {
+                            name: '当前月',
+                            type: 'radar',
+                            lineStyle: lineStyle,
+                            data: dataMonth,
+                            symbol: 'none',
+                            itemStyle: {
+                                normal: {
+                                    color: '#fb2f89'
+                                }
+                            },
+                            areaStyle: {
+                                normal: {
+                                    opacity: 0.05
+                                }
+                            }
+                        },
+                        {
+                            name: '近三月',
+                            type: 'radar',
+                            lineStyle: lineStyle,
+                            data: dataThree,
+                            symbol: 'none',
+                            itemStyle: {
+                                normal: {
+                                    color: '#7356e8'
+                                }
+                            },
+                            areaStyle: {
+                                normal: {
+                                    opacity: 0.05
+                                }
+                            }
+                        }
+                    ]
+                };
+                myChartIllegal.clear();
+                myChartIllegal.setOption(option);
+
+                myChartIllegal.on('click',function (params) {
+                    console.log(params);
+                    alert(params.seriesName+':'+ params.value);
+                })
+
+            })
+
+        })
+
+    }
+
+    /************************设备违规结束*****************************/
+
+
+    /************************通话纪录开始*****************************/
+    //通话纪录
+    function callRecords(appUesd,group){
+        $('.footer-right').html('<div class="footer-right-main">'
+            +'  <span class="left-main1-1"></span>'
+            +'  <span class="left-main1-2"></span>'
+            +'  <span class="left-main1-3"></span>'
+            +'  <span class="left-main1-4"></span>'
+            +'<div class="titleTop">'
+            +'<h3 class="title">用户信息活跃度</h3>'
+            +'<select class="selectDate" id="userActiveSelect">'
+            +'<option value="0">个人</option>'
+            +'<option value="1">群组</option>'
+            +'</select>'
+            +'</div>'
+            +'  <div id="call-records"></div>'
+            +'</div>')
+
+        //设置宽高
+        $('.footer-right-main').css({
+            width:base.dw*0.780,
+            height:base.dh*0.31,
+            marginTop:base.dh*0.01
+        })
+
+        $("#userActiveSelect").on("change",function(){
+            var valueChange = parseInt($(this).val());
+            callRecords($("#adjustmentApp").val(),valueChange);
+            $("#userActiveSelect").val(valueChange);
+        })
+
+        var callRecords1 = document.getElementById('call-records');
+        callRecords1.style.width = $('.footer-right-main').width()+'px';
+        callRecords1.style.height = $('.footer-right-main').height()-$('.footer-right-main .titleTop').height()+'px';
+
+        var myChartCall= echarts.init(callRecords1);
+        myChartCall.showLoading({
+            text: '数据加载中',
+            color: 'rgba(75,189,203,1)',
+            textColor: 'rgba(75,189,203,1)',
+            maskColor: 'rgba(18,39,76,0.8)',
+            zlevel: 0
+        });
+
+        /*var hours = ['1', '2', '3', '4', '5', '6',
+         '7', '8', '9','10','11','12','13','14','15','16','17','18','19','20'];*/
+        var hours = ['1', '2', '3', '4', '5', '6',
+            '7', '8', '9','10'];
+        var days = ['今天', '近七天', '当前月','近三月'];
+
+        xmlToJson.loadDoc('xml/'+appUesd+'_sum_dx_'+group+'.xml',function(resUser){
+            myChartCall.hideLoading();
+            var data = [];
+            var todayData =[[0,0,5,'小明'],
+                [0,1,1,'小海'],
+                [0,2,0,'小凌'],
+                [0,3,12,'小峰'],
+                [0,4,0,'小婷'],
+                [0,5,4,'小花'],
+                [0,6,8,'小画'],
+                [0,7,9,'小英'],
+                [0,8,6,'小东'],
+                [0,9,11,'小杨']],weekData =[[1,0,7,'小明'],
+                [1,1,3,'小海'],
+                [1,2,9,'小凌'],
+                [1,3,0,'小峰'],
+                [1,4,4,'小婷'],
+                [1,5,9,'小花'],
+                [1,6,7,'小画'],
+                [1,7,4,'小英'],
+                [1,8,0,'小东'],
+                [1,9,10,'小杨']],monthData =[[2,0,1,'小明'],
+                [2,1,1,'小海'],
+                [2,2,3,'小凌'],
+                [2,3,9,'小峰'],
+                [2,4,7,'小婷'],
+                [2,5,0,'小花'],
+                [2,6,5,'小画'],
+                [2,7,8,'小英'],
+                [2,8,0,'小东'],
+                [2,9,5,'小杨']],threeData =[[3,0,7,'小明'],
+                [3,1,3,'小海'],
+                [3,2,0,'小凌'],
+                [3,3,5,'小峰'],
+                [3,4,0,'小婷'],
+                [3,5,12,'小花'],
+                [3,6,10,'小画'],
+                [3,7,0,'小英'],
+                [3,8,1,'小东'],
+                [3,9,3,'小杨']];
+            for(var i=0;i<resUser.length;i++){
+                var number = parseInt(JSON.parse(resUser[i][0]).num);
+                if(JSON.parse(resUser[i][2]).date_type==1) {
+                    todayData.splice(i,1,[0,i,number,JSON.parse(resUser[i][1]).staff_name]);
+                }else if(JSON.parse(resUser[i][2]).date_type==2){
+                    weekData.splice(i,1,[1,i,number,JSON.parse(resUser[i][1]).staff_name]);
+                }else if(JSON.parse(resUser[i][2]).date_type==3){
+                    monthData.splice(i,1,[2, i,number, JSON.parse(resUser[i][1]).staff_name]);
+                }else if(JSON.parse(resUser[i][2]).date_type==4){
+                    threeData.splice(i,1,[3,i,number,JSON.parse(resUser[i][1]).staff_name]);
+                }
+            }
+            data = todayData.concat(weekData,monthData,threeData);
+            option = {
+                noDataLoadingOption :{
+                    text: '暂无数据',
+                    effect:'bubble',
+                    effectOption : {
+                        effect: {
+                            n: 0 //气泡个数为0
+                        }
+                    }
+                },
+                tooltip: {
+                    position: 'top',
+                    formatter: function(params) {
+                        var paopaoArr = ['今天','近七天','当前月','近三月'];
+                        return '<span style="display:inline-block;position:relative;margin-right:10px;border-color:'+ params.color +';border-radius:10px;width:9px;height:9px;background-color:' + params.color + '"></span>'+paopaoArr[params.seriesIndex]+"<br/>"+params.value[2]+':'+params.value[1];
+                    },
+                },
+                title: [],
+                //legend是显示，必须有对应的series的name对应
+                legend: {
+                    data:days,
+                    right:'8%',
+                    top:'1%',
+                    itemWidth:base.dw*0.01,
+                    itemHeight:base.dh*0.01,
+                    textStyle: {
+                        color: 'rgba(62,172,205,1)',
+                        fontSize: 14,
+                        fontWeight:'normal'
+                    }
+                },
+                grid: [],
+                singleAxis: [],
+                series: []
+            };
+
+            echarts.util.each(days, function (day, idx) {
+                var colorArr = ['#0A74B2','#A68D1F','#31754E','#59458C'];
+                option.title.push({
+                    show:true,
+                    textBaseline: 'middle',
+                    top: (idx + 1.2) * 100 /5 + '%' ,
+                    left: 10,
+                    text: day,
+                    textStyle:{
+                        color:'#346A75',
+                        fontSize:14,
+                        fontWeight:'normal'
+                    }
+                });
+                option.singleAxis.push({
+                    left: 120,
+                    type: 'category',
+                    boundaryGap: false,
+                    data: hours,
+                    top: (idx * 100 / 5 + 30) + '%',
+                    height: (100 / 5 - 30) + '%',
+                    axisLine:{
+                        lineStyle:{
+                            color:'#346A75'
+                        }
+                    },
+                    axisLabel: {
+                        interval: 1,
+                        show:false
+                    },
+                    axisTick:{
+                        show:false
+                    },
+                    splitLine:{
+                        show:false
+                    }
+                });
+                option.series.push({
+                    singleAxisIndex: idx,
+                    name:day,
+                    coordinateSystem: 'singleAxis',
+                    type: 'scatter',
+                    itemStyle:{
+                        normal:{
+                            color:colorArr[idx]
+                        }
+                    },
+                    data: [],
+                    symbolSize: function (dataItem) {
+                        return dataItem[1]/15;      //图形显示的扩大倍数
+                    }
+                });
+            });
+
+            echarts.util.each(data, function (dataItem) {
+                option.series[dataItem[0]].data.push([dataItem[1], dataItem[2],dataItem[3]]);
+            });
+            myChartCall.clear();
+            myChartCall.setOption(option);
+
+        })
+
+
+
+
+
+    }
+    /************************通话纪录结束*****************************/
+
+})
+
+</script>
+</body>
+</html>

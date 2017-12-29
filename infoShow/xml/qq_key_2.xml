@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<resultset statement="select sensitive_source, sensitive_name, COUNT(sensitive_name) AS num, DATE_ADD(CURDATE(), INTERVAL - 6 DAY) AS startData, CURDATE() AS endDate FROM behavior_sensitive_word_report WHERE sensitive_source LIKE 'com.tencent.%qq%' AND use_date &gt;= DATE_ADD(CURDATE(), INTERVAL - 6 DAY) GROUP BY sensitive_name ORDER BY num DESC limit 20" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <row>
+	<field name="sensitive_source">com.tencent.mobileqq</field>
+	<field name="sensitive_name">战士</field>
+	<field name="num">2</field>
+	<field name="startData">2017-12-23</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+</resultset>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?> 
+<resultset> 
+     <row>
+         <field name="keyword">徐</field>
+         <field name="counter">264</field>
+     </row>
+     <row>
+         <field name="keyword">葛银龙</field>
+         <field name="counter">235</field>
+     </row>
+     <row>
+         <field name="keyword">郭子容</field>
+         <field name="counter">131</field>
+     </row>
+     <row>
+         <field name="keyword">江春银</field>
+         <field name="counter">55</field>
+     </row>
+</resultset>

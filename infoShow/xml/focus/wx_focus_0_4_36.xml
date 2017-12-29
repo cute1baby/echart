@@ -1,0 +1,15 @@
+<?xml version="1.0"?> 
+<resultset> 
+     <row>
+         <field name="keyword">杨振国</field>
+         <field name="counter">569</field>
+     </row>
+     <row>
+         <field name="keyword">韩声建</field>
+         <field name="counter">458</field>
+     </row>
+     <row>
+         <field name="keyword">葛醒</field>
+         <field name="counter">5</field>
+     </row>
+</resultset>

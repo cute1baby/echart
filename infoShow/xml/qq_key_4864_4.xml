@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<resultset statement="select w.sensitive_name,s.name,COUNT(w.user_id) as num , DATE_ADD( DATE_ADD(CURDATE(), INTERVAL - 2 MONTH), INTERVAL - (DAYOFMONTH(CURDATE()) - 1) DAY ) AS startData, CURDATE() AS endDate from behavior_sensitive_word_report w LEFT JOIN sys_user s on s.user_id =w.user_id where sensitive_source LIKE 'com.tencent.mobileqq' and sensitive_name = '4864' AND use_date &gt;= DATE_ADD( DATE_ADD(CURDATE(), INTERVAL - 2 MONTH), INTERVAL - (DAYOFMONTH(CURDATE()) - 1) DAY ) GROUP BY w.user_id ORDER BY num desc limit 20" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <row>
+	<field name="sensitive_name">4864</field>
+	<field name="name">VC</field>
+	<field name="num">2</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-04</field>
+  </row>
+</resultset>

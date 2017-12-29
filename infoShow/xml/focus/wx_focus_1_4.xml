@@ -1,0 +1,203 @@
+<?xml version="1.0"?> 
+<resultset> 
+     <row>
+         <field name="keyword">群聊</field>
+         <field name="counter">36</field>
+     </row>
+     <row>
+         <field name="keyword">加入</field>
+         <field name="counter">35</field>
+     </row>
+     <row>
+         <field name="keyword">邀请</field>
+         <field name="counter">32</field>
+     </row>
+     <row>
+         <field name="keyword">哈哈</field>
+         <field name="counter">25</field>
+     </row>
+     <row>
+         <field name="keyword">什么</field>
+         <field name="counter">23</field>
+     </row>
+     <row>
+         <field name="keyword">不是</field>
+         <field name="counter">18</field>
+     </row>
+     <row>
+         <field name="keyword">你们</field>
+         <field name="counter">18</field>
+     </row>
+     <row>
+         <field name="keyword">可以</field>
+         <field name="counter">14</field>
+     </row>
+     <row>
+         <field name="keyword">微信</field>
+         <field name="counter">14</field>
+     </row>
+     <row>
+         <field name="keyword">没有</field>
+         <field name="counter">13</field>
+     </row>
+     <row>
+         <field name="keyword">注意</field>
+         <field name="counter">13</field>
+     </row>
+     <row>
+         <field name="keyword">那个</field>
+         <field name="counter">13</field>
+     </row>
+     <row>
+         <field name="keyword">朋友</field>
+         <field name="counter">13</field>
+     </row>
+     <row>
+         <field name="keyword">关系</field>
+         <field name="counter">13</field>
+     </row>
+     <row>
+         <field name="keyword">群里</field>
+         <field name="counter">12</field>
+     </row>
+     <row>
+         <field name="keyword">隐私</field>
+         <field name="counter">11</field>
+     </row>
+     <row>
+         <field name="keyword">安全</field>
+         <field name="counter">11</field>
+     </row>
+     <row>
+         <field name="keyword">其他人</field>
+         <field name="counter">11</field>
+     </row>
+     <row>
+         <field name="keyword">现在</field>
+         <field name="counter">11</field>
+     </row>
+     <row>
+         <field name="keyword">wxid</field>
+         <field name="counter">10</field>
+     </row>
+     <row>
+         <field name="keyword">怎么</field>
+         <field name="counter">10</field>
+     </row>
+     <row>
+         <field name="keyword">有没有</field>
+         <field name="counter">9</field>
+     </row>
+     <row>
+         <field name="keyword">一下</field>
+         <field name="counter">9</field>
+     </row>
+     <row>
+         <field name="keyword">fromusername</field>
+         <field name="counter">8</field>
+     </row>
+     <row>
+         <field name="keyword">AA</field>
+         <field name="counter">8</field>
+     </row>
+     <row>
+         <field name="keyword">向日葵</field>
+         <field name="counter">8</field>
+     </row>
+     <row>
+         <field name="keyword">我们</field>
+         <field name="counter">8</field>
+     </row>
+     <row>
+         <field name="keyword">厉害</field>
+         <field name="counter">8</field>
+     </row>
+     <row>
+         <field name="keyword">呼吸</field>
+         <field name="counter">8</field>
+     </row>
+     <row>
+         <field name="keyword">聆听</field>
+         <field name="counter">8</field>
+     </row>
+     <row>
+         <field name="keyword">步调</field>
+         <field name="counter">8</field>
+     </row>
+     <row>
+         <field name="keyword">捂脸</field>
+         <field name="counter">8</field>
+     </row>
+     <row>
+         <field name="keyword">一个</field>
+         <field name="counter">8</field>
+     </row>
+     <row>
+         <field name="keyword">今天</field>
+         <field name="counter">8</field>
+     </row>
+     <row>
+         <field name="keyword">信贷</field>
+         <field name="counter">8</field>
+     </row>
+     <row>
+         <field name="keyword">Always</field>
+         <field name="counter">8</field>
+     </row>
+     <row>
+         <field name="keyword">回来</field>
+         <field name="counter">8</field>
+     </row>
+     <row>
+         <field name="keyword">__</field>
+         <field name="counter">8</field>
+     </row>
+     <row>
+         <field name="keyword">出来</field>
+         <field name="counter">8</field>
+     </row>
+     <row>
+         <field name="keyword">社会</field>
+         <field name="counter">7</field>
+     </row>
+     <row>
+         <field name="keyword">干嘛</field>
+         <field name="counter">7</field>
+     </row>
+     <row>
+         <field name="keyword">scale</field>
+         <field name="counter">7</field>
+     </row>
+     <row>
+         <field name="keyword">location</field>
+         <field name="counter">7</field>
+     </row>
+     <row>
+         <field name="keyword">位置</field>
+         <field name="counter">7</field>
+     </row>
+     <row>
+         <field name="keyword">poiname</field>
+         <field name="counter">7</field>
+     </row>
+     <row>
+         <field name="keyword">label</field>
+         <field name="counter">7</field>
+     </row>
+     <row>
+         <field name="keyword">哪里</field>
+         <field name="counter">7</field>
+     </row>
+     <row>
+         <field name="keyword">16</field>
+         <field name="counter">7</field>
+     </row>
+     <row>
+         <field name="keyword">东西</field>
+         <field name="counter">7</field>
+     </row>
+     <row>
+         <field name="keyword">msg</field>
+         <field name="counter">7</field>
+     </row>
+</resultset>

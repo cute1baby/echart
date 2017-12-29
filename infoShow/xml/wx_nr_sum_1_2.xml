@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<resultset statement="select log.content_type,COUNT(log.content_type)as num , CURDATE() as endDate,DATE_ADD(CURDATE(),INTERVAL -6 DAY)  as startData FROM behavior_chat_log log LEFT JOIN behavior_chat_audit audit ON log.chat_audit_id = audit.chat_audit_id where log.chat_time &gt;= DATE_ADD(CURDATE(),INTERVAL -6 DAY) and audit.app_pkg_name ='com.tencent.mm' and log.talk_type =1 GROUP BY log.content_type " xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <row>
+	<field name="content_type">1</field>
+	<field name="num">28</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-23</field>
+  </row>
+
+  <row>
+	<field name="content_type">2</field>
+	<field name="num">7</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-23</field>
+  </row>
+
+  <row>
+	<field name="content_type">5</field>
+	<field name="num">1</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-23</field>
+  </row>
+
+  <row>
+	<field name="content_type">6</field>
+	<field name="num">1</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-23</field>
+  </row>
+</resultset>

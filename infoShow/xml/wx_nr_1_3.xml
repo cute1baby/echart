@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+
+<resultset statement="select log.group_id,log.group_name,log.content_type, count(log.content_type) AS num , CURDATE() as endDate,DATE_ADD(CURDATE(),INTERVAL -(DAYOFMONTH(CURDATE())-1) day)  as startData FROM behavior_chat_log log LEFT JOIN behavior_chat_audit audit ON log.chat_audit_id = audit.chat_audit_id INNER JOIN ( SELECT log.group_id, count(log.group_id) AS num FROM behavior_chat_log log LEFT JOIN behavior_chat_audit audit ON log.chat_audit_id = audit.chat_audit_id WHERE audit.app_pkg_name ='com.tencent.mm' AND log.talk_type = 1 AND log.chat_time &gt;= DATE_ADD(CURDATE(),INTERVAL -(DAYOFMONTH(CURDATE())-1) day) GROUP BY log.group_id ORDER BY num LIMIT 50 ) AS tmp ON log.group_id = tmp.group_id WHERE audit.app_pkg_name ='com.tencent.mm' AND log.talk_type = 1 AND log.chat_time &gt;= DATE_ADD(CURDATE(),INTERVAL -(DAYOFMONTH(CURDATE())-1) day) GROUP BY log.group_id, log.content_type ORDER BY tmp.num DESC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <row>
+	<field name="group_id">7172919217@chatroom</field>
+	<field name="group_name">韩婷婷、大伯声林、婶婶、韩先盛装饰：瓷砖销售，厨卫、舅舅、爸爸、韩娟、妈妈、爱不完，</field>
+	<field name="content_type">1</field>
+	<field name="num">66</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">7172919217@chatroom</field>
+	<field name="group_name">爸爸、韩娟、韩婷婷、爱不完，、妈妈、舅舅、韩先盛装饰：瓷砖销售，厨卫、大伯声林、婶婶</field>
+	<field name="content_type">3</field>
+	<field name="num">23</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">7172919217@chatroom</field>
+	<field name="group_name">家</field>
+	<field name="content_type">2</field>
+	<field name="num">16</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">7172919217@chatroom</field>
+	<field name="group_name">家</field>
+	<field name="content_type">6</field>
+	<field name="num">3</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">7172919217@chatroom</field>
+	<field name="group_name">家</field>
+	<field name="content_type">5</field>
+	<field name="num">2</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">8071661982@chatroom</field>
+	<field name="group_name">高丽山下</field>
+	<field name="content_type">2</field>
+	<field name="num">5</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">8071661982@chatroom</field>
+	<field name="group_name">高丽山下</field>
+	<field name="content_type">1</field>
+	<field name="num">34</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">8071661982@chatroom</field>
+	<field name="group_name">高丽山下</field>
+	<field name="content_type">3</field>
+	<field name="num">4</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">6428779509@chatroom</field>
+	<field name="group_name">最帅的都在这</field>
+	<field name="content_type">6</field>
+	<field name="num">4</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">6428779509@chatroom</field>
+	<field name="group_name">最帅的都在这</field>
+	<field name="content_type">1</field>
+	<field name="num">4</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">6428779509@chatroom</field>
+	<field name="group_name">最帅的都在这</field>
+	<field name="content_type">3</field>
+	<field name="num">16</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">6755824912@chatroom</field>
+	<field name="group_name">高一尖子班</field>
+	<field name="content_type">1</field>
+	<field name="num">4</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="group_id">6755824912@chatroom</field>
+	<field name="group_name">高一尖子班</field>
+	<field name="content_type">5</field>
+	<field name="num">1</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+</resultset>

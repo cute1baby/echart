@@ -1,0 +1,203 @@
+<?xml version="1.0"?> 
+<resultset> 
+     <row>
+         <field name="keyword">http</field>
+         <field name="counter">17</field>
+     </row>
+     <row>
+         <field name="keyword">url</field>
+         <field name="counter">16</field>
+     </row>
+     <row>
+         <field name="keyword">mmbiz</field>
+         <field name="counter">16</field>
+     </row>
+     <row>
+         <field name="keyword">msg</field>
+         <field name="counter">16</field>
+     </row>
+     <row>
+         <field name="keyword">+.</field>
+         <field name="counter">16</field>
+     </row>
+     <row>
+         <field name="keyword">category</field>
+         <field name="counter">16</field>
+     </row>
+     <row>
+         <field name="keyword">mmreader</field>
+         <field name="counter">16</field>
+     </row>
+     <row>
+         <field name="keyword">item</field>
+         <field name="counter">16</field>
+     </row>
+     <row>
+         <field name="keyword">appmsg</field>
+         <field name="counter">16</field>
+     </row>
+     <row>
+         <field name="keyword">source</field>
+         <field name="counter">16</field>
+     </row>
+     <row>
+         <field name="keyword">sources</field>
+         <field name="counter">16</field>
+     </row>
+     <row>
+         <field name="keyword">item1</field>
+         <field name="counter">11</field>
+     </row>
+     <row>
+         <field name="keyword">play</field>
+         <field name="counter">10</field>
+     </row>
+     <row>
+         <field name="keyword">item2</field>
+         <field name="counter">10</field>
+     </row>
+     <row>
+         <field name="keyword">item3</field>
+         <field name="counter">10</field>
+     </row>
+     <row>
+         <field name="keyword">00</field>
+         <field name="counter">10</field>
+     </row>
+     <row>
+         <field name="keyword">item4</field>
+         <field name="counter">10</field>
+     </row>
+     <row>
+         <field name="keyword">jpeg</field>
+         <field name="counter">10</field>
+     </row>
+     <row>
+         <field name="keyword">item5</field>
+         <field name="counter">8</field>
+     </row>
+     <row>
+         <field name="keyword">topnew</field>
+         <field name="counter">6</field>
+     </row>
+     <row>
+         <field name="keyword">qpic</field>
+         <field name="counter">6</field>
+     </row>
+     <row>
+         <field name="keyword">appinfo</field>
+         <field name="counter">6</field>
+     </row>
+     <row>
+         <field name="keyword">item7</field>
+         <field name="counter">6</field>
+     </row>
+     <row>
+         <field name="keyword">appattach</field>
+         <field name="counter">6</field>
+     </row>
+     <row>
+         <field name="keyword">item6</field>
+         <field name="counter">6</field>
+     </row>
+     <row>
+         <field name="keyword">赣县</field>
+         <field name="counter">5</field>
+     </row>
+     <row>
+         <field name="keyword">cn</field>
+         <field name="counter">5</field>
+     </row>
+     <row>
+         <field name="keyword">publisher</field>
+         <field name="counter">5</field>
+     </row>
+     <row>
+         <field name="keyword">wxtype</field>
+         <field name="counter">4</field>
+     </row>
+     <row>
+         <field name="keyword">640</field>
+         <field name="counter">4</field>
+     </row>
+     <row>
+         <field name="keyword">content</field>
+         <field name="counter">4</field>
+     </row>
+     <row>
+         <field name="keyword">现在</field>
+         <field name="counter">4</field>
+     </row>
+     <row>
+         <field name="keyword">过年</field>
+         <field name="counter">3</field>
+     </row>
+     <row>
+         <field name="keyword">video</field>
+         <field name="counter">3</field>
+     </row>
+     <row>
+         <field name="keyword">时候</field>
+         <field name="counter">3</field>
+     </row>
+     <row>
+         <field name="keyword">voip</field>
+         <field name="counter">3</field>
+     </row>
+     <row>
+         <field name="keyword">wxfrom</field>
+         <field name="counter">3</field>
+     </row>
+     <row>
+         <field name="keyword">清明</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">当兵</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">当不了</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">好像</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">可以</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">回来</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">知道</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">什么</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">那天</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">回家</field>
+         <field name="counter">1</field>
+     </row>
+     <row>
+         <field name="keyword">通信团</field>
+         <field name="counter">1</field>
+     </row>
+     <row>
+         <field name="keyword">朋友</field>
+         <field name="counter">1</field>
+     </row>
+     <row>
+         <field name="keyword">广东</field>
+         <field name="counter">1</field>
+     </row>
+</resultset>

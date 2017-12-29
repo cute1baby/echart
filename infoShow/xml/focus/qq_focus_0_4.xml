@@ -1,0 +1,203 @@
+<?xml version="1.0"?> 
+<resultset> 
+     <row>
+         <field name="keyword">u0000</field>
+         <field name="counter">598</field>
+     </row>
+     <row>
+         <field name="keyword">u0001</field>
+         <field name="counter">548</field>
+     </row>
+     <row>
+         <field name="keyword">u0008</field>
+         <field name="counter">377</field>
+     </row>
+     <row>
+         <field name="keyword">u0004</field>
+         <field name="counter">319</field>
+     </row>
+     <row>
+         <field name="keyword">u0002</field>
+         <field name="counter">314</field>
+     </row>
+     <row>
+         <field name="keyword">u0009</field>
+         <field name="counter">216</field>
+     </row>
+     <row>
+         <field name="keyword">u0018</field>
+         <field name="counter">206</field>
+     </row>
+     <row>
+         <field name="keyword">u0003web</field>
+         <field name="counter">206</field>
+     </row>
+     <row>
+         <field name="keyword">u0010</field>
+         <field name="counter">204</field>
+     </row>
+     <row>
+         <field name="keyword">qq</field>
+         <field name="counter">194</field>
+     </row>
+     <row>
+         <field name="keyword">u0003</field>
+         <field name="counter">193</field>
+     </row>
+     <row>
+         <field name="keyword">u0005</field>
+         <field name="counter">191</field>
+     </row>
+     <row>
+         <field name="keyword">id</field>
+         <field name="counter">190</field>
+     </row>
+     <row>
+         <field name="keyword">u000e</field>
+         <field name="counter">185</field>
+     </row>
+     <row>
+         <field name="keyword">null</field>
+         <field name="counter">183</field>
+     </row>
+     <row>
+         <field name="keyword">u0012</field>
+         <field name="counter">177</field>
+     </row>
+     <row>
+         <field name="keyword">u0006</field>
+         <field name="counter">165</field>
+     </row>
+     <row>
+         <field name="keyword">u0004item</field>
+         <field name="counter">164</field>
+     </row>
+     <row>
+         <field name="keyword">u000c</field>
+         <field name="counter">152</field>
+     </row>
+     <row>
+         <field name="keyword">u0015</field>
+         <field name="counter">151</field>
+     </row>
+     <row>
+         <field name="keyword">RemarkOrNick</field>
+         <field name="counter">150</field>
+     </row>
+     <row>
+         <field name="keyword">com</field>
+         <field name="counter">146</field>
+     </row>
+     <row>
+         <field name="keyword">u0003128</field>
+         <field name="counter">132</field>
+     </row>
+     <row>
+         <field name="keyword">同意</field>
+         <field name="counter">131</field>
+     </row>
+     <row>
+         <field name="keyword">&_</field>
+         <field name="counter">127</field>
+     </row>
+     <row>
+         <field name="keyword">申请</field>
+         <field name="counter">116</field>
+     </row>
+     <row>
+         <field name="keyword">mobileqq</field>
+         <field name="counter">115</field>
+     </row>
+     <row>
+         <field name="keyword">电话</field>
+         <field name="counter">111</field>
+     </row>
+     <row>
+         <field name="keyword">strategyIds</field>
+         <field name="counter">109</field>
+     </row>
+     <row>
+         <field name="keyword">DX</field>
+         <field name="counter">109</field>
+     </row>
+     <row>
+         <field name="keyword">group</field>
+         <field name="counter">107</field>
+     </row>
+     <row>
+         <field name="keyword">reportEventFolderStatusValue</field>
+         <field name="counter">106</field>
+     </row>
+     <row>
+         <field name="keyword">视频</field>
+         <field name="counter">104</field>
+     </row>
+     <row>
+         <field name="keyword">u0016z</field>
+         <field name="counter">103</field>
+     </row>
+     <row>
+         <field name="keyword">gtimg</field>
+         <field name="counter">101</field>
+     </row>
+     <row>
+         <field name="keyword">FeedsId</field>
+         <field name="counter">99</field>
+     </row>
+     <row>
+         <field name="keyword">inews</field>
+         <field name="counter">99</field>
+     </row>
+     <row>
+         <field name="keyword">newsapp</field>
+         <field name="counter">94</field>
+     </row>
+     <row>
+         <field name="keyword">rs</field>
+         <field name="counter">91</field>
+     </row>
+     <row>
+         <field name="keyword">u00071319000</field>
+         <field name="counter">88</field>
+     </row>
+     <row>
+         <field name="keyword">rp</field>
+         <field name="counter">88</field>
+     </row>
+     <row>
+         <field name="keyword">idle</field>
+         <field name="counter">84</field>
+     </row>
+     <row>
+         <field name="keyword">jpg</field>
+         <field name="counter">81</field>
+     </row>
+     <row>
+         <field name="keyword">www</field>
+         <field name="counter">80</field>
+     </row>
+     <row>
+         <field name="keyword">allimg</field>
+         <field name="counter">79</field>
+     </row>
+     <row>
+         <field name="keyword">view</field>
+         <field name="counter">78</field>
+     </row>
+     <row>
+         <field name="keyword">cur</field>
+         <field name="counter">78</field>
+     </row>
+     <row>
+         <field name="keyword">uin</field>
+         <field name="counter">77</field>
+     </row>
+     <row>
+         <field name="keyword">130929</field>
+         <field name="counter">76</field>
+     </row>
+     <row>
+         <field name="keyword">29</field>
+         <field name="counter">74</field>
+     </row>
+</resultset>

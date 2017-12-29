@@ -1,0 +1,12 @@
+{
+ "msg":"Success",
+ "code":0,
+ "data":[
+  {"name":"部队","value":4} ,
+   {"name":"实力","value":3} ,
+   {"name":"班长","value":3} ,
+   {"name":"首长","value":1} ,
+   {"name":"营长","value":1} ,
+   {"name":"排长","value":1}
+	]
+ }

@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+
+<resultset statement="select log.content_type, log.group_name, count(log.group_id) AS num, DATE_ADD( DATE_ADD(CURDATE(), INTERVAL - 2 MONTH), INTERVAL - (DAYOFMONTH(CURDATE()) - 1) DAY ) AS startData, CURDATE() AS endDate FROM behavior_chat_log log LEFT JOIN behavior_chat_audit audit ON log.chat_audit_id = audit.chat_audit_id WHERE audit.app_pkg_name ='com.tencent.mm' AND log.content_type = 3 AND log.talk_type = 1 AND log.chat_time &gt; DATE_ADD( DATE_ADD(CURDATE(), INTERVAL - 2 MONTH), INTERVAL - (DAYOFMONTH(CURDATE()) - 1) DAY ) GROUP BY log.group_id ORDER BY num DESC LIMIT 20" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <row>
+	<field name="content_type">3</field>
+	<field name="group_name">最帅的都在这</field>
+	<field name="num">56</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">3</field>
+	<field name="group_name">新兵七班</field>
+	<field name="num">32</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">3</field>
+	<field name="group_name">爸爸、韩娟、韩婷婷、爱不完，、妈妈、舅舅、韩先盛装饰：瓷砖销售，厨卫、大伯声林、婶婶</field>
+	<field name="num">23</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">3</field>
+	<field name="group_name">高丽山下</field>
+	<field name="num">6</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">3</field>
+	<field name="group_name">杨家埠第一生产队</field>
+	<field name="num">1</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+</resultset>

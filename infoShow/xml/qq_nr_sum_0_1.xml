@@ -1,0 +1,3 @@
+<?xml version="1.0"?>
+
+<resultset statement="select log.content_type,log.chat_status,COUNT(log.content_type)as num , CURDATE() as endDate,CURDATE()  as startData  FROM behavior_chat_log log LEFT JOIN behavior_chat_audit audit ON log.chat_audit_id = audit.chat_audit_id where log.chat_time &gt;=CURDATE() and audit.app_pkg_name like 'com.tencent.%qq%' and log.talk_type =0 GROUP BY log.content_type,log.chat_status " xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"></resultset>

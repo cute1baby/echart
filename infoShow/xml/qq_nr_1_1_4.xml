@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+
+<resultset statement="select log.content_type, log.group_name, count(log.group_id) AS num, COUNT(tmp.behavior_chat_log_id) urlNum,DATE_ADD( DATE_ADD(CURDATE(), INTERVAL - 2 MONTH), INTERVAL - (DAYOFMONTH(CURDATE()) - 1) DAY ) AS startData, CURDATE() AS endDate FROM behavior_chat_log log LEFT JOIN behavior_chat_audit audit ON log.chat_audit_id = audit.chat_audit_id left join ( SELECT behavior_chat_log_id FROM behavior_chat_log log LEFT JOIN behavior_chat_audit audit ON log.chat_audit_id = audit.chat_audit_id WHERE audit.app_pkg_name LIKE 'com.tencent.%qq%' AND log.content_type = 1 AND log.talk_type = 1 AND log.chat_time &gt;= DATE_ADD( DATE_ADD(CURDATE(), INTERVAL - 2 MONTH), INTERVAL - (DAYOFMONTH(CURDATE()) - 1) DAY ) AND ( CAST(log.chat_content AS CHAR) LIKE '%http://%' OR CAST(log.chat_content AS CHAR) LIKE '%https://%' ) ) AS tmp on log.behavior_chat_log_id =tmp.behavior_chat_log_id  WHERE audit.app_pkg_name LIKE 'com.tencent.%qq%' AND log.content_type = 1 AND log.talk_type = 1 AND log.chat_time &gt; DATE_ADD( DATE_ADD(CURDATE(), INTERVAL - 2 MONTH), INTERVAL - (DAYOFMONTH(CURDATE()) - 1) DAY ) GROUP BY log.group_id ORDER BY num DESC LIMIT 20" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <row>
+	<field name="content_type">1</field>
+	<field name="group_name">传说🍂审核群</field>
+	<field name="num">1616</field>
+	<field name="urlNum">15</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">1</field>
+	<field name="group_name">插花娱乐溜冰场</field>
+	<field name="num">1254</field>
+	<field name="urlNum">5</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">1</field>
+	<field name="group_name">Top众神領域</field>
+	<field name="num">285</field>
+	<field name="urlNum">12</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">1</field>
+	<field name="group_name">Top众神領域</field>
+	<field name="num">218</field>
+	<field name="urlNum">6</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">1</field>
+	<field name="group_name">142天天在一起</field>
+	<field name="num">181</field>
+	<field name="urlNum">1</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">1</field>
+	<field name="group_name">王者荣耀-罒至尊灬魔</field>
+	<field name="num">171</field>
+	<field name="urlNum">17</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">1</field>
+	<field name="group_name">久伴、久久久</field>
+	<field name="num">157</field>
+	<field name="urlNum">44</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">1</field>
+	<field name="group_name">时光、葬了爱情</field>
+	<field name="num">107</field>
+	<field name="urlNum">50</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">1</field>
+	<field name="group_name">小仙肉😫</field>
+	<field name="num">103</field>
+	<field name="urlNum">23</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">1</field>
+	<field name="group_name">家族企业</field>
+	<field name="num">81</field>
+	<field name="urlNum">79</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">1</field>
+	<field name="group_name">张雨晴、陈晓梅、我、杨心雨</field>
+	<field name="num">80</field>
+	<field name="urlNum">0</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">1</field>
+	<field name="group_name">可爱基佬之家</field>
+	<field name="num">51</field>
+	<field name="urlNum">0</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">1</field>
+	<field name="group_name">😄😄</field>
+	<field name="num">51</field>
+	<field name="urlNum">0</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">1</field>
+	<field name="group_name">互赞•﹏•</field>
+	<field name="num">17</field>
+	<field name="urlNum">3</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">1</field>
+	<field name="group_name">柒度免费技术分享群</field>
+	<field name="num">13</field>
+	<field name="urlNum">2</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">1</field>
+	<field name="group_name">星座☆情缘</field>
+	<field name="num">11</field>
+	<field name="urlNum">9</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">1</field>
+	<field name="group_name">夜冰魅</field>
+	<field name="num">10</field>
+	<field name="urlNum">0</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">1</field>
+	<field name="group_name">^O^*星座:密语♥～</field>
+	<field name="num">9</field>
+	<field name="urlNum">2</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">1</field>
+	<field name="group_name">顶级╱／乱插</field>
+	<field name="num">9</field>
+	<field name="urlNum">4</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">1</field>
+	<field name="group_name">乄鳄鱼</field>
+	<field name="num">9</field>
+	<field name="urlNum">0</field>
+	<field name="startData">2017-10-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+</resultset>

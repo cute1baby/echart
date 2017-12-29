@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+
+<resultset statement="select log.content_type,log.chat_status,COUNT(log.content_type)as num , CURDATE() as endDate,DATE_ADD(CURDATE(),INTERVAL -(DAYOFMONTH(CURDATE())-1) day)  as startData FROM behavior_chat_log log LEFT JOIN behavior_chat_audit audit ON log.chat_audit_id = audit.chat_audit_id where log.chat_time &gt;= DATE_ADD(CURDATE(),INTERVAL -(DAYOFMONTH(CURDATE())-1) day) and audit.app_pkg_name ='com.tencent.mm' and log.talk_type =0 GROUP BY log.content_type,log.chat_status " xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <row>
+	<field name="content_type">1</field>
+	<field name="chat_status">0</field>
+	<field name="num">351</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="content_type">1</field>
+	<field name="chat_status">1</field>
+	<field name="num">268</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="content_type">1</field>
+	<field name="chat_status">3</field>
+	<field name="num">13</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="content_type">2</field>
+	<field name="chat_status">0</field>
+	<field name="num">55</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="content_type">2</field>
+	<field name="chat_status">1</field>
+	<field name="num">1</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="content_type">3</field>
+	<field name="chat_status">0</field>
+	<field name="num">44</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="content_type">3</field>
+	<field name="chat_status">1</field>
+	<field name="num">43</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="content_type">4</field>
+	<field name="chat_status">0</field>
+	<field name="num">2</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="content_type">5</field>
+	<field name="chat_status">1</field>
+	<field name="num">2</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+
+  <row>
+	<field name="content_type">6</field>
+	<field name="chat_status">0</field>
+	<field name="num">3</field>
+	<field name="endDate">2017-12-29</field>
+	<field name="startData">2017-12-01</field>
+  </row>
+</resultset>

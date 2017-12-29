@@ -1,0 +1,2760 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>数据统计中心</title>
+    <link rel="stylesheet" type="text/css" href="css/iconfont.css">
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
+    <script src="js/plugins/jquery.min.js"></script>
+    <script src="js/plugins/echarts.min.js"></script>
+    <script type="text/javascript" src="js/plugins/bootstrap.min.js"></script>
+    <link href="css/jquery.ui.datepicker.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/plugins/jquery.ui.core.js"></script>
+    <script type="text/javascript" src="js/plugins/jquery.ui.datepicker.js"></script>
+    <script type="text/javascript" src="js/plugins/crypto-js.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+//        (function(){
+//            if(!sessionStorage.getItem('loginName')){
+//                alert('请登录');
+//                window.location.href = 'login.html';
+//               return;
+//            }
+//        })()
+    </script>
+
+
+</head>
+<body>
+<div id="main">
+
+</div>
+
+<!--筛选条件窗口-->
+<div id="modal_default" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">关闭</button>
+                <h5 class="modal-title" style="width: 200px">设置筛选条件</h5>
+            </div>
+            <p class="line"></p>
+            <div class="modal-body">
+                <h6 class="text-semibold">组织/个人</h6>
+                <p class="selectOrg" onclick="selectUser();" style="cursor:pointer">
+                    <span class="selectOrg1"></span>
+                    <span class="selectOrg2"></span>
+                    <span class="selectOrg3"></span>
+                    <span class="selectOrg4"></span>
+                    <span class="orgUserSelectValue f-l">张三丰</span>
+                    <input type="hidden" value="" id="selectedId" />
+                    <input type="hidden" value="" id="selectedType" />
+                    <span id="orgUserSelectIcon" class="f-r iconfont icon-xiangyoutubiao"></span>
+                    <span class="f-r iconfont icon-xialatubiao" style="display: none"></span>
+                    <span class="arrows-top" style="display: none"></span>
+                    <span id="orgUserSelect" style="display: none"></span>
+                </p>
+
+
+
+                <h6 class="text-semibold">时间</h6>
+
+
+                <div class="select-time-plugs f-l" >
+                    <span class="select-time-plugs1"></span>
+                    <span class="select-time-plugs2"></span>
+                    <span class="select-time-plugs3"></span>
+                    <span class="select-time-plugs4"></span>
+                    <input type="text" class="form-control daterange-single f-l" value="" id="from">
+                    <i class="iconfont icon-xxx f-l"></i>
+                    <span class="iconfont icon-rili f-l"></span></input>
+
+                    <span class="arrows-top" style="display: none"></span>
+
+                </div>
+                <div class="select-time-line"><span class="select-time-line-span"></span></div>
+                <div class="select-time-plugs f-r">
+                    <span class="select-time-plugs1"></span>
+                    <span class="select-time-plugs2"></span>
+                    <span class="select-time-plugs3"></span>
+                    <span class="select-time-plugs4"></span>
+                    <input type="text" class="form-control daterange-single f-l" value="" id="to">
+                    <span class="iconfont icon-rili f-l"></span>
+                    <span class="arrows-top" style="display:none;"></span>
+
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-dismiss="modal" style="margin-right: 20px">取消</button>
+                <button type="button" onclick="submitForm();" data-dismiss="modal" class="btn btn-primary" style="margin-left: 20px">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--账户窗口-->
+<div id="modal_account" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">关闭</button>
+                <h5 class="modal-title" style="width: 200px">账号信息</h5>
+            </div>
+            <p class="line"></p>
+            <div class="modal-body">
+                <div class="accountForm">
+                    <span class="select-time-plugs1"></span>
+                    <span class="select-time-plugs2"></span>
+                    <span class="select-time-plugs3"></span>
+                    <span class="select-time-plugs4"></span>
+                    <ul>
+                        <li class="accountName">
+                            姓名：王红
+                        </li>
+                        <li class="accountOrg">
+                            组织机构：全军
+                        </li>
+                        <li class="accountDetail">
+                            账户：1723322222
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" onclick="exitForm();" data-dismiss="modal" class="btn btn-primary" style="width: 100%">退出登录</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+<script>
+    var treeData = '';//组织/个人树的数据
+    var rootId = '';//组织的根节点
+    var rootType = '';
+    var rootText = '';//组织的根节点名称
+    var owner = '';//
+    var ownerType = 'C';
+    var ownerText = '';
+    var beginTime = nowDateTime('month')[2];//开始时间
+    var endTime = nowDateTime('month')[1]; //结束时间
+    var k = 0;
+    //中间区域的开始结束时间需要每5秒更新一次，所以，时间需要重新计算
+    var clockbeginTime = nowDateTime('month')[2]
+    var clockendTime = nowDateTime('month')[2]
+    var hours = ''
+    function commonMain(){
+        //可视窗口的宽高
+        var dw = $(window).width();
+        var dh = $(window).height();
+
+        var mainH = dh-70;
+
+        var circleX = dw*0.575*0.5;//圆的中心坐标
+        var circleY = dh*0.5837*0.5;
+        var r = circleY-45;//圆的半径，表盘
+
+        //定义矩形的宽高
+        var rectWidth = dw*0.076;
+        var rectHeight = dh*0.0736;
+
+        //最外层的样式
+        $('#main').css({
+            paddingTop:dh*0.02,
+            paddingBottom:dh*0.02,
+            paddingLeft:dw*0.005,
+            paddingRight:dw*0.005,
+            width:dw-dw*0.01,
+            height:dh-dh*0.04
+        });
+
+        //插入基本框架
+        $('#main').html('<div class="left-m f-l"></div>' +
+                        '<div class="middle-m f-l"></div>' +
+                        '<div class="right-m f-r"></div>' +
+                        '<div class="footer-left f-l"></div>' +
+                        '<div class="footer-right f-r"></div>');
+
+        return {
+            dw:dw,
+            dh:dh,
+            circleX:circleX,
+            circleY:circleY,
+            r:r,
+            rectWidth:rectWidth,
+            rectHeight:rectHeight,
+            mainH:mainH
+        }
+
+    }
+
+    //设置里的初始数据
+    function initOrgUser(){
+        //请求必要的数据
+        $.ajax({
+            url:base_url+'emm/cfg/rest/getEmmOrgUserTree',
+            //            headers:{'Content-Type':'text/plain;charset=UTF-8'},
+//            beforeSend:function(request){
+//                request.setRequestHeader("Authorization",sessionStorage.getItem('token'))
+//            },
+            data:{
+                parentId:sessionStorage.getItem('deptId')
+            },
+            success:function(result){
+                if(result){
+                    var res = JSON.parse(result);
+                    var data = res.data;
+                    treeData = data;//组织/个人的树数据
+                    rootId = treeData[0].id;//根节点id
+                    rootType = treeData[0].type;//根节点id
+                    rootText = treeData[0].title;//根节点的文字
+                    filterContraint();
+                }
+            }
+        })
+    }
+
+    //初始状态
+    var base = commonMain();
+    initOrgUser();
+
+/********************初始化数据阶段结束*************************/
+
+
+    //表盘动画加载
+    window.anTimes = setInterval(function(){
+        runClock();
+    },50);
+
+    //每5秒绘制一次表盘的数据
+//    window.dataTimes = setInterval(function(){
+//        clockbeginTime = hours[k%hours.length]
+//        clockendTime = hours[(k+1) % hours.length]
+//        k++;
+//        //设备数目
+//        requestData('month',clockbeginTime,clockendTime);
+//    },1000);
+
+    //敏感词拦截
+    sensitiveWord('month');
+
+    //拦截网址
+    holdUrl('month');
+
+    //中间区域
+    middleM();
+
+    //中间主要区域,绘制表盘
+    drawClock('month');
+
+    //安装应用
+    installApp('month');
+
+    //流量监控
+    flowMonitoring('month');
+
+    //违规行为
+    illegalBehavior('month');
+
+    //通话纪录
+    callRecords('month');
+
+
+
+    //不改变大小的
+    //筛选条件的初始数据
+//    filterContraint();
+
+
+
+    //设置
+    settingBtn();
+
+    //设置里面的时间选择
+    timeSelected(this)
+
+    //选择日月年
+    selectTimeStyle();
+
+    //改变窗口
+    function resizehandler(){
+        base = commonMain();
+
+
+        //敏感词拦截
+        sensitiveWord('month');
+
+        //拦截网址
+        holdUrl('month');
+
+        //中间区域
+        middleM();
+
+        //中间主要区域,绘制表盘
+        drawClock('month');
+
+        //表盘动画加载
+        clearInterval(window.anTimes);
+        window.anTimes = setInterval(function(){
+            runClock();
+        },50);
+
+        //每5秒绘制一次表盘的数据
+        clearInterval(window.dataTimes);
+//        var d = 0;
+//        window.dataTimes = setInterval(function(){
+////            clockbeginTime = hours[k%hours.length]
+////            clockendTime = hours[(k%hours.length)+1]
+////            if(d==12) d=0
+////            d++;
+//            //设备数目
+//            requestData('month');
+//        },5000);
+
+        //安装应用
+        installApp('month');
+
+        //流量监控
+        flowMonitoring('month');
+
+        //违规行为
+        illegalBehavior('month');
+
+        //通话纪录
+        callRecords('month');
+
+        //选择日月年
+        selectTimeStyle();
+
+        //设置
+        settingBtn();
+    }
+
+    function throttle(method){
+        clearTimeout(method.tId);
+        method.tId=setTimeout(function(){
+            method();
+        },500);
+    }
+
+    window.onresize=function(){
+        throttle(resizehandler);
+    };
+
+
+
+    //拦截敏感词
+    function sensitiveWord(unit){
+        $('.left-m').html('<div class="left-main1">'
+                +'  <span class="left-main1-1"></span>'
+                +'  <span class="left-main1-2"></span>'
+                +'  <span class="left-main1-3"></span>'
+                +'  <span class="left-main1-4"></span>'
+                +'  <div id="sensitive"></div>'
+                +'</div>')
+        //设置宽高
+        $('.left-main1').css({
+            width:base.dw*0.2,
+            height:base.dh*0.37
+        })
+        var sensitive = document.getElementById('sensitive');
+
+        sensitive.style.width = $('.left-main1').width()+'px';
+        sensitive.style.height = $('.left-main1').height()+'px';
+        var myChartSensitive= echarts.init(sensitive);
+        myChartSensitive.showLoading({
+            text: '数据加载中',
+            color: 'rgba(75,189,203,1)',
+            textColor: 'rgba(75,189,203,1)',
+            maskColor: 'rgba(18,39,76,0.8)',
+            zlevel: 0
+        });
+        $.ajax({
+            url:base_url+'emm/dv/rest/sensitiveWordStatics',
+            data:{
+                beginTime:beginTime,
+                endTime:endTime,
+                owner:owner,
+                type:ownerType,
+                unit:unit
+            },
+            success:function(result){
+                myChartSensitive.hideLoading();
+                if(result){
+                    var res = JSON.parse(result);
+                    var data = res.data;
+                    data.sort(function(a, b) {
+                        return a.value - b.value;
+                    })
+                    //名称
+                    var categoryData = [];
+                    //柱形数据
+                    var barData = [];
+                    //渐变色
+                    var colorList = [];
+                    for (var i = 0; i < data.length; i++) {
+                        categoryData.push(data[i].name);
+                        barData.push(data[i].value);
+                        var j = i+1;
+                        var opacity = j/data.length;
+                        colorList.push('rgba(211,178,45,'+opacity+')');
+                    }
+                    //设置
+                    option = {
+                        animation: true,
+                        animationDuration: 1000,
+                        animationEasing: 'cubicInOut',
+                        animationDurationUpdate: 1000,
+                        animationEasingUpdate: 'cubicInOut',
+                        tooltip: {
+                            trigger: 'item',
+                            position: 'top',
+                            padding: [5, 10],
+                            formatter: function(params) {
+                                return '<span style="display:inline-block;position:relative;margin-right:10px;border-color:'+ params.color +';border-radius:10px;width:9px;height:9px;background-color:' + params.color + '"></span>'+categoryData[params.dataIndex]+'：'+params.value;
+                            },
+                            textStyle:{
+                                width:300,
+                                lineHeight:18
+                            }
+                        },
+                        title: {
+                            id: 'statistic',
+                            text: '拦截敏感词   TOP10',
+                            left: 10,
+                            top: 10,
+                            textStyle: {
+                                color: 'rgba(75,189,203,1)',
+                                fontSize: base.dw*0.0105,
+                                fontWeight:'normal'
+                            }
+                        },
+                        //整个图距外框的距离
+                        grid: {
+                            left: 70,
+                            top: base.dh*0.09,
+                            bottom: 20
+                        },
+                        xAxis: {
+                            type: 'value',
+
+//                            scale: true,
+                            position: 'top',
+                            boundaryGap: true,
+                            splitLine: {
+                                show: false
+                            },
+                            axisLine: {
+                                show: false
+                            },
+                            axisTick: {
+                                show: false
+                            },
+                            axisLabel: {
+                                textStyle: {
+                                    color: 'rgb(62,172,205)'
+                                }
+                            }
+                        },
+                        yAxis: {
+                            type: 'category',
+                            nameGap: 16,
+                            axisLine: {
+                                show: false,
+                                lineStyle: {
+                                    color: 'rgba(62,172,205,1)'
+                                }
+                            },
+                            axisTick: {
+                                show: false,
+                                lineStyle: {
+                                    color: 'rgba(62,172,205,1)'
+                                }
+                            },
+                            axisLabel: {
+                                interval: 0,
+                                rotate:34,
+                                textStyle: {
+                                    color: 'rgba(62,172,205,1)',
+                                    fontSize: base.dw*0.005
+                                }
+                            },
+                            data: categoryData
+                        },
+                        series: [ //柱形
+                            {
+                                id: 'bar',
+                                zlevel: 1,
+                                type: 'bar',
+                                barGap: 20,
+                                barWidth: '30%',
+//                                barCategoryGap: base.dh*0.018,//柱间的距离
+                                symbol: 'none',
+                                itemStyle: {
+                                    normal: {
+                                        color: function(params) {
+                                            return colorList[params.dataIndex]
+                                        }
+                                    }
+                                },
+                                data: barData
+                            }]
+                    };
+                    myChartSensitive.clear();
+                    myChartSensitive.setOption(option);
+                }
+            },
+            error:function(errorMsg){
+                myChartSensitive.showLoading({
+                    text: '数据加载失败，请联系管理员',
+                    color: 'rgba(75,189,203,0)',
+                    textColor: 'rgba(75,189,203,1)',
+                    maskColor: 'rgba(18,39,76,0.8)',
+                    zlevel: 0
+                });
+                //myChartSensitive.hideLoading();
+            }
+        })
+    }
+
+    //拦截网址
+    function holdUrl(unit){
+        $('.left-m').append('<div class="left-main2">'
+                +'  <span class="left-main1-1"></span>'
+                +'  <span class="left-main1-2"></span>'
+                +'  <span class="left-main1-3"></span>'
+                +'  <span class="left-main1-4"></span>'
+                +'  <div id="hold-url"></div>'
+                +'</div>')
+
+        //设置宽高
+        $('.left-main2').css({
+            width:base.dw*0.2,
+            height:base.dh*0.25,
+            marginTop:base.dh*0.01
+        })
+        var holdUrl = document.getElementById('hold-url');
+        holdUrl.style.width = $('.left-main2').width()+'px';
+        holdUrl.style.height = $('.left-main2').height()+'px';
+        var myChartUrl= echarts.init(holdUrl);
+
+        myChartUrl.showLoading({
+            text: '数据加载中',
+            color: 'rgba(75,189,203,1)',
+            textColor: 'rgba(75,189,203,1)',
+            maskColor: 'rgba(18,39,76,0.8)',
+            zlevel: 0
+        });
+
+        $.ajax({
+            url:base_url+'emm/dv/rest/interceptUrlStatics',
+            data:{
+                beginTime:beginTime,
+                endTime:endTime,
+                owner:owner,
+                type:ownerType,
+                unit:unit
+            },
+            success:function(result){
+                myChartUrl.hideLoading();
+                if(result){
+                    var res = JSON.parse(result);
+                    var data = res.data;
+                    //渐变色
+                    var colorList = [];
+
+                    for (var i = 0; i < data.length; i++) {
+//                        data[i].selected = true;//为了饼图有间距，在数组的object加入selected:true
+                        var j = i+1;
+                        var opacity = j/data.length;
+                        colorList.push('rgba(211,178,45,'+opacity+')');
+                    }
+                    option = {
+                        title: {
+                            id: 'statistic',
+                            text: '拦截网址   TOP10',
+                            left: 10,
+                            top: 10,
+                            textStyle: {
+                                color: 'rgba(75,189,203,1)',
+                                fontSize: base.dw*0.0105,
+                                fontWeight:'normal'
+                            }
+                        },
+                        grid: {
+                            left: 50,
+                            top: 95,
+                            bottom: 30,
+                            right:50
+                        },
+                        tooltip : {
+                            trigger: 'item',
+                            position: 'top',
+                            padding: [5, 10],
+                            formatter: function(params) {
+                                return '<span style="display:inline-block;position:relative;margin-right:10px;border-color:'+ params.color +';border-radius:10px;width:9px;height:9px;background-color:' + params.color + '"></span>'+params.data.name+'：'+params.value;
+                            }
+
+                        },
+
+                        calculable : false,
+                        series :
+                                [{
+                                    name:'拦截网址',
+                                    type:'pie',
+                                    radius : ['40%', '55%'],//控制饼图的大小
+                                    center:['50%','60%'],//位置
+                                    // for funnel
+//                                    x: '60%',
+
+                                    funnelAlign: 'left',
+                                    //max: 1048,
+                                    itemStyle: {
+                                        normal: {
+                                            borderWidth: 3,
+                                            borderColor: 'rgba(14,21,46,1)',
+                                            labelLine : {
+                                                show : true
+                                            }
+                                        }
+                                    },
+                                    label:{
+                                        normal:{
+                                            fontSize: base.dw*0.005
+                                        }
+                                    },
+                                    labelLine:{
+                                        normal:{
+                                            length:15,
+                                            length2:6
+                                        }
+                                    },
+                                    color: ['#cb7a9a', '#cb533e', '#d97a13', '#e8c11a', '#89539d','#3c8ccc','#4db462','#34b9cd','#32479a','#51298a'],
+                                    data:data
+                                },
+                                    {
+                                        name:'拦截网址',
+                                        type:'pie',
+                                        radius : ['30%', '40%'],//控制饼图的大小
+                                        center:['50%','60%'],
+                                        // for funnel
+//                                        x: '60%',
+
+                                        funnelAlign: 'left',
+                                        //max: 1048,
+                                        itemStyle: {
+                                            normal: {
+                                                borderWidth: 3,
+                                                borderColor: 'rgba(14,21,46,1)',
+                                                opacity:0.2,
+                                                label : {
+                                                    show : false
+                                                },
+                                                labelLine : {
+                                                    show : false
+                                                }
+                                            }
+                                        },
+                                        color: ['#cb7a9a', '#cb533e', '#d97a13', '#e8c11a', '#89539d','#3c8ccc','#4db462','#34b9cd','#32479a','#51298a'],
+                                        data:data
+                                    },
+                                ]
+
+                    };
+                    myChartUrl.clear();
+                    myChartUrl.setOption(option);
+                }
+            },
+            error:function(errorMsg){
+                myChartUrl.showLoading({
+                    text: '数据加载失败，请联系管理员',
+                    color: 'rgba(75,189,203,0)',
+                    textColor: 'rgba(75,189,203,1)',
+                    maskColor: 'rgba(18,39,76,0.8)',
+                    zlevel: 0
+                });
+            }
+        })
+    }
+
+    //中间区域头部
+    function middleM(){
+        $('.middle-m').html('<header>'
+                +'<div class="logo">'
+                +'<div class="f-l"><img src="images/logo.png" /></div>'
+                +'<div class="logo-right f-l"><span>数据统计中心</span><font>DATA STATISTICS CENTER</font></div>'
+                +'</div>'
+                +'<div class="setting-btn">'
+                +'<ul class="setting-time f-l">'
+                +'<li class="active" cid="day" style="font-size:'+base.dw*0.009+'px;margin-right: '+base.dw*0.009+'px">昨日</li>'
+                +'<li cid="week" style="font-size:'+base.dw*0.009+'px;margin-right: '+base.dw*0.009+'px">近一周</li>'
+                +'<li cid="month" style="font-size:'+base.dw*0.009+'px;margin-right: '+base.dw*0.009+'px">近一月</li>'
+                +'</ul>'
+                +'<div class="f-l"><span class="iconfont icon-shezhi fa-lg" style="font-size:'+base.dw*0.01+'px;cursor:pointer" id="settingbtn"></span></div>'
+                +'<div class="settingSelect" style="display: none">'
+                +'<span class="arrows-top"></span>'
+                +'<ul>'
+                +'<li class="filtrateShowLi" >筛选</li>'
+                +'</ul>'
+                +'</div>'
+                +'</div>'
+                +'</header><div class="canvas-main"></div>')
+
+        $('header').css({
+            width:base.dw*0.58,
+            height:base.dh*0.05,
+            marginBottom:base.dh*0.01
+        })
+        $('header img').css({
+            width:base.dw*0.025,
+            height:base.dh*0.055
+        })
+        $('.logo').css({
+            width:base.dw*0.15
+        })
+        $('.logo-right').css({
+            marginLeft:base.dw*0.0078
+        })
+        $('.select-time').css({
+            right:base.dw*0.003,
+            top:base.dh*0.0138
+
+        })
+        $('.setting-btn').css({
+            right:base.dw*0.0195,
+            top:base.dh*0.0208
+        })
+    }
+
+    //计算前一个月到今天多少天
+    function computedDays(bDate,aDate){
+        var daysStr = Math.abs(Date.parse(bDate)-Date.parse(aDate));
+        var iDays = Math.floor(daysStr/(24*3600*1000));
+        return iDays;
+    }
+
+    //绘制表盘
+    function drawClock(until,iDays){
+        $('.canvas-main').html('<canvas id="clock" style="margin: 0;display: block;"></canvas>'
+                                +'<canvas id="clockData" style="margin: 0 auto;display: block;"></canvas>'
+                                +'<canvas id="animateClock" style="margin: 0 auto;display: block;"></canvas>'
+                                +'<canvas id="clockScale" style="margin: 0 auto;display: block;"></canvas>'
+                                +'<canvas id="clockText" style="margin: 0 auto;display: block;"></canvas>');
+
+        //表盘的画布，第一个画布
+        var clock = document.getElementById("clock");
+        var cxt = clock.getContext('2d');
+        clock.width = base.dw*0.575;
+        clock.height = base.dh*0.58;
+
+        //开始画
+        cxt.clearRect(0,0,base.circleX,base.circleY);
+
+        //最外面的渐变圆环
+        cxt.beginPath();
+        /* 设定渐变区域 */
+        var grad  = cxt.createRadialGradient(base.circleX,base.circleY,base.r*0.75,base.circleX,base.circleY,base.r*0.92);
+        /* 设定各个位置的颜色 */
+        grad.addColorStop(0,'rgba(41,97,172,.0)');
+        grad.addColorStop(0.5,'rgba(53,110,163,.65)');
+        grad.addColorStop(1,'rgba(24,127,195,.2)');
+
+
+        cxt.fillStyle = grad;
+        cxt.arc(base.circleX,base.circleY, base.r*0.92, 0, Math.PI*2);
+        cxt.fill();
+        //减去圆
+        cxt.beginPath();
+        cxt.fillStyle = 'rgba(255,255,255,.1)';
+        cxt.arc(base.circleX,base.circleY, base.r*0.82, 0, Math.PI*2);
+        cxt.fill();
+
+        //渐变圆环上的黑色圆环
+        cxt.strokeStyle = "rgba(0,0,0,.38)";
+        cxt.lineWidth = "10";
+        cxt.beginPath();
+        cxt.arc(base.circleX,base.circleY,base.r*0.86,0,2*Math.PI);
+        cxt.stroke();
+
+        //渐变圆环上的黑色圆环上的蓝色圆环
+        cxt.strokeStyle = "rgba(143,210,233,.8)";
+        cxt.lineWidth = "6.5";
+        cxt.beginPath();
+        cxt.arc(base.circleX,base.circleY,base.r*0.86,0,2*Math.PI);
+        cxt.stroke();
+
+        //内圆的渐变环形
+        cxt.beginPath();
+        /* 设定渐变区域 */
+        var grad  = cxt.createRadialGradient(base.circleX,base.circleY,base.r*0.7,base.circleX,base.circleY,base.r*0.7);
+        /* 设定各个位置的颜色 */
+        grad.addColorStop(0,'rgba(5,12,38,.0)');
+        grad.addColorStop(0.5,'rgba(15,72,121,.8)');
+        grad.addColorStop(1,'rgba(24,127,195,.0)');
+
+        cxt.fillStyle = grad;
+        cxt.arc(base.circleX,base.circleY, base.r*0.82, 0, Math.PI*2);
+        cxt.fill();
+
+        //圆中心的实心圆
+        cxt.beginPath();
+        cxt.fillStyle = 'rgba(15,27,58,.85)';
+        cxt.arc(base.circleX,base.circleY, base.r*0.79, 0, Math.PI*2);
+        cxt.fill();
+
+        //表盘中心的地图
+        //离心画布
+        var into = document.createElement("canvas");
+        var cxt2 = into.getContext('2d');
+
+        into.width = base.r*0.76*2;
+        into.height = base.r*0.99*2;
+
+        var image = new Image();
+        image.src = "images/eri.png";
+        image.onload=function(){
+            cxt2.drawImage(image,0,0,into.width,into.height);
+            var pattern = cxt.createPattern(into, 'repeat');
+            cxt.fillStyle = pattern;
+            cxt.beginPath();
+            // 添加圆弧
+            cxt.arc(base.circleX, base.circleY,base.r*0.76,0,Math.PI * 2,true);
+            cxt.closePath();
+            // 设置使用位图填充作为边框颜色
+            cxt.fill();
+        }
+
+        //文字离外圈的距离
+        for(var i=0; i<120;i++){//每一个小刻度
+            cxt.save();
+            cxt.lineWidth=1;
+            cxt.strokeStyle="#8fd2e9";//每一个小刻度的颜色
+            cxt.translate(base.circleX,base.circleY);//中心
+            cxt.rotate(i*3*Math.PI/180);
+            cxt.beginPath();
+            cxt.moveTo(0,-base.r);//每个小刻度的开始
+            cxt.lineTo(0,-base.r+12);//每个小刻度的结束，开始和结束相差，就是刻度宽度
+            if(until=='day' && iDays == undefined){
+                if(i%10==0){
+                    cxt.strokeStyle = "#b5a028";//每一个大刻度黄色
+                    cxt.fillStyle = '#a1d7e3'
+
+                }
+            }else if(until=='day' && iDays !== undefined){
+                if(iDays>=6){
+                    if(i==0 || i==17 || i== 34 || i==51 || i==69 || i==86 || i==103){
+                        cxt.strokeStyle = "#b5a028";//每一个大刻度黄色
+                        cxt.fillStyle = '#a1d7e3';
+                    }
+                }else{
+                    if(i%Math.floor(120/(iDays+1))==0){
+                        cxt.strokeStyle = "#b5a028";//每一个大刻度黄色
+                        cxt.fillStyle = '#a1d7e3'
+                    }
+                }
+//                if(iDays<=11 || iDays !==6){
+//                    if(i%Math.floor(120/(iDays+1))==0){
+//                        cxt.strokeStyle = "#b5a028";//每一个大刻度黄色
+//                        cxt.fillStyle = '#a1d7e3'
+//                    }
+//                }else{
+//                    if(i==0 || i==17 || i== 34 || i==51 || i==69 || i==86 || i==103){
+//                        cxt.strokeStyle = "#b5a028";//每一个大刻度黄色
+//                        cxt.fillStyle = '#a1d7e3';
+//                    }
+//                }
+            }else{
+
+                if(i==0 || i==17 || i== 34 || i==51 || i==69 || i==86 || i==103){
+                    cxt.strokeStyle = "#b5a028";//每一个大刻度黄色
+                    cxt.fillStyle = '#a1d7e3';
+                }
+            }
+            cxt.stroke();
+            cxt.closePath();
+            cxt.restore();
+        }
+
+        /*圆外面的矩形框数据*/
+        //刻度2对应的
+        var line1X = base.r*0.86*Math.sin(240*Math.PI/360);
+        var line1Y = base.r*0.86*Math.cos(240*Math.PI/360);
+        cxt.beginPath();
+        cxt.moveTo(line1X+base.circleX,base.circleY+line1Y);
+        cxt.lineTo(base.r*1.25*Math.sin(260*Math.PI/360)+base.circleX,base.r*1.25*Math.cos(260*Math.PI/360)+base.circleY);
+        cxt.lineTo(base.r*1.75*Math.sin(260*Math.PI/360)+base.circleX,base.r*1.25*Math.cos(260*Math.PI/360)+base.circleY);
+        cxt.lineWidth = 1;
+        cxt.strokeStyle = "#8fd2e9";
+        cxt.stroke();
+        cxt.closePath();
+
+        //刻度4对应的
+        var line2X = base.r*0.86*Math.sin(90*Math.PI/360);
+        var line2Y = base.r*0.86*Math.cos(90*Math.PI/360);
+        cxt.beginPath();
+        cxt.moveTo(line2X+base.circleX,line2Y+base.circleY);
+        cxt.lineTo(base.r*1.3*Math.sin(100*Math.PI/360)+base.circleX,base.r*0.93*Math.cos(100*Math.PI/360)+base.circleY);
+        cxt.lineTo(base.r*1.5*Math.sin(100*Math.PI/360)+base.circleX,base.r*1.1*Math.cos(100*Math.PI/360)+base.circleY);
+        cxt.lineWidth = 1;
+        cxt.strokeStyle = "#8fd2e9";
+        cxt.stroke();
+
+        //刻度8对应的
+        var line3X = base.r*0.86*Math.sin(-110*Math.PI/360);
+        var line3Y = base.r*0.86*Math.cos(-110*Math.PI/360);
+        cxt.beginPath();
+        cxt.moveTo(line3X+base.circleX,line3Y+base.circleY);
+        cxt.lineTo(base.r*1.2*Math.sin(-90*Math.PI/360)+base.circleX,base.r*1.1*Math.cos(-90*Math.PI/360)+base.circleY);
+        cxt.lineTo(base.r*1.8*Math.sin(-90*Math.PI/360)+base.circleX,base.r*1.1*Math.cos(-90*Math.PI/360)+base.circleY);
+        cxt.lineWidth = 1;
+        cxt.strokeStyle = "#8fd2e9";
+        cxt.stroke();
+
+        //刻度10对应的
+        var line4X = base.r*0.86*Math.sin(-240*Math.PI/360);
+        var line4Y = base.r*0.86*Math.cos(-240*Math.PI/360);
+        cxt.beginPath();
+        cxt.moveTo(line4X+base.circleX,line4Y+base.circleY);
+        cxt.lineTo(base.r*1.2*Math.sin(-260*Math.PI/360)+base.circleX,base.r*1.1*Math.cos(-260*Math.PI/360)+base.circleY);
+        cxt.lineTo(base.r*1.6*Math.sin(-260*Math.PI/360)+base.circleX,base.r*1.1*Math.cos(-260*Math.PI/360)+base.circleY);
+        cxt.lineWidth = 1;
+        cxt.strokeStyle = "#8fd2e9";
+        cxt.stroke();
+
+        /*对应的矩形框数据*/
+        cxt.beginPath();
+        //1.安装应用
+        cxt.rect(base.r*1.75*Math.sin(260*Math.PI/360)+base.circleX,base.r*1.25*Math.cos(260*Math.PI/360)+base.circleY-base.rectHeight*0.5,base.rectWidth,base.rectHeight);
+        //2.违规行为
+        cxt.rect(base.r*1.5*Math.sin(100*Math.PI/360)+base.circleX-base.rectWidth*0.5,base.r*1.1*Math.cos(100*Math.PI/360)+base.circleY,base.rectWidth,base.rectHeight);
+        //3.拦截网址
+        cxt.rect(base.r*1.8*Math.sin(-90*Math.PI/360)+base.circleX-base.rectWidth,base.r*1.1*Math.cos(-90*Math.PI/360)+base.circleY-base.rectHeight*0.5,base.rectWidth,base.rectHeight);
+        //4.敏感词
+        cxt.rect(base.r*1.6*Math.sin(-260*Math.PI/360)+base.circleX-base.rectWidth,base.r*1.1*Math.cos(-260*Math.PI/360)+base.circleY-base.rectHeight*0.5,base.rectWidth,base.rectHeight);
+        //矩形框的背景色
+        cxt.fillStyle = 'rgba(18,39,76,.4)';
+        cxt.fill();
+        cxt.closePath();
+        //绘制中间的数据
+        requestData('month');
+    }
+    //表盘的数据
+    function requestData(unit,number,iDays){
+        $.ajax({
+            url:base_url+'emm/dv/rest/totalInfoStatics',
+            data:{
+                beginTime:clockbeginTime,
+                endTime:clockendTime,
+                owner:owner,
+                type:ownerType,
+                unit:unit
+            },
+            success:function(result){
+                if(result) {
+                    var res = JSON.parse(result);
+                    var data = res.data;
+                    clockDataFn(data);
+                    clockScale(number,unit,iDays);
+                    clockText(number,unit,iDays);
+                }
+            }
+        })
+    }
+
+    //表盘中间的变化的日期
+    function clockInDate(scaleText,numArr,yesDays,num){
+        var currentText= beginTime;
+        var endCurrentText = endTime;
+//        for(var i in numArr){
+//            if(numArr[i]==num){
+//                currentText = yesDays[i];
+//            }
+//        }
+
+        //" 2017.8.25 AM12:00"
+        scaleText.fillStyle = '#acdbe5';
+        scaleText.font=base.dw*0.01+"px Arial";
+        scaleText.textAlign = "center";   // 文字水平对齐方式
+//        scaleText.fillText(currentText,base.circleX,base.circleY+65);
+//        scaleText.fillText('--',base.circleX+8,base.circleY+78);
+//        scaleText.fillText(endCurrentText,base.circleX,base.circleY+95);
+
+        scaleText.fillText(currentText+ ' -- ' +endCurrentText,base.circleX,base.circleY+65);
+    }
+
+    //表盘的数字
+    function clockText(num,until,iDays){
+        var clockText = document.getElementById("clockText");
+        var scaleText = clockText.getContext('2d');
+        //数据的宽高,第三个画布
+        clockText.width = base.dw*0.575;
+        clockText.height = base.dh*0.58;
+        // 分针刻度
+        if(until=='day' && iDays == undefined){
+            hours = ['00:00','02:00','04:00','06:00','08:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00'],s = 0;
+        }else if(until=='day' && iDays !== undefined){
+//            hours = getDays(sessionStorage.getItem('beginTime'),sessionStorage.getItem('endTime')),s=0
+            hours = getDays($('#from').val(),$('#to').val()),s=0
+        }else if(until=='week'){
+            hours = [],s = 0;//表盘外圈的文字，周一到周日
+            var yesWeeks = [];//表盘中间的日期
+            var str = '周'+'日一二三四五六'.charAt(new Date().getDay()-1);//今天是周几
+            var todayDate = formatDateYear(new Date());
+            hours.push(str);
+            yesWeeks.push(todayDate+' '+str);
+            var stepWeek=1;
+            for(var a=1;a<7;a++){
+                var dWeek=new Date((new Date().getTime()-24*60*60*1000)-24*60*60*1000*stepWeek);
+                var weekstr = '周'+'日一二三四五六'.charAt(dWeek.getDay())
+                hours.push(weekstr);
+                stepWeek = stepWeek+1;
+                yesWeeks.push(formatDateYear(dWeek)+'   '+weekstr);
+            }
+        }else{
+            hours = [],s=0;
+            var yesMonths = [];//表盘中间的日期
+            hours.push(formatDate(new Date(new Date().getTime()-24*60*60*1000)));//数组第一个是今天的日期
+            yesMonths.push(formatDateYear(new Date(new Date().getTime())))
+            var step = 5;
+            for(var i=1;i<7;i++){
+                var d=new Date((new Date().getTime()-24*60*60*1000)-24*60*60*1000*step);//每循环一次往后推5天，
+                hours.push(formatDate(d))
+                step=step+5;
+                yesMonths.push(formatDateYear(d))
+            }
+        }
+        if(until=='day' && iDays == undefined){
+            var numArr = [0,30,60,90,120,150,180,210,240,270,300,330];
+            var yestoday=formatDateYear(new Date(now.getTime()-24*60*60*1000));
+            var yesDays = [];
+            for(var b in hours){
+                yesDays.push(yestoday+'  '+hours[b]);
+            }
+            clockInDate(scaleText,numArr,yesDays,num);//绘制表盘中的时期
+            for(var deg = 0;deg<360;deg=deg+6){
+                scaleText.beginPath();
+                scaleText.translate(0,0);//中心
+                scaleText.fillStyle = '#acdbe5';
+                if(deg%30==0){
+                    var textX =(base.r*1.09)*Math.sin(deg*2*Math.PI/360); //文字x坐标
+                    var textY =-(base.r*1.09)*Math.cos(deg*2*Math.PI/360); //文字y坐标
+                if(num == deg){
+                    scaleText.font = base.dw*0.0115+"px Arial";
+                }else{
+                    scaleText.font = base.dw*0.009+"px Arial";
+                }
+                    scaleText.textBaseline = "middle";// 文字垂直对齐方式
+                    scaleText.textAlign = "center";   // 文字水平对齐方式
+                    if(deg==30){
+                        scaleText.fillText(hours[s],textX+base.circleX,textY+base.circleY-2);//10:00
+                    }else if(deg==60){
+                        scaleText.fillText(hours[s],textX+base.circleX+15,textY+base.circleY-2);
+                    }else if(deg==90){
+                        scaleText.fillText(hours[s],textX+base.circleX+15,textY+base.circleY+2);
+                    }else if(deg==120){
+                        scaleText.fillText(hours[s],textX+base.circleX+15,textY+base.circleY+5);
+                    }else if(deg==150){
+                        scaleText.fillText(hours[s],textX+base.circleX+10,textY+base.circleY+5);
+                    }else if(deg==180){
+                        scaleText.fillText(hours[s],textX+base.circleX,textY+base.circleY+5);//00:0
+                    }else if(deg==210){
+                        scaleText.fillText(hours[s],textX+base.circleX-10,textY+base.circleY+5);
+                    }else if(deg==240){
+                        scaleText.fillText(hours[s],textX+base.circleX-15,textY+base.circleY);
+                    }
+                    else if(deg==270){
+                        scaleText.fillText(hours[s],textX+base.circleX-15,textY+base.circleY+2);
+                    }
+                    else if(deg==300){
+                        scaleText.fillText(hours[s],textX+base.circleX-15,textY+base.circleY-2);
+                    }else if(deg==330){
+                        scaleText.fillText(hours[s],textX+base.circleX,textY+base.circleY-2);
+                    }else if(deg==360){
+                        scaleText.fillText(hours[s],textX+base.circleX,textY+base.circleY-2);
+                    }else{
+                        scaleText.fillText(hours[s],textX+base.circleX,textY+base.circleY-2);
+                    }
+                    s++;
+                }
+                scaleText.closePath();
+            }
+        }else if(until == 'day' && iDays !== undefined){
+            clockInDate(scaleText,numArr,yesWeeks,num);//绘制表盘中的时期
+            if(iDays>=6){
+                for(var deg = 1;deg<360;deg=deg+1){
+                    scaleText.beginPath();
+                    scaleText.fillStyle = '#acdbe5';
+                    var textX =(base.r*1.2)*Math.sin(deg*2*Math.PI/360); //文字x坐标
+                    var textY =-(base.r*1.1)*Math.cos(deg*2*Math.PI/360); //文字y坐标
+                    if(deg%51==0){
+                        if(num == deg || num - deg == '3' || (num == 0 && deg == 357)){
+                            scaleText.font = base.dw*0.0105+"px Arial";
+                        }else{
+                            scaleText.font = base.dw*0.008+"px Arial";
+                        }
+                        scaleText.textBaseline = "middle";// 文字垂直对齐方式
+                        scaleText.textAlign = "center";   // 文字水平对齐方式
+                        if(deg==51){
+                            scaleText.fillText(hours[s],textX+base.circleX,textY+base.circleY);
+                        }else if(deg==102){
+                            scaleText.fillText(hours[s],textX+base.circleX-10,textY+base.circleY);
+                        }else if(deg==153){
+                            scaleText.fillText(hours[s],textX+base.circleX,textY+base.circleY);
+                        }else if(deg==204){
+                            scaleText.fillText(hours[s],textX+base.circleX-10,textY+base.circleY-5);
+                        }else if(deg==255){
+                            scaleText.fillText(hours[s],textX+base.circleX+10,textY+base.circleY-10);
+                        }else if(deg==306){
+                            scaleText.fillText(hours[s],textX+base.circleX+10,textY+base.circleY-10);
+                        }else if(deg==357){
+                            scaleText.fillText(hours[s],textX+base.circleX+15,textY+base.circleY+5);
+                        }
+                        s++;
+                    }
+                    scaleText.closePath();
+                }
+            }else{
+
+                for(var deg = 0;deg<360;deg=deg+1){
+                    scaleText.beginPath();
+                    scaleText.translate(0,0);//中心
+                    scaleText.fillStyle = '#acdbe5';
+                    if(deg%(360/(iDays+1))==0){
+                        var textX =(base.r*1.09)*Math.sin(deg*2*Math.PI/360); //文字x坐标
+                        var textY =-(base.r*1.09)*Math.cos(deg*2*Math.PI/360); //文字y坐标
+                        if(num == deg){
+                            scaleText.font = base.dw*0.0115+"px Arial";
+                        }else{
+                            scaleText.font = base.dw*0.01+"px Arial";
+                        }
+                        scaleText.textBaseline = "middle";// 文字垂直对齐方式
+                        scaleText.textAlign = "center";   // 文字水平对齐方式
+                        scaleText.fillText(hours[s],textX+base.circleX,textY+base.circleY-2);//10:00
+                        s++;
+                    }
+
+                    scaleText.closePath();
+                }
+
+            }
+        }else if(until=='week'){
+            var numArr = [51,102,153,207,258,309,0];
+            clockInDate(scaleText,numArr,yesWeeks,num);//绘制表盘中的时期
+            for(var deg = 1;deg<360;deg=deg+1){
+                scaleText.beginPath();
+                scaleText.fillStyle = '#acdbe5';
+                var textX =(base.r*1.2)*Math.sin(deg*2*Math.PI/360); //文字x坐标
+                var textY =-(base.r*1.1)*Math.cos(deg*2*Math.PI/360); //文字y坐标
+                if(deg%51==0){
+                    if(num == deg || num - deg == '3' || (num == 0 && deg == 357)){
+                        scaleText.font = base.dw*0.0105+"px Arial";
+                    }else{
+                        scaleText.font = base.dw*0.008+"px Arial";
+                    }
+                    scaleText.textBaseline = "middle";// 文字垂直对齐方式
+                    scaleText.textAlign = "center";   // 文字水平对齐方式
+                    if(deg==51){
+                        scaleText.fillText(hours[s],textX+base.circleX,textY+base.circleY);
+                    }else if(deg==102){
+                        scaleText.fillText(hours[s],textX+base.circleX-10,textY+base.circleY);
+                    }else if(deg==153){
+                        scaleText.fillText(hours[s],textX+base.circleX,textY+base.circleY);
+                    }else if(deg==204){
+                        scaleText.fillText(hours[s],textX+base.circleX-10,textY+base.circleY-5);
+                    }else if(deg==255){
+                        scaleText.fillText(hours[s],textX+base.circleX+10,textY+base.circleY-10);
+                    }else if(deg==306){
+                        scaleText.fillText(hours[s],textX+base.circleX+10,textY+base.circleY-10);
+                    }else if(deg==357){
+                        scaleText.fillText(hours[s],textX+base.circleX+15,textY+base.circleY+5);
+                    }
+                    s++;
+                }
+                scaleText.closePath();
+            }
+        }else{
+            var numArr = [51,102,153,207,258,309,0];
+            clockInDate(scaleText,numArr,yesMonths,num);//绘制表盘中的时期
+            for(var deg = 1;deg<360;deg=deg+1){
+                scaleText.beginPath();
+                scaleText.fillStyle = '#acdbe5';
+                var textX =(base.r*1.2)*Math.sin(deg*2*Math.PI/360); //文字x坐标
+                var textY =-(base.r*1.1)*Math.cos(deg*2*Math.PI/360); //文字y坐标
+                if(deg%51==0){
+                    if(num == deg || num - deg == '3' || (num == 0 && deg == 357)){
+                        scaleText.font = base.dw*0.0115+"px Arial";
+                    }else{
+                        scaleText.font = base.dw*0.009+"px Arial";
+                    }
+                    scaleText.textBaseline = "middle";// 文字垂直对齐方式
+                    scaleText.textAlign = "center";   // 文字水平对齐方式
+                    if(deg==51){
+                        scaleText.fillText(hours[s],textX+base.circleX,textY+base.circleY);
+                    }else if(deg==102){
+                        scaleText.fillText(hours[s],textX+base.circleX-10,textY+base.circleY);
+                    }else if(deg==153){
+                        scaleText.fillText(hours[s],textX+base.circleX,textY+base.circleY);
+                    }else if(deg==204){
+                        scaleText.fillText(hours[s],textX+base.circleX-10,textY+base.circleY-5);
+                    }else if(deg==255){
+                        scaleText.fillText(hours[s],textX+base.circleX+10,textY+base.circleY-10);
+                    }else if(deg==306){
+                        scaleText.fillText(hours[s],textX+base.circleX+10,textY+base.circleY-10);
+                    }else if(deg==357){
+                        scaleText.fillText(hours[s],textX+base.circleX+15,textY+base.circleY+5);
+                    }
+                    s++;
+                }
+                scaleText.closePath();
+            }
+        }
+    }
+    //大黄线，刻度
+    function clockScale(num,until){
+        var clockScale = document.getElementById("clockScale");
+        var scale = clockScale.getContext('2d');
+        //数据的宽高,第三个画布
+        clockScale.width = base.dw*0.575;
+        clockScale.height = base.dh*0.58;
+        scale.clearRect(0,0,clockScale.width,clockScale.height);
+        scale.save();
+        scale.beginPath();
+        scale.translate(base.circleX,base.circleY);//中心
+        scale.rotate(num*Math.PI/180);
+        scale.strokeStyle="#b5a028";
+        scale.moveTo(0,-base.r+12);
+        scale.lineTo(0,-base.r-6);
+        scale.stroke();
+        scale.closePath();
+    }
+
+    //绘制表盘数据
+    var time = 0;//
+    function clockDataFn(data){
+        //数据，第三个画布
+        var clockData = document.getElementById("clockData");
+        var contextData = clockData.getContext('2d');
+        //数据的宽高,第三个画布
+        clockData.width = base.dw*0.575;
+        clockData.height = base.dh*0.58;
+
+        //现在的时间
+        contextData.clearRect(0,0,clockData.width,clockData.height);
+        contextData.save();
+        contextData.beginPath();
+
+        //圆中间的文字"2,000"
+        contextData.fillStyle = '#acdbe5';
+//        contextData.font=base.dw*0.04+"px Arial";
+        data.deviceCount>10000000 ? contextData.font=base.dw*0.02+"px Arial" : contextData.font=base.dw*0.04+"px Arial"
+        contextData.textAlign = "center";   // 文字水平对齐方式
+        contextData.fillText(data.deviceCount,base.circleX,base.circleY);//data.deviceCount
+        contextData.font=base.dw*0.006+"px Arial";
+        contextData.textAlign = "center";   // 文字水平对齐方式
+        contextData.fillText('台设备',base.circleX,base.circleY+20);
+        //"设备行为监测"
+        contextData.fillStyle = '#acdbe5';
+        contextData.font=base.dw*0.01+"px Arial";
+        contextData.textAlign = "center";   // 文字水平对齐方式
+        contextData.fillText(ownerText,base.circleX,base.circleY-65);//ownerText
+
+
+        /*矩形里面的文字*/
+        /*矩形框上的数据*/
+        contextData.font = base.dw*0.015+"px Arial";
+        contextData.fillStyle = "#acdbe5";//大文字的颜色
+        //1.安装应用
+        contextData.fillText(data.installedApp,base.r*1.75*Math.sin(260*Math.PI/360)+base.circleX+base.rectWidth*0.5,base.r*1.25*Math.cos(260*Math.PI/360)+base.circleY-base.rectHeight*0.01);
+        //2.违规行为
+        contextData.fillText(data.invalidBehaviour,(base.r*1.5*Math.sin(100*Math.PI/360)+base.circleX),base.r*1.2*Math.cos(100*Math.PI/360)+base.circleY+base.rectHeight*0.25);
+        //3.拦截网址
+        contextData.fillText(data.interceptUrl,base.r*1.8*Math.sin(-90*Math.PI/360)+base.circleX-base.rectWidth*0.5,base.r*1.1*Math.cos(-90*Math.PI/360)+base.circleY-base.rectHeight*0.02);
+        //4.敏感词
+        contextData.fillText(data.sensitiveWord,base.r*1.6*Math.sin(-260*Math.PI/360)+base.circleX-base.rectWidth*0.5,base.r*1.1*Math.cos(-260*Math.PI/360)+base.circleY-base.rectHeight*0.02);
+        contextData.font = base.dw*0.009+"px Arial";
+        /*矩形框下部分的文字*/
+        contextData.fillText('安装应用',base.r*1.75*Math.sin(260*Math.PI/360)+base.circleX+base.rectWidth*0.5,base.r*1.25*Math.cos(260*Math.PI/360)+base.circleY+base.rectHeight*0.29);
+        contextData.fillText('设备违规',base.r*1.5*Math.sin(100*Math.PI/360)+base.circleX,base.r*1.2*Math.cos(100*Math.PI/360)+base.circleY+base.rectHeight*0.56);
+        contextData.fillText('拦截网址',base.r*1.8*Math.sin(-90*Math.PI/360)+base.circleX-base.rectWidth*0.5,base.r*1.1*Math.cos(-90*Math.PI/360)+base.circleY+base.rectHeight*0.26);
+        contextData.fillText('敏感词',base.r*1.6*Math.sin(-260*Math.PI/360)+base.circleX-base.rectWidth*0.5,base.r*1.1*Math.cos(-260*Math.PI/360)+base.circleY+base.rectHeight*0.29);
+        contextData.fill();
+        contextData.closePath();
+        contextData.restore();
+        time++
+    }
+
+    //表盘转圈的动画
+    function runClock(){
+        //动画的画布，第二个画布
+        var animateClock = document.getElementById("animateClock");
+        var context = animateClock.getContext('2d');
+
+        animateClock.width = base.dw*0.575;
+        animateClock.height = base.dh*0.58;
+
+        context.clearRect(0,0,animateClock.width,animateClock.height);
+        context.save();
+        context.translate(base.circleX,base.circleY);//将当前以左上角坐标为(0,0)的上下文环境进行保存，这样是为了在接下来中要进行画布偏移后，可以进行还原当前的环境
+        context.rotate(time*8*Math.PI/180);//设定每次旋转的度数
+        context.beginPath();
+
+        context.moveTo(15,base.r*0.86);
+        context.lineTo(-15,base.r*0.89);
+        context.arc(-15,base.r*0.86,base.r*0.03,0.5*Math.PI,1.5*Math.PI);//半径=折线的终点-线的起点base.r*0.02 = base.r*0.88-base.r*0.86
+        context.closePath();
+        context.fillStyle = "rgba(143,210,233,0.8)";
+        context.fill();
+        context.restore();
+        time+=1;
+    }
+
+    //选择昨日，近一周，近一月
+    function selectTimeStyle(){
+        $('.setting-time li').click(function(){
+            $(this).addClass('active').siblings().removeClass('active');
+            var unit = $(this).attr('cid');
+//            ownerText = rootText //显示默认的组织机构
+            if(unit=='day'){
+                beginTime = clockbeginTime = nowDateTime('day')[2]
+                endTime = clockendTime = nowDateTime('day')[2]
+            }else if(unit=='week'){
+                beginTime = clockbeginTime = nowDateTime('week')[2]
+                endTime = clockendTime = nowDateTime('week')[1]
+            }else if(unit=='month'){
+                beginTime = clockbeginTime = nowDateTime('month')[2]
+                endTime = clockendTime = nowDateTime('month')[1]
+            }
+            drawClock(unit);
+            //每5秒绘制一次表盘的数据
+            clearInterval(window.dataTimes);
+            var num = 0;
+            var dataTime = function(){
+                //设备数目
+                if(unit=='day'){
+                    num += 30
+                    if(num == '360')num = 0
+                }else if(unit=='week' || unit=='month'){
+                    if(num == '153'){
+                        num += 54
+                    }else{
+                        num += 51
+                    }
+                    if(num == '360')num = 0
+                }
+                requestData(unit,num);
+            }
+            dataTime()
+            window.dataTimes = setInterval(dataTime,5000);
+
+            //敏感词拦截
+            sensitiveWord(unit);
+
+            //拦截网址
+            holdUrl(unit);
+
+            //安装应用
+            installApp(unit);
+
+            //流量监控
+            flowMonitoring(unit);
+
+            //违规行为
+            illegalBehavior(unit);
+
+            //通话纪录
+            callRecords(unit);
+        })
+        $('.setting-time li:eq(2)').click()
+    }
+
+    //设置
+    function settingBtn(){
+        $('#settingbtn').click(function(event){
+            event.stopPropagation();
+            $('.settingSelect').toggle();
+        });
+        //点击空白处隐藏
+        $(document).click(function(){
+            $('.settingSelect').slideUp('fast');
+        });
+        //点击筛选条件
+        $('.filtrateShowLi').click(function(){
+            debugger;
+            filterContraint();//筛选条件的初始化数据
+            $('#modal_default').modal('show');
+            //表单默认的态度
+            $('#selectedId').val(owner);
+            $('#selectedType').val(ownerType);
+            $('.orgUserSelectValue').text(ownerText);
+            $('#from').val(beginTime);
+            $('#to').val(endTime);
+
+        });
+        //点击账户
+        $('.accountShowLi').click(function(){
+            $('.accountName').text(sessionStorage.getItem('accountName'));
+            $('.accountOrg').text(sessionStorage.getItem('accountOrg'));
+            $('.accountDetail').text(sessionStorage.getItem('loginName'));
+            $('#modal_account').modal('show');
+
+        })
+    }
+
+    //tree组织/个人
+    function treeDataFn(){
+        //组织
+        function orgFn(data,isFirst){
+            var template = isFirst ? '<ul class="treeWrapper fancytree-container">' : '<ul class="" style="display: none">';
+            for(var i=0;i<data.length;i++){
+                var orgData = data[i];
+                template += '<li>'
+                        +'         <span onclick="addMinus(this,event)" class="fancytree-partsel fa '+(orgData.expanded?'fa-minus-square-o':'fa-plus-square-o') +'"></span>'
+                        +'             <span onclick="selectedValue(this)" class="fancytree-title" seltype="'+orgData.type+'" selid="'+orgData.id+'">'+orgData.title+'</span>'
+                        +orgFn(orgData.children)
+                        +'         <ul style="displ ay: none">'+userFn(orgData.userChildren)+'</ul>'
+                        +'</li>';
+            }
+            template += '</ul>';
+            return template;
+        }
+        //用户
+        function userFn(arr){
+            var str = '';
+            for(var s=0;s<arr.length;s++){
+                str += '<li>'
+                        +'   <span class="fancytree-partsel">'
+                        +'     <span class="fancytree-expander"></span>'
+                        +'     <span class="fancytree-title" onclick="selectedValue(this)" seltype="'+arr[s].type+'" selid="'+arr[s].id+'">'+arr[s].title+'</span>'
+                        +'   </span>'
+                        +'</li> '
+            }
+            return str;
+        }
+
+        $('#orgUserSelect').html(orgFn(treeData,true,1))
+    }
+
+    //显示组织/个人
+    function selectUser(){
+        treeDataFn();
+        $('.fa-angle-down').toggle();
+        $('.fa-angle-right').toggle();
+        $('#orgUserSelect').toggle();
+        $('.selectOrg .arrows-top').toggle();
+    }
+
+    //展开子级
+    function addMinus(_this,event){
+        event.stopPropagation();
+        $(_this).parent().children('ul').toggle();
+        if($(_this).parent().children('ul').css('display') == 'none'){
+            $(_this).addClass('fa-plus-square-o').removeClass('fa-minus-square-o');
+        }else{
+            $(_this).addClass('fa-minus-square-o').removeClass('fa-plus-square-o')
+        }
+    }
+
+    //改变组合/个人的选中的值
+    function selectedValue(_this){
+        $('.orgUserSelectValue').text($(_this).text());
+        var selectId = $(_this).attr('selid');
+        $('#selectedId').val(selectId);
+        var selectedType = $(_this).attr('seltype');
+        $('#selectedType').val(selectedType);
+    }
+
+    //设置开始结束时间选择
+    function timeSelected(_this){
+        //$(this).children('.arrows-top').toggle();
+        //开始时间
+        $( "#from" ).datepicker({
+            changeMonth: true,
+            changeYear:true,
+            numberOfMonths: 1,//此参数控制 显示一个日期选择,
+            maxDate:new Date(),
+            dateFormat:'yy-mm-dd',
+            defaultDate:new Date(),
+            showMonthAfterYear:true,
+            onClose: function( selectedDate ) {
+                $( "#to" ).datepicker( "option", "minDate", selectedDate );
+            }
+        });
+        //结束时间
+        $( "#to" ).datepicker({
+            changeYear:true,//下拉列表显示年
+            changeMonth: true,//下拉列表显示月
+            numberOfMonths: 1,
+            maxDate:new Date(),//最大的时间是现在
+            dateFormat:'yy-mm-dd',//日期格式化
+            defaultDate:new Date(),//默认时间
+            showMonthAfterYear:true,//在年后显示月
+            onClose: function( selectedDate ) {
+                $( "#from" ).datepicker( "option", "maxDate", selectedDate );
+            }
+        });
+    }
+
+    //提交表单
+    function submitForm(){
+        owner = $('#selectedId').val();
+        if(!$('#selectedType').val()){
+            ownerType = 'C'
+        }else{
+            ownerType = $('#selectedType').val();
+        }
+        beginTime = clockbeginTime = $('#from').val();
+        endTime = clockendTime = $('#to').val();
+        var iDays = dateDiff(beginTime,endTime);
+        var unit = 'day';
+        drawClock(unit,iDays,beginTime,endTime,owner,ownerType);
+        //每5秒绘制一次表盘的数据
+        clearInterval(window.dataTimes);
+        var num = 0;
+        var dataTime = function(){
+            //设备数目
+            if(iDays >=6){
+                if(num == '153'){
+                    num += 54
+                }else{
+                    num += 51
+                }
+                if(num == '360')num = 0
+            }else{
+                num += 360/(iDays+1)
+                if( num == 360)num = 0
+            }
+            requestData(unit,num,iDays,owner,ownerType);
+        }
+        dataTime()
+        window.dataTimes = setInterval(dataTime,5000);
+        clockScale(num,unit,beginTime,endTime,owner,ownerType);
+        //敏感词拦截
+        sensitiveWord(unit,beginTime,endTime,owner,ownerType);
+
+        //拦截网址
+        holdUrl(unit,beginTime,endTime,owner,ownerType);
+
+        //安装应用
+        installApp(unit,beginTime,endTime,owner,ownerType);
+
+        //流量监控
+        flowMonitoring(unit,beginTime,endTime,owner,ownerType);
+
+        //违规行为
+        illegalBehavior(unit,beginTime,endTime,owner,ownerType);
+
+        //通话纪录
+        callRecords(unit,beginTime,endTime,owner,ownerType);
+
+        $('.setting-time li').removeClass('active')
+        ownerText =$('.orgUserSelectValue').text()
+//        sessionStorage.setItem('owner',$('#selectedId').val());
+//        sessionStorage.setItem('ownerType',$('#selectedType').val());
+        sessionStorage.setItem('ownerText',$('.orgUserSelectValue').text());
+        sessionStorage.setItem('beginTimeFrom',$('#from').val());
+        sessionStorage.setItem('endTimeTo',$('#to').val());
+        initOrgUser();
+    }
+
+
+    //退出表单
+    function exitForm(){
+        $.ajax({
+            url:base_url+'emm/dv/rest/auth/logout',
+            //headers:headers,
+            data:{
+                userId:sessionStorage.getItem('userId')
+            },
+            success:function(result){
+                if(result){
+                    var res = JSON.parse(result);
+                    var code = res.code;
+                    if(code==0){
+                        alert('退出成功');
+                        sessionStorage.removeItem('accountName');
+                        sessionStorage.removeItem('accountOrg');
+                        sessionStorage.removeItem('loginName');
+                        window.location.href = 'login.html';
+                    }
+                }
+
+            }
+        })
+
+    }
+
+    //弹窗设置筛选条件的初始化数据
+    function filterContraint(){
+//        owner = rootId;
+//        ownerType = rootType;
+//        ownerText = rootText;
+//        if(sessionStorage.getItem('ownerText')){
+//            ownerText = sessionStorage.getItem('ownerText')
+//        }
+//        beginTime = nowDateTime()[1];
+//        endTime = nowDateTime()[1];
+//        //筛选条件的初始数据
+        if(sessionStorage.getItem('ownerText')){
+//            owner = sessionStorage.getItem('owner');
+//            ownerType = sessionStorage.getItem('ownerType');
+            ownerText = sessionStorage.getItem('ownerText');
+        }else{
+//            owner = rootId;
+//            ownerType = rootType;
+            ownerText = rootText;
+        }
+        if(sessionStorage.getItem('beginTimeFrom')){
+            $('#from').val(sessionStorage.getItem('beginTimeFrom'));
+        }else{
+            $('#from').val(nowDateTime()[1]);
+        }
+        if(sessionStorage.getItem('endTimeTo')){
+            $('#to').val(sessionStorage.getItem('endTimeTo'));
+        }else{
+            $('#to').val(nowDateTime()[1]);
+        }
+    }
+
+    //安装应用
+    function installApp(unit){
+        $('.right-m').html('<div class="right-main1">'
+                +'  <span class="left-main1-1"></span>'
+                +'  <span class="left-main1-2"></span>'
+                +'  <span class="left-main1-3"></span>'
+                +'  <span class="left-main1-4"></span>'
+                +'  <div id="install-app"></div>'
+                +'</div>')
+
+        //设置宽高
+        $('.right-main1').css({
+            width:base.dw*0.2,
+            height:base.dh*0.37
+        })
+        var installApp = document.getElementById('install-app');
+        installApp.style.width = $('.right-main1').width()+'px';
+        installApp.style.height = $('.right-main1').height()+'px';
+        var myChartInstall= echarts.init(installApp);
+        //加载动画
+        myChartInstall.showLoading({
+            text: '数据加载中',
+            color: 'rgba(75,189,203,1)',
+            textColor: 'rgba(75,189,203,1)',
+            maskColor: 'rgba(18,39,76,0.8)',
+            zlevel: 0
+        });
+        /*千次*/
+        $.ajax({
+            url:base_url+'emm/dv/rest/appInstallStatics',
+            data:{
+                beginTime:beginTime,
+                endTime:endTime,
+                owner:owner,
+                type:ownerType,
+                unit:unit
+            },
+            success:function(result){
+                myChartInstall.hideLoading();
+                if(result){
+                    var res = JSON.parse(result);
+                    var data = res.data;
+                    //名称,两组数据用一个名称
+                    var myData = [];
+                    //千次的数据
+                    var valueData = [];
+                    //千次的渐变色
+                    var colorList = [];
+                    for (var i = 0; i < data.length; i++) {
+                        myData.push(data[i].name);
+                        valueData.push(data[i].value);
+                        var j = i+1;
+                        var opacity = j/data.length;
+                        colorList.unshift('rgba(203,83,62,'+opacity+')');
+                    }
+                    /*小时*/
+                    $.ajax({
+                        url:base_url+'emm/dv/rest/appUsingTimeStatics',
+                        data:{
+                            beginTime:beginTime,
+                            endTime:endTime,
+                            owner:owner,
+                            type:ownerType,
+                            unit:unit
+                        },
+                        success:function(res){
+                            if(res){
+                                var timeData = JSON.parse(res).data;
+                                //小时数据
+                                var timeDataArr = [];
+                                //小时渐变色
+                                var colorListTime = [];
+
+                                for (var i = 0; i < timeData.length; i++) {
+                                    timeDataArr.push(timeData[i].value);
+                                    var j = i+1;
+                                    var opacity = j/timeData.length;
+                                    colorListTime.unshift('rgba(66,172,205,'+opacity+')');
+                                }
+
+                                option = {
+                                    tooltip: {
+                                        position: 'top',
+                                        padding: [5, 10],
+                                        formatter: function(params) {
+                                            return '<span style="display:inline-block;position:relative;margin-right:10px;border-color:'+ params.color +';border-radius:10px;width:9px;height:9px;background-color:' + params.color + '"></span>'+myData[params.dataIndex]+'：'+params.value;
+                                        },
+                                        textStyle:{
+                                            width:300,
+                                            lineHeight:18
+                                        }
+                                    },
+                                    title: {
+                                        text: '安装应用   TOP10',
+                                        left: 10,
+                                        top: 10,
+                                        textStyle: {
+                                            color: 'rgba(75,189,203,1)',
+                                            fontSize: base.dw*0.0105,
+                                            fontWeight:'normal'
+                                        }
+                                    },
+                                    legend: {
+                                        itemWidth:base.dw*0.01,
+                                        itemHeight:base.dh*0.012,
+                                        right:10,
+                                        top:base.dw*0.019,
+                                        textStyle: {
+                                            color: 'rgba(62,172,205,1)',
+                                            fontSize: base.dw*0.005,
+                                            fontWeight:'normal'
+                                        },
+                                        data: ['安装量', '使用时长']//必须与下面series里面的name对应才显示
+                                    },
+                                    grid: [{
+                                        show: false,
+                                        left: '22%',
+                                        top: base.dh*0.09,
+                                        bottom: base.dh*0.01,
+                                        containLabel: true,
+                                        width: '30%',
+                                    }, {
+                                        show: false,
+                                        left: '52%',
+                                        top: base.dh*0.09,
+                                        bottom: base.dh*0.033,
+                                        width: '1%',
+                                    }, {
+                                        show: false,
+                                        right: '12%',
+                                        top: base.dh*0.09,
+                                        bottom: base.dh*0.01,
+                                        containLabel: true,
+                                        width: '40%',
+                                    }, ],
+                                    xAxis: [{
+                                        splitNumber: 4,
+                                        name: '次',
+                                        nameTextStyle:{
+                                            fontSize: base.dw*0.005,
+                                            fontWeight:'normal'
+                                        },
+                                        type: 'value',
+                                        inverse: true,
+                                        axisLine: {
+                                            show: true,
+                                            lineStyle: {
+                                                color: 'rgba(62,172,205,1)'
+                                            }
+                                        },
+                                        axisTick: {
+                                            show: true
+
+                                        },
+                                        position: 'bottom',
+                                        axisLabel: {
+                                            show: true,
+                                            formatter: '{value}',
+                                            textStyle: {
+                                                color: 'rgba(62,172,205,1)',
+                                                fontSize: base.dw*0.004,
+                                                fontWeight:'normal'
+                                            }
+                                        },
+                                        splitLine: {
+                                            show: false,
+                                            lineStyle: {
+                                                width: 0
+                                            }
+                                        }
+                                    }, {
+                                        gridIndex: 1,
+                                        show: false
+                                    }, {
+                                        gridIndex: 2,
+                                        splitNumber: 4,
+                                        type: 'value',
+                                        name: '小时',
+                                        nameTextStyle:{
+                                            fontSize: base.dw*0.005,
+                                            fontWeight:'normal'
+                                        },
+                                        axisLine: {
+                                            show: true,
+                                            lineStyle: {
+                                                color: 'rgba(62,172,205,1)'
+                                            }
+                                        },
+                                        axisTick: {
+                                            show: true
+                                        },
+                                        position: 'bottom',
+                                        axisLabel: {
+                                            show: true,
+                                            textStyle: {
+                                                color: 'rgba(62,172,205,1)',
+                                                fontSize: base.dw*0.004,
+                                                fontWeight:'normal'
+                                            },
+                                            formatter: '{value}'
+                                        },
+                                        splitLine: {
+                                            show: false,
+                                            lineStyle: {
+                                                width: 0
+                                            }
+                                        }
+                                    }
+                                    ],
+                                    yAxis: [
+                                        //左边的标尺
+                                        {
+                                            type: 'category',
+                                            inverse: true,
+                                            position: 'right',
+                                            axisLine: {
+                                                lineStyle: {
+                                                    color: 'rgba(62,172,205,1)'
+                                                }
+                                            },
+                                            axisTick: {
+                                                show: true
+                                            },
+                                            axisLabel: {
+                                                show: false
+                                            },
+                                            data: myData.map(function(value,index) {
+                                                return {
+                                                    value: index+1,
+                                                    textStyle: {
+                                                        align: 'right',
+                                                        color:'rgba(62,172,205,1)',
+                                                        fontSize: base.dw*0.005,
+                                                        fontWeight:'normal'
+
+                                                    }
+                                                }
+                                            })
+                                        },
+                                        //中间的标尺
+                                        {
+                                            gridIndex: 1,
+                                            type: 'category',
+                                            inverse: true,
+                                            position: 'left',
+                                            axisLine: {
+                                                show: false
+
+                                            },
+                                            name:'Top',
+                                            nameLocation:'start',
+                                            nameTextStyle:{
+                                                padding:[0,0,-5,-15],
+                                                color:'rgba(62,172,205,1)'
+                                            },
+                                            axisTick: {
+                                                show: false
+
+                                            },
+                                            axisLabel: {
+                                                show: true
+                                            },
+
+                                            data: myData.map(function(value,index) {
+                                                return {
+                                                    value: index+1,
+                                                    textStyle: {
+                                                        align: 'center',
+                                                        color:'rgba(62,172,205,1)',
+                                                        fontSize: base.dw*0.005,
+                                                        fontWeight:'normal'
+
+                                                    }
+                                                }
+                                            })
+                                        },
+                                        //右边的标尺
+                                        {
+                                            gridIndex: 2,
+                                            type: 'category',
+                                            inverse: true,
+                                            position: 'left',
+                                            axisLine: {
+                                                show: true,
+                                                lineStyle: {
+                                                    color: 'rgba(62,172,205,1)'
+                                                }
+                                            },
+
+                                            axisTick: {
+                                                show: true,
+                                                lineStyle: {
+                                                    color: 'rgba(62,172,205,1)'
+                                                }
+                                            },
+                                            axisLabel: {
+                                                show: false
+                                            },
+
+                                            data: myData.map(function(value,index) {
+                                                return {
+                                                    value: index+1,
+                                                    textStyle: {
+                                                        align: 'right',
+                                                        color:'rgba(62,172,205,1)',
+                                                        fontSize: base.dw*0.005,
+                                                        fontWeight:'normal'
+
+                                                    }
+                                                }
+                                            })
+                                        }
+                                    ],
+                                    series: [{
+                                        name: '安装量',
+                                        type: 'bar',
+                                        barGap: 20,
+                                        barWidth: '30%',
+                                        label: {
+                                            normal: {
+                                                show: true,
+                                                color: 'red',
+                                                position: 'left',
+                                                formatter:function(params){
+                                                    var arr = [];
+                                                    myData.forEach(function(value) {
+                                                        return arr.push(value)
+                                                    })
+                                                    return arr[params.dataIndex];
+
+                                                },
+                                                textStyle: {
+                                                    color: 'rgba(62,172,205,1)',
+                                                    fontSize: base.dw*0.005,
+                                                    fontWeight:'normal'
+                                                }
+
+                                            },
+                                            emphasis: {
+                                                show: false
+                                            }
+
+                                        },
+                                        itemStyle: {
+                                            normal: {
+                                                color: function(params){
+                                                    return colorList[params.dataIndex]
+                                                }
+                                            },
+                                            emphasis: {
+                                                show: false
+                                            }
+                                        },
+                                        data: valueData
+                                    }, {
+                                        name: '使用时长',
+                                        type: 'bar',
+                                        barGap: 20,
+                                        barWidth: '30%',
+                                        xAxisIndex: 2,
+                                        yAxisIndex: 2,
+                                        label: {
+                                            normal: {
+                                                show: true,
+                                                color: 'red',
+                                                position: 'right',
+                                                textStyle: {
+                                                    color: 'rgba(62,172,205,1)',
+                                                    fontSize: base.dw*0.005,
+                                                    fontWeight:'normal'
+                                                },
+                                                formatter:function(params){
+                                                    var arr = [];
+                                                    myData.forEach(function(value) {
+                                                        return arr.push(value)
+                                                    })
+                                                    return arr[params.dataIndex];
+
+                                                }
+                                            }
+                                        },
+                                        itemStyle: {
+                                            normal: {
+                                                color: function(params){
+                                                    var colorListTimes = ['#42accd','#3b9bc1','#3398db8','#3880b4','#3880b4','#3375af','#165294','#113f7d','#113674','#142a51']
+                                                    return colorListTimes[params.dataIndex]
+                                                }
+                                            },
+                                            emphasis: {
+                                                show: false
+                                            }
+                                        },
+                                        data: timeDataArr
+                                    }]
+                                };
+                                myChartInstall.clear();
+                                myChartInstall.setOption(option);
+                            }
+                        }
+                    })
+                }
+            },
+            error:function(errorMsg){
+                myChartInstall.showLoading({
+                    text: '数据加载失败，请联系管理员',
+                    color: 'rgba(75,189,203,0)',
+                    textColor: 'rgba(75,189,203,1)',
+                    maskColor: 'rgba(18,39,76,0.8)',
+                    zlevel: 0
+                });
+            }
+        })
+    }
+
+    //流量监控
+    function flowMonitoring(unit){
+
+        $('.right-m').append('<div class="right-main2">'
+                +'  <span class="left-main1-1"></span>'
+                +'  <span class="left-main1-2"></span>'
+                +'  <span class="left-main1-3"></span>'
+                +'  <span class="left-main1-4"></span>'
+                +'  <div id="flow-monitoring"></div>'
+                +'</div>')
+
+        //设置宽高
+        $('.right-main2').css({
+            width:base.dw*0.2,
+            height:base.dh*0.25,
+            marginTop:base.dh*0.01
+        })
+        var flowMonitoring = document.getElementById('flow-monitoring');
+        flowMonitoring.style.width = $('.right-main2').width()+'px';
+        flowMonitoring.style.height = $('.right-main2').height()+'px';
+
+        var myChartFlow= echarts.init(flowMonitoring);
+        myChartFlow.showLoading({
+            text: '数据加载中',
+            color: 'rgba(75,189,203,1)',
+            textColor: 'rgba(75,189,203,1)',
+            maskColor: 'rgba(18,39,76,0.8)',
+            zlevel: 0
+        });
+
+        $.ajax({
+            url:base_url+'emm/dv/rest/deviceFlowStatics',
+            data:{
+                beginTime:beginTime,
+                endTime:endTime,
+                owner:owner,
+                type:ownerType,
+                unit:unit
+            },
+            success:function(result){
+                myChartFlow.hideLoading();
+                if(result){
+                    var res = JSON.parse(result);
+                    var data = res.data;
+                    //名称
+                    var categoryData = ['用户设备流量','应用流量'];
+                    //数据
+                    $.ajax({
+                        url:base_url+'emm/dv/rest/appFlowStatics',
+                        data:{
+                            beginTime:beginTime,
+                            endTime:endTime,
+                            owner:owner,
+                            type:ownerType,
+                            unit:unit
+                        },
+                        success:function(result){
+                            if(result){
+                                var res = JSON.parse(result);
+                                var appData = res.data;
+                                var valueData = [];
+                                var r = base.dw*0.04;//圆半径
+                                var colors = 1;//透明度
+                                var lineLength =  15;
+                                var placeHolderStyle = {
+                                    normal : {
+                                        color: 'rgba(0,0,0,0)',
+                                        label: {show:false},
+                                        labelLine: {show:false}
+                                    },
+                                    emphasis : {
+                                        show: false,
+                                        color: 'rgba(0,0,0,0)'
+                                    }
+                                };
+                                for (var i = 0; i < data.length; i++) {
+                                    var radiusM = r-3;
+                                    var radiusS = r;
+                                    var rMm = r-6;
+                                    valueData.push({
+                                                name: categoryData[0],
+                                                type : "pie",
+                                                clockWise: false,
+                                                radius: [radiusS, radiusM],
+                                                center: ['50%', '65%'],
+                                                label: {
+                                                    show:true,
+                                                    normal:{
+                                                        color:'rgba(118,64,204,1)'
+                                                    }
+
+                                                },
+                                                labelLine: {
+                                                    show:true,
+                                                    normal:{
+                                                        length: lineLength,
+                                                        length2:6,
+                                                        lineStyle:{
+                                                            color:'rgba(118,64,204,1)'
+                                                        }
+                                                    }
+                                                },
+                                                itemStyle: {
+                                                    normal: {
+                                                        color:'rgba(118,64,204,'+colors+')',
+                                                        shadowBlur: 10,
+                                                        shadowColor: 'rgba(40, 40, 40, 0.5)'
+                                                    }
+                                                },
+                                                hoverAnimation: false,
+                                                data:[{
+                                                    value : data[i].value,
+                                                    name : data[i].name
+                                                },{
+                                                    value: appData[i].value,
+                                                    name: appData[i].name,
+                                                    itemStyle: placeHolderStyle
+                                                }]
+                                            },{
+                                                name:categoryData[1],
+                                                type:'pie',
+                                                clockWise:false,
+                                                radius : [radiusM,rMm],
+                                                center: ['50%', '65%'],
+                                                label: {
+                                                    show:true,
+                                                    normal:{
+                                                        color:'rgba(100,188,226,1)'
+                                                    }
+
+                                                },
+                                                labelLine: {
+                                                    show:true,
+                                                    normal:{
+                                                        length: lineLength,
+                                                        length2:6,
+                                                        lineStyle:{
+                                                            color:'rgba(100,188,226,1)'
+                                                        }
+                                                    }
+
+                                                },
+                                                itemStyle : {
+                                                    normal: {
+                                                        color:'rgba(100,188,226,'+colors+')',
+                                                        shadowBlur: 10,
+                                                        shadowColor: 'rgba(40, 40, 40, 0.5)'
+                                                    }
+                                                },
+                                                hoverAnimation: false,
+
+                                                data:[{
+                                                    value : data[i].value,
+                                                    name : data[i].name,
+                                                    itemStyle: placeHolderStyle
+                                                },{
+                                                    value: appData[i].value,
+                                                    name: appData[i].name
+
+                                                }]
+                                            }
+
+                                    );
+                                    r = r-6;
+                                    colors = colors-0.1;
+                                    lineLength = lineLength + 5;
+                                };
+
+
+                                option = {
+                                    title: {
+                                        id: 'statistic',
+                                        text: '流量监控   TOP10',
+                                        left: 10,
+                                        top: 10,
+                                        textStyle: {
+                                            color: 'rgba(75,189,203,1)',
+                                            fontSize: base.dw*0.0105,
+                                            fontWeight:'normal'
+                                        }
+                                    },
+                                    color: ['#7640cc', "#64bce2"],
+                                    tooltip : {
+                                        show: true,
+                                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                                    },
+                                    legend: {
+                                        itemGap:12,
+                                        itemWidth:base.dw*0.01,
+                                        itemHeight:base.dh*0.012,
+                                        right:10,
+                                        top:base.dw*0.019,
+                                        textStyle: {
+                                            color: 'rgba(62,172,205,1)',
+                                            fontSize: base.dw*0.005,
+                                            fontWeight:'normal'
+                                        },
+                                        data:['用户设备流量','应用流量']
+                                    },
+                                    series : valueData
+                                };
+                                myChartFlow.clear();
+                                myChartFlow.setOption(option);
+
+                            }
+                        }
+                    })
+                }
+            },
+            error:function(errorMsg){
+                myChartFlow.showLoading({
+                    text: '数据加载失败，请联系管理员',
+                    color: 'rgba(75,189,203,0)',
+                    textColor: 'rgba(75,189,203,1)',
+                    maskColor: 'rgba(18,39,76,0.8)',
+                    zlevel: 0
+                });
+            }
+        })
+    }
+
+    //违规行为
+    function illegalBehavior(unit){
+        $('.footer-left').html('<div class="footer-left-main">'
+                +'  <span class="left-main1-1"></span>'
+                +'  <span class="left-main1-2"></span>'
+                +'  <span class="left-main1-3"></span>'
+                +'  <span class="left-main1-4"></span>'
+                +'  <div id="illegal-behavior"></div>'
+                +'</div>')
+
+        //设置宽高
+        $('.footer-left-main').css({
+            width:base.dw*0.7785,
+            height:base.dh*0.31,
+            marginTop:base.dh*0.01
+
+        })
+        var illegalBehavior = document.getElementById('illegal-behavior');
+        illegalBehavior.style.width = $('.footer-left-main').width()+'px';
+        illegalBehavior.style.height = $('.footer-left-main').height()+'px';
+
+        var myChartIllegal= echarts.init(illegalBehavior);
+        myChartIllegal.showLoading({
+            text: '数据加载中',
+            color: 'rgba(75,189,203,1)',
+            textColor: 'rgba(75,189,203,1)',
+            maskColor: 'rgba(18,39,76,0.8)',
+            zlevel: 0
+        });
+
+        $.ajax({
+            url:base_url+'emm/dv/rest/invalidBehaviourStatics',
+            data:{
+                beginTime:beginTime,
+                endTime:endTime,
+                owner:owner,
+                type:ownerType,
+                unit:unit
+            },
+            success:function(result){
+                myChartIllegal.hideLoading();
+                if(result){
+                    var res = JSON.parse(result);
+                    var val = res.data.val;
+
+                    //名称
+                    var catName = res.data.cat;
+                    //数据
+                    var data = [];
+                    //时间
+                    var hoursData = [];
+                    var arr = [];
+                    var maxTotalCount = 1
+                    for (var i = 0; i < val.length; i++) {
+                        hoursData.push(val[i].time);
+                        arr.push(val[i].value);
+                    }
+
+                    hoursData.forEach(function(ele,i){
+                        catName.forEach(function(ele,j){
+                            var arr1 = [];
+                            arr1.push(j,i,arr[i][j]/100);
+                            data.push(arr1);
+                        })
+                    })
+
+                    option = {
+                        noDataLoadingOption :{
+                            text: '暂无数据',
+                            effect:'bubble',
+                            effectOption : {
+                                effect: {
+                                    n: 0 //气泡个数为0
+                                }
+                            }
+                        },
+                        tooltip: {
+                            position: 'top',
+                            padding: [5, 10],
+                            formatter: function(params) {
+                                return '<span style="display:inline-block;position:relative;margin-right:10px;border-color:'+ params.color +';border-radius:10px;width:9px;height:9px;background-color:' + params.color + '"></span>'+params.name+'<br>'+params.seriesName+':'+params.value[1]*100;
+                            },
+                            textStyle:{
+                                width:300,
+                                lineHeight:18
+                            }
+                        },
+                        title: [
+                            {
+                                id: 'statistic',
+                                text: '设备违规',
+                                left: 10,
+                                top: 10,
+                                textStyle: {
+                                    color: 'rgba(75,189,203,1)',
+                                    fontSize: base.dw*0.0105,
+                                    fontWeight:'normal'
+                                }
+                            }
+                        ],
+                        //legend是显示，必须有对应的series的name对应
+                        legend: {
+                            data:catName,
+                            right:'4%',
+                            top:10,
+                            itemWidth:base.dw*0.01,
+                            itemHeight:base.dh*0.01,
+                            textStyle: {
+                                color: 'rgba(62,172,205,1)',
+                                fontSize: base.dw*0.006,
+                                fontWeight:'normal'
+                            }
+                        },
+
+                        singleAxis: [],
+                        series: []
+                    };
+                    echarts.util.each(catName, function(day, idx) {
+                        option.title.push({
+                            left: 10,
+                            textBaseline: 'middle',
+                            textStyle: {
+                                color: 'rgba(62,172,205,1)',
+                                fontSize:base.dw*0.005,
+                                fontWeight:'normal'
+                            },
+                            top: idx==0?base.mainH*0.34*0.3*1.15:(idx==1?base.mainH*0.34*0.3*2:base.mainH*0.34*0.3*2.8),//设置字的间距
+//                            text: 'No.'+Number(idx+1)+'  '+day
+                            text: 'Top'+Number(idx+1)+'  '+ (day.length > 10 ? (day.slice(0,10)+"...") : day)
+                        });
+                        option.singleAxis.push({
+                            left: 220,
+                            type: 'category',
+                            boundaryGap: false,
+                            data: hoursData,
+                            top: idx==0?base.mainH*0.34*0.3*0.75:(idx==1?base.mainH*0.34*0.3*1.6:base.mainH*0.34*0.3*2.4),
+                            height: (70 / 3 -10) + '%',//设置坐标的间距
+                            axisLabel: {
+                                interval: unit === 'week' ? 0 : 2
+                            },
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'rgba(62,172,205,1)',
+                                    width:0.5
+                                }
+                            },
+                            splitLine:{
+                                show:false,//底部网格线不显示
+                                lineStyle:{
+                                    width:0
+                                }
+                            }
+                        });
+                        option.series.push({
+                            name:day,
+                            singleAxisIndex: idx,
+                            coordinateSystem: 'singleAxis',
+                            type: 'scatter',
+                            data: [],
+                            itemStyle:{
+                                normal:{
+                                    color:function(){
+                                        var colorList = ['rgba(166,141,26,.8)','rgba(51,158,81,.8)','rgba(49,181,177,.8)'];
+                                        return colorList[idx];
+                                    }
+                                }
+                            },
+                            //symbolSize标记的大小
+                            symbolSize: function(dataItem) {
+//                                return dataItem[1] * 4;
+                                var cur = Math.round(dataItem[1] * 12 / maxTotalCount);
+                                var max = 30;
+                                var min = 5;
+                                if(cur>max){
+                                    cur = max;
+                                }
+                                if(cur<min){
+                                    cur = min;
+                                }
+                                if(dataItem[1] === 0){
+                                    cur = Math.round(0 + dataItem[1] * 20 / maxTotalCount)
+                                }else{
+                                    cur = Math.round(10 + dataItem[1] * 30 / maxTotalCount)
+                                }
+                                return cur;
+                            }
+                        });
+                    });
+
+                    echarts.util.each(data, function(dataItem) {
+                        option.series[dataItem[0]].data.push([dataItem[1], dataItem[2]]);
+                    });
+
+                    myChartIllegal.clear();
+                    myChartIllegal.setOption(option);
+                }
+            },
+            error:function(errorMsg){
+                myChartIllegal.showLoading({
+                    text: '数据加载失败，请联系管理员',
+                    color: 'rgba(75,189,203,0)',
+                    textColor: 'rgba(75,189,203,1)',
+                    maskColor: 'rgba(18,39,76,0.8)',
+                    zlevel: 0
+                });
+            }
+        })
+    }
+
+
+    //通话纪录
+    function callRecords(unit){
+        $('.footer-right').html('<div class="footer-right-main">'
+                +'  <span class="left-main1-1"></span>'
+                +'  <span class="left-main1-2"></span>'
+                +'  <span class="left-main1-3"></span>'
+                +'  <span class="left-main1-4"></span>'
+                +'  <div id="call-records"></div>'
+                +'</div>')
+
+        //设置宽高
+        $('.footer-right-main').css({
+            width:base.dw*0.2,
+            height:base.dh*0.31,
+            marginTop:base.dh*0.01
+        })
+        var callRecords = document.getElementById('call-records');
+        callRecords.style.width = $('.footer-right-main').width()+'px';
+        callRecords.style.height = $('.footer-right-main').height()+'px';
+
+        var myChartCall= echarts.init(callRecords);
+        myChartCall.showLoading({
+            text: '数据加载中',
+            color: 'rgba(75,189,203,1)',
+            textColor: 'rgba(75,189,203,1)',
+            maskColor: 'rgba(18,39,76,0.8)',
+            zlevel: 0
+        });
+        //第一个通话纪录
+        $.ajax({
+            url:base_url+'emm/dv/rest/callTimeStatics',
+            data:{
+                beginTime:beginTime,
+                endTime:endTime,
+                owner:owner,
+                type:ownerType,
+                unit:unit
+            },
+            success:function(result){
+                myChartCall.hideLoading();
+                if(result){
+                    var res = JSON.parse(result);
+                    var data = res.data;
+                    //名称
+                    var catName = [];//在第二个请求完成后插入
+                    var phoneName = data.cat[0];
+                    var valDa = data.val;
+                    //数据通话纪录
+                    var phoneCall = [];
+                    //时间
+                    var times = [];
+
+                    for (var i = 0; i < valDa.length; i++) {
+                        times.push(valDa[i].time);
+                        phoneCall.push(valDa[i].value[0]);
+                    }
+                    //其它的通讯方式的接口
+                    $.ajax({
+                        url:base_url+'emm/dv/rest/shortMessageStatics',
+                        data:{
+                            beginTime:beginTime,
+                            endTime:endTime,
+                            owner:owner,
+                            type:ownerType,
+                            unit:unit
+                        },
+                        success:function(result){
+                            if(result){
+                                var dataRes = JSON.parse(result).data;
+
+                                catName = dataRes.cat;
+                                catName.unshift(phoneName);
+
+                                var valData = dataRes.val;
+                                var qqValue = [];
+                                var wxValue = [];
+                                var dxValue = [];
+                                valData.forEach(function(ele,i){
+                                    qqValue.push(ele.value[0]);//qq
+                                    wxValue.push(ele.value[1]);//微信
+                                    dxValue.push(ele.value[2]);//短信
+
+
+                                })
+                                option = {
+                                    title: {
+                                        id: 'statistic',
+                                        text: '通话纪录',
+                                        left: 10,
+                                        top: 10,
+                                        textStyle: {
+                                            color: 'rgba(75,189,203,1)',
+                                            fontSize: base.dw*0.0105,
+                                            fontWeight:'normal'
+                                        }
+                                    },
+                                    //整个图距外框的距离
+                                    grid: {
+                                        left: 50,
+                                        top: 95,
+                                        bottom: 30,
+                                        right:50
+                                    },
+                                    tooltip: {
+                                        trigger: 'axis',
+                                        formatter: function(params) {
+                                            return '<dl class="mark-call"><dt>'+params[0].name+'</dt>'+params.map(function(value){
+                                                        return '<dd><span style="display:inline-block;position:relative;margin-right:10px;border-color:'+ value.color +';border-radius:10px;width:9px;height:9px;background-color:' + value.color + '"></span>'+value.seriesName+'：'+value.value+'</dd>';
+                                                    })+'</dl>'
+                                        }
+                                    },
+
+                                    legend: {
+
+                                        right:10,
+                                        top:base.dw*0.019,
+                                        textStyle: {
+                                            color: 'rgba(62,172,205,1)',
+                                            fontSize: base.dw*0.005,
+                                            fontWeight:'normal'
+                                        },
+                                        itemWidth:base.dw*0.01,
+                                        itemHeight:base.dh*0.012,
+                                        data:catName
+                                    },
+                                    xAxis: [
+                                        {
+                                            type: 'category',
+                                            interval: 1,
+                                            data: times,
+                                            boundaryGap: true,//X轴是否从0开始，false是从0开始，true是不从0开始
+                                            axisLabel: {
+
+                                                textStyle: {
+                                                    color: 'rgba(62,172,205,1)',
+                                                    fontSize: base.dw*0.005,
+                                                    fontWeight:'normal'
+                                                }
+                                            },
+                                            axisLine: {
+                                                onZero: false,
+                                                textStyle: {
+                                                    color: 'rgba(62,172,205,1)'
+                                                },
+                                                lineStyle: {
+                                                    color: 'rgba(62,172,205,1)'
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    yAxis: [
+                                        {
+                                            type: 'value',
+                                            name: '次',
+                                            nameTextStyle:{
+                                                fontSize: base.dw*0.005,
+                                                fontWeight:'normal'
+                                            },
+                                            //min: 0,
+                                            //max: 250,
+                                            //interval: 50,
+                                            //底部网格线
+                                            splitLine:{
+                                                show:false,//底部网格线不显示
+                                                lineStyle:{
+                                                    width:0
+                                                }
+                                            },
+                                            axisLabel: {
+                                                formatter: '{value}'
+                                            },
+                                            axisLine: {
+                                                lineStyle: {
+                                                    color: 'rgba(62,172,205,1)'
+                                                }
+                                            }
+                                        },
+                                        {
+                                            type: 'value',
+                                            name: '分钟',
+                                            nameTextStyle:{
+                                                fontSize: base.dw*0.005,
+                                                fontWeight:'normal'
+                                            },
+                                            //min: 0,
+                                            //max: 25,
+                                            //interval: 5,
+                                            splitLine:{
+                                                show:false,
+                                                lineStyle:{
+                                                    width:0
+                                                }
+                                            },
+                                            //坐标上文字的样式
+                                            axisLabel: {
+                                                formatter: '{value}'
+                                            },
+                                            //坐标线的样式
+                                            axisLine: {
+                                                lineStyle: {
+                                                    color: 'rgba(62,172,205,1)'
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    series: [
+                                        {
+                                            name:'通话',
+                                            type:'line',
+                                            yAxisIndex: 1,
+                                            symbol:'circle',//实心圆滑
+                                            data:phoneCall,
+                                            itemStyle:{
+                                                normal:{
+                                                    color:'#e8c11a'
+                                                }
+
+                                            },
+                                            ////折线，设置颜色
+                                            lineStyle:{
+                                                normal:{
+                                                    color:'#e8c11a',
+                                                    width:0.5
+                                                }
+                                            }
+                                        },
+                                        {
+                                            name:'QQ',
+                                            type:'bar',//bar柱形
+                                            data:qqValue,
+                                            barGap:'20%',
+                                            barWidth:'15%',
+                                            itemStyle: {
+                                                normal: {
+                                                    color: '#96d3db'
+                                                }
+                                            }
+                                        },
+                                        {
+                                            name:'微信',
+                                            type:'bar',
+                                            data:wxValue,
+                                            barGap:'20%',
+                                            barWidth:'15%',
+                                            //itemStyle柱形图的颜色
+                                            itemStyle: {
+                                                normal: {
+                                                    color: '#146eb2'
+                                                }
+                                            }
+                                        },
+                                        {
+                                            name:'短信',
+                                            type:'bar',
+                                            barGap:'20%',
+                                            barWidth:'15%',
+                                            data:dxValue,
+                                            itemStyle: {
+                                                normal: {
+                                                    color: '#417c46'
+                                                }
+                                            }
+                                        }
+
+                                    ]
+                                };
+                                myChartCall.clear();
+                                myChartCall.setOption(option);
+
+                            }
+                        }
+                    })
+                }
+            },
+            error:function(errorMsg){
+                myChartCall.showLoading({
+                    text: '数据加载失败，请联系管理员',
+                    color: 'rgba(75,189,203,0)',
+                    textColor: 'rgba(75,189,203,1)',
+                    maskColor: 'rgba(18,39,76,0.8)',
+                    zlevel: 0
+                });
+            }
+        })
+
+    }
+
+
+</script>
+
+
+
+</html>

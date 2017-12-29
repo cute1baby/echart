@@ -1,0 +1,203 @@
+<?xml version="1.0"?> 
+<resultset> 
+     <row>
+         <field name="keyword">http</field>
+         <field name="counter">1190</field>
+     </row>
+     <row>
+         <field name="keyword">appmsg</field>
+         <field name="counter">1189</field>
+     </row>
+     <row>
+         <field name="keyword">msg</field>
+         <field name="counter">1189</field>
+     </row>
+     <row>
+         <field name="keyword">category</field>
+         <field name="counter">1188</field>
+     </row>
+     <row>
+         <field name="keyword">mmbiz</field>
+         <field name="counter">1188</field>
+     </row>
+     <row>
+         <field name="keyword">item</field>
+         <field name="counter">1188</field>
+     </row>
+     <row>
+         <field name="keyword">mmreader</field>
+         <field name="counter">1188</field>
+     </row>
+     <row>
+         <field name="keyword">+.</field>
+         <field name="counter">1188</field>
+     </row>
+     <row>
+         <field name="keyword">sources</field>
+         <field name="counter">1177</field>
+     </row>
+     <row>
+         <field name="keyword">jpeg</field>
+         <field name="counter">1139</field>
+     </row>
+     <row>
+         <field name="keyword">qpic</field>
+         <field name="counter">954</field>
+     </row>
+     <row>
+         <field name="keyword">url</field>
+         <field name="counter">893</field>
+     </row>
+     <row>
+         <field name="keyword">wxfrom</field>
+         <field name="counter">833</field>
+     </row>
+     <row>
+         <field name="keyword">cn</field>
+         <field name="counter">827</field>
+     </row>
+     <row>
+         <field name="keyword">source</field>
+         <field name="counter">814</field>
+     </row>
+     <row>
+         <field name="keyword">item1</field>
+         <field name="counter">759</field>
+     </row>
+     <row>
+         <field name="keyword">topnew</field>
+         <field name="counter">705</field>
+     </row>
+     <row>
+         <field name="keyword">wxtype</field>
+         <field name="counter">684</field>
+     </row>
+     <row>
+         <field name="keyword">item2</field>
+         <field name="counter">616</field>
+     </row>
+     <row>
+         <field name="keyword">appinfo</field>
+         <field name="counter">573</field>
+     </row>
+     <row>
+         <field name="keyword">appattach</field>
+         <field name="counter">573</field>
+     </row>
+     <row>
+         <field name="keyword">item3</field>
+         <field name="counter">474</field>
+     </row>
+     <row>
+         <field name="keyword">publisher</field>
+         <field name="counter">410</field>
+     </row>
+     <row>
+         <field name="keyword">640</field>
+         <field name="counter">379</field>
+     </row>
+     <row>
+         <field name="keyword">item4</field>
+         <field name="counter">261</field>
+     </row>
+     <row>
+         <field name="keyword">环球时报</field>
+         <field name="counter">214</field>
+     </row>
+     <row>
+         <field name="keyword">参考消息</field>
+         <field name="counter">190</field>
+     </row>
+     <row>
+         <field name="keyword">play</field>
+         <field name="counter">163</field>
+     </row>
+     <row>
+         <field name="keyword">item5</field>
+         <field name="counter">163</field>
+     </row>
+     <row>
+         <field name="keyword">jpg</field>
+         <field name="counter">160</field>
+     </row>
+     <row>
+         <field name="keyword">item6</field>
+         <field name="counter">148</field>
+     </row>
+     <row>
+         <field name="keyword">item7</field>
+         <field name="counter">145</field>
+     </row>
+     <row>
+         <field name="keyword">赣县</field>
+         <field name="counter">115</field>
+     </row>
+     <row>
+         <field name="keyword">content</field>
+         <field name="counter">87</field>
+     </row>
+     <row>
+         <field name="keyword">voip</field>
+         <field name="counter">73</field>
+     </row>
+     <row>
+         <field name="keyword">00</field>
+         <field name="counter">71</field>
+     </row>
+     <row>
+         <field name="keyword">陆军</field>
+         <field name="counter">69</field>
+     </row>
+     <row>
+         <field name="keyword">CDATA</field>
+         <field name="counter">54</field>
+     </row>
+     <row>
+         <field name="keyword">现在</field>
+         <field name="counter">54</field>
+     </row>
+     <row>
+         <field name="keyword">video</field>
+         <field name="counter">52</field>
+     </row>
+     <row>
+         <field name="keyword">红包</field>
+         <field name="counter">48</field>
+     </row>
+     <row>
+         <field name="keyword">微信</field>
+         <field name="counter">46</field>
+     </row>
+     <row>
+         <field name="keyword">color</field>
+         <field name="counter">46</field>
+     </row>
+     <row>
+         <field name="keyword">十九</field>
+         <field name="counter">46</field>
+     </row>
+     <row>
+         <field name="keyword">什么</field>
+         <field name="counter">43</field>
+     </row>
+     <row>
+         <field name="keyword">老师</field>
+         <field name="counter">41</field>
+     </row>
+     <row>
+         <field name="keyword">sendid</field>
+         <field name="counter">41</field>
+     </row>
+     <row>
+         <field name="keyword">20</field>
+         <field name="counter">39</field>
+     </row>
+     <row>
+         <field name="keyword">我们</field>
+         <field name="counter">38</field>
+     </row>
+     <row>
+         <field name="keyword">调理</field>
+         <field name="counter">38</field>
+     </row>
+</resultset>

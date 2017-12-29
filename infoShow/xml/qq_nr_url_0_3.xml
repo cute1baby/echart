@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<resultset statement="select COUNT(log.chat_status) AS num, log.chat_status FROM behavior_chat_log log LEFT JOIN behavior_chat_audit audit ON log.chat_audit_id = audit.chat_audit_id LEFT JOIN pub_staff s ON audit.staff_id = s.staff_id where log.chat_time &gt;= DATE_ADD(CURDATE(),INTERVAL -(DAYOFMONTH(CURDATE())-1) day) and audit.app_pkg_name like 'com.tencent.%qq%' and log.talk_type =0 and (CAST(log.chat_content AS char) like '%http://%' or CAST(log.chat_content AS char) like '%https://%' ) GROUP BY log.chat_status order by num desc LIMIT 20" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <row>
+	<field name="num">38</field>
+	<field name="chat_status">0</field>
+  </row>
+</resultset>

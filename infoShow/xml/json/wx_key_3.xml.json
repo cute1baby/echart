@@ -1,0 +1,7 @@
+{
+ "msg":"Success",
+ "code":0,
+ "data":[
+{"name":"部队","value":14} , {"name":"实力","value":11} , {"name":"班长","value":9} , {"name":"军队","value":5} , {"name":"首长","value":3} , {"name":"排长","value":2} , {"name":"军改","value":2} , {"name":"营长","value":1}
+	]
+ }

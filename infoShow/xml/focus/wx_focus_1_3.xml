@@ -1,0 +1,203 @@
+<?xml version="1.0"?> 
+<resultset> 
+     <row>
+         <field name="keyword">群聊</field>
+         <field name="counter">10</field>
+     </row>
+     <row>
+         <field name="keyword">加入</field>
+         <field name="counter">10</field>
+     </row>
+     <row>
+         <field name="keyword">邀请</field>
+         <field name="counter">8</field>
+     </row>
+     <row>
+         <field name="keyword">大伯</field>
+         <field name="counter">6</field>
+     </row>
+     <row>
+         <field name="keyword">社会</field>
+         <field name="counter">6</field>
+     </row>
+     <row>
+         <field name="keyword">不错</field>
+         <field name="counter">6</field>
+     </row>
+     <row>
+         <field name="keyword">最帅峰源</field>
+         <field name="counter">4</field>
+     </row>
+     <row>
+         <field name="keyword">嘿嘿</field>
+         <field name="counter">4</field>
+     </row>
+     <row>
+         <field name="keyword">改变</field>
+         <field name="counter">4</field>
+     </row>
+     <row>
+         <field name="keyword">念念</field>
+         <field name="counter">4</field>
+     </row>
+     <row>
+         <field name="keyword">十连</field>
+         <field name="counter">4</field>
+     </row>
+     <row>
+         <field name="keyword">声林</field>
+         <field name="counter">4</field>
+     </row>
+     <row>
+         <field name="keyword">可以</field>
+         <field name="counter">4</field>
+     </row>
+     <row>
+         <field name="keyword">不要</field>
+         <field name="counter">4</field>
+     </row>
+     <row>
+         <field name="keyword">努力</field>
+         <field name="counter">3</field>
+     </row>
+     <row>
+         <field name="keyword">兰兰</field>
+         <field name="counter">3</field>
+     </row>
+     <row>
+         <field name="keyword">韩娟</field>
+         <field name="counter">3</field>
+     </row>
+     <row>
+         <field name="keyword">大姐</field>
+         <field name="counter">3</field>
+     </row>
+     <row>
+         <field name="keyword">wxid</field>
+         <field name="counter">3</field>
+     </row>
+     <row>
+         <field name="keyword">你们</field>
+         <field name="counter">3</field>
+     </row>
+     <row>
+         <field name="keyword">朋友</field>
+         <field name="counter">3</field>
+     </row>
+     <row>
+         <field name="keyword">妈妈</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">销售</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">说话</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">7172919217</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">verifycontact</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">装饰</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">哈哈</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">婷婷</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">慢慢</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">打击</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">上次</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">理发店</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">回家</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">家武</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">真的</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">讲理</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">记得</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">低调</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">理发师</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">好了吧</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">摇身一变</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">好久</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">验证</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">沧桑</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">才能</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">现在</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">一样</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">玫瑰</field>
+         <field name="counter">2</field>
+     </row>
+     <row>
+         <field name="keyword">声泽</field>
+         <field name="counter">2</field>
+     </row>
+</resultset>

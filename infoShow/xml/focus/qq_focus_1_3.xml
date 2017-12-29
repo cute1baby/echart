@@ -1,0 +1,203 @@
+<?xml version="1.0"?> 
+<resultset> 
+     <row>
+         <field name="keyword">QQ</field>
+         <field name="counter">51</field>
+     </row>
+     <row>
+         <field name="keyword">小冰</field>
+         <field name="counter">51</field>
+     </row>
+     <row>
+         <field name="keyword">u0000</field>
+         <field name="counter">41</field>
+     </row>
+     <row>
+         <field name="keyword">出现</field>
+         <field name="counter">41</field>
+     </row>
+     <row>
+         <field name="keyword">学习</field>
+         <field name="counter">41</field>
+     </row>
+     <row>
+         <field name="keyword">为了</field>
+         <field name="counter">41</field>
+     </row>
+     <row>
+         <field name="keyword">做菜</field>
+         <field name="counter">39</field>
+     </row>
+     <row>
+         <field name="keyword">u0008</field>
+         <field name="counter">38</field>
+     </row>
+     <row>
+         <field name="keyword">com</field>
+         <field name="counter">33</field>
+     </row>
+     <row>
+         <field name="keyword">qq</field>
+         <field name="counter">33</field>
+     </row>
+     <row>
+         <field name="keyword">html</field>
+         <field name="counter">32</field>
+     </row>
+     <row>
+         <field name="keyword">&_</field>
+         <field name="counter">32</field>
+     </row>
+     <row>
+         <field name="keyword">bid</field>
+         <field name="counter">31</field>
+     </row>
+     <row>
+         <field name="keyword">wv</field>
+         <field name="counter">30</field>
+     </row>
+     <row>
+         <field name="keyword">u0001</field>
+         <field name="counter">20</field>
+     </row>
+     <row>
+         <field name="keyword">qun</field>
+         <field name="counter">19</field>
+     </row>
+     <row>
+         <field name="keyword">gc</field>
+         <field name="counter">19</field>
+     </row>
+     <row>
+         <field name="keyword">u000a</field>
+         <field name="counter">18</field>
+     </row>
+     <row>
+         <field name="keyword">u0002</field>
+         <field name="counter">18</field>
+     </row>
+     <row>
+         <field name="keyword">阳痿</field>
+         <field name="counter">17</field>
+     </row>
+     <row>
+         <field name="keyword">生日</field>
+         <field name="counter">16</field>
+     </row>
+     <row>
+         <field name="keyword">1031</field>
+         <field name="counter">16</field>
+     </row>
+     <row>
+         <field name="keyword">calendar</field>
+         <field name="counter">16</field>
+     </row>
+     <row>
+         <field name="keyword">早泄</field>
+         <field name="counter">16</field>
+     </row>
+     <row>
+         <field name="keyword">2340</field>
+         <field name="counter">16</field>
+     </row>
+     <row>
+         <field name="keyword">u0003web</field>
+         <field name="counter">16</field>
+     </row>
+     <row>
+         <field name="keyword">专治</field>
+         <field name="counter">15</field>
+     </row>
+     <row>
+         <field name="keyword">继续</field>
+         <field name="counter">15</field>
+     </row>
+     <row>
+         <field name="keyword">成语</field>
+         <field name="counter">13</field>
+     </row>
+     <row>
+         <field name="keyword">你们</field>
+         <field name="counter">13</field>
+     </row>
+     <row>
+         <field name="keyword">422249053</field>
+         <field name="counter">12</field>
+     </row>
+     <row>
+         <field name="keyword">pid</field>
+         <field name="counter">12</field>
+     </row>
+     <row>
+         <field name="keyword">1027</field>
+         <field name="counter">12</field>
+     </row>
+     <row>
+         <field name="keyword">buluo</field>
+         <field name="counter">12</field>
+     </row>
+     <row>
+         <field name="keyword">u0014</field>
+         <field name="counter">12</field>
+     </row>
+     <row>
+         <field name="keyword">sub</field>
+         <field name="counter">12</field>
+     </row>
+     <row>
+         <field name="keyword">grp</field>
+         <field name="counter">11</field>
+     </row>
+     <row>
+         <field name="keyword">128</field>
+         <field name="counter">11</field>
+     </row>
+     <row>
+         <field name="keyword">我接</field>
+         <field name="counter">11</field>
+     </row>
+     <row>
+         <field name="keyword">mobile</field>
+         <field name="counter">11</field>
+     </row>
+     <row>
+         <field name="keyword">detail</field>
+         <field name="counter">10</field>
+     </row>
+     <row>
+         <field name="keyword">gid</field>
+         <field name="counter">10</field>
+     </row>
+     <row>
+         <field name="keyword">游戏</field>
+         <field name="counter">10</field>
+     </row>
+     <row>
+         <field name="keyword">u0003</field>
+         <field name="counter">10</field>
+     </row>
+     <row>
+         <field name="keyword">聊天</field>
+         <field name="counter">10</field>
+     </row>
+     <row>
+         <field name="keyword">qqweb</field>
+         <field name="counter">10</field>
+     </row>
+     <row>
+         <field name="keyword">...</field>
+         <field name="counter">9</field>
+     </row>
+     <row>
+         <field name="keyword">src</field>
+         <field name="counter">8</field>
+     </row>
+     <row>
+         <field name="keyword">http</field>
+         <field name="counter">8</field>
+     </row>
+     <row>
+         <field name="keyword">cn</field>
+         <field name="counter">8</field>
+     </row>
+</resultset>

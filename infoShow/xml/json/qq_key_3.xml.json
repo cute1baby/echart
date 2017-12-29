@@ -1,0 +1,7 @@
+{
+ "msg":"Success",
+ "code":0,
+ "data":[
+{"name":"战士","value":2} , {"name":"部队","value":1}
+	]
+ }

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<resultset statement="select log.content_type, log.group_name, count(log.group_id) AS num, DATE_ADD( CURDATE(), INTERVAL - (DAYOFMONTH(CURDATE()) - 1) DAY ) AS startData, CURDATE() AS endDate FROM behavior_chat_log log LEFT JOIN behavior_chat_audit audit ON log.chat_audit_id = audit.chat_audit_id WHERE audit.app_pkg_name LIKE 'com.tencent.%qq%' AND log.content_type = 2 AND log.talk_type = 1 AND log.chat_time &gt; DATE_ADD( CURDATE(), INTERVAL - (DAYOFMONTH(CURDATE()) - 1) DAY ) GROUP BY log.group_id ORDER BY num DESC LIMIT 20" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <row>
+	<field name="content_type">2</field>
+	<field name="group_name">Top众神領域</field>
+	<field name="num">27</field>
+	<field name="startData">2017-12-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">2</field>
+	<field name="group_name">久伴、久久久</field>
+	<field name="num">11</field>
+	<field name="startData">2017-12-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+
+  <row>
+	<field name="content_type">2</field>
+	<field name="group_name">小仙肉😫</field>
+	<field name="num">6</field>
+	<field name="startData">2017-12-01</field>
+	<field name="endDate">2017-12-29</field>
+  </row>
+</resultset>
